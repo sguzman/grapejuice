@@ -44,7 +44,12 @@ def main():
             print("Please supply a URI")
             return
 
-        robloxctrl.run_studio(uri)
+        ide = False
+        if not uri.startswith("roblox-studio"):
+            uri = "Z:" + uri.replace("/", "\\")
+            ide = True
+
+        robloxctrl.run_studio(uri, ide)
         return
 
     if args.player:

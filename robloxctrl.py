@@ -51,15 +51,18 @@ def locate_player_launcher():
     return locate_in_versions("RobloxPlayerLauncher.exe")
 
 
-def run_studio(uri=""):
+def run_studio(uri="", ide=False):
     launcher = locate_studio_launcher()
     if launcher is None:
         return False
 
-    if uri:
-        winectrl.run_exe(launcher, uri)
+    if ide:
+        winectrl.run_exe(launcher, "-ide", uri)
     else:
-        winectrl.run_exe(launcher)
+        if uri:
+            winectrl.run_exe(launcher, uri)
+        else:
+            winectrl.run_exe(launcher)
 
     return True
 

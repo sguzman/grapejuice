@@ -12,6 +12,9 @@ DESKTOP_STUDIO = "roblox-studio.desktop"
 DESKTOP_PLAYER = "roblox-player.desktop"
 DESKTOP_GRAPEJUICE = "grapejuice.desktop"
 
+MIME_RBXL = "x-roblox-rbxl.xml"
+MIME_RBXLX = "x-roblox-rbxlx.xml"
+
 
 def copy_files():
     source = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -74,6 +77,24 @@ def install_desktop_files():
         )
 
 
+def install_mime_def(src, target_dir):
+    name = os.path.basename(src)
+
+    target = os.path.join(target_dir, name)
+    if os.path.exists(target):
+        os.remove(target)
+
+    shutil.copy(src, target)
+
+
+def install_mime_files():
+    mime_files = [MIME_RBXL, MIME_RBXLX]
+    for f in mime_files:
+        install_mime_def(os.path.join(variables.application_dir(), "assets", f), variables.xdg_mime_packages())
+
+    os.spawnlp(os.P_WAIT, "update-mime-database", "update-mime-database", variables.xdg_mime_dir())
+
+
 def mime_assoc(desktop, mime_type):
     os.spawnlp(os.P_WAIT, "xdg-mime", "xdg-mime", "default", desktop, mime_type)
 
@@ -83,11 +104,18 @@ def update_protocol_handlers():
     mime_assoc(DESKTOP_PLAYER, "x-scheme-handler/roblox-player")
 
 
+def update_file_associations():
+    mime_assoc(DESKTOP_STUDIO, "application/x-roblox-rbxl")
+    mime_assoc(DESKTOP_STUDIO, "application/x-roblox-rbxlx")
+
+
 def install_main():
     copy_files()
     install_packages()
+    install_mime_files()
     install_desktop_files()
     update_protocol_handlers()
+    update_file_associations()
 
 
 if __name__ == "__main__":

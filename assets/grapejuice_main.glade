@@ -197,6 +197,7 @@
           <object class="GtkMenuButton">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="focus_on_click">False</property>
             <property name="receives_default">True</property>
             <property name="popover">main_menu</property>
             <child>
@@ -322,7 +323,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="image">icon_link</property>
                     <property name="image_position">top</property>
                     <signal name="clicked" handler="update_protocol_handlers" swapped="no"/>
                   </object>
@@ -330,6 +330,37 @@
                     <property name="left_attach">2</property>
                     <property name="top_attach">0</property>
                   </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Install MIME files</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_mime</property>
+                    <property name="image_position">top</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Update file associations</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_link</property>
+                    <property name="image_position">top</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
               <packing>
@@ -388,7 +419,6 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="image">icon_mime</property>
                     <property name="image_position">top</property>
                     <signal name="clicked" handler="disable_mime_assoc" swapped="no"/>
                   </object>

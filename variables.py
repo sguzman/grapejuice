@@ -39,3 +39,11 @@ def installer_path():
 
 def xdg_applications_dir():
     return os.path.join(home(), ".local", "share", "applications")
+
+
+def xdg_mime_dir():
+    return os.path.join(home(), ".local", "share", "mime")
+
+
+def xdg_mime_packages():
+    return os.path.join(xdg_mime_dir(), "packages")
