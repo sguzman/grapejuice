@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkImage" id="icon_desktop">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">desktop-effect</property>
+  </object>
+  <object class="GtkImage" id="icon_drive">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">drive-harddisk</property>
+  </object>
+  <object class="GtkImage" id="icon_file_manager">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">file-manager</property>
+  </object>
+  <object class="GtkImage" id="icon_install">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">package-install</property>
+  </object>
+  <object class="GtkImage" id="icon_library">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">library</property>
+  </object>
+  <object class="GtkImage" id="icon_link">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">link</property>
+  </object>
+  <object class="GtkImage" id="icon_mime">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">mime-ascii</property>
+  </object>
+  <object class="GtkImage" id="icon_registry_editor">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">dconf-editor</property>
+  </object>
+  <object class="GtkImage" id="icon_roblox_studio">
+    <property name="height_request">16</property>
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">roblox-studio-24.png</property>
+  </object>
+  <object class="GtkImage" id="icon_sandbox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">boxes</property>
+  </object>
+  <object class="GtkImage" id="icon_wine_config">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">configuration_section</property>
+  </object>
+  <object class="GtkImage" id="icon_winetricks">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">winetricks</property>
+  </object>
+  <object class="GtkPopoverMenu" id="main_menu">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="margin_left">10</property>
+        <property name="margin_right">10</property>
+        <property name="margin_top">10</property>
+        <property name="margin_bottom">10</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <child>
+          <object class="GtkButton">
+            <property name="label" translatable="yes">Exit</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="on_destroy" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="submenu">submenu0</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkWindow" id="main_window">
+    <property name="can_focus">False</property>
+    <property name="resizable">False</property>
+    <property name="default_width">550</property>
+    <property name="default_height">300</property>
+    <signal name="destroy" handler="on_destroy" swapped="no"/>
+    <child type="titlebar">
+      <object class="GtkHeaderBar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="valign">center</property>
+        <property name="title" translatable="yes">Grapejuice</property>
+        <property name="show_close_button">True</property>
+        <property name="decoration_layout">menu:minimize,close</property>
+        <child>
+          <object class="GtkMenuButton">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="popover">main_menu</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="margin_left">2</property>
+                <property name="margin_right">2</property>
+                <property name="margin_top">5</property>
+                <property name="margin_bottom">5</property>
+                <property name="pixbuf">grapejuice-24.png</property>
+                <property name="icon_size">0</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkStackSwitcher">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">center</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
+            <property name="stack">main_stack</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStack" id="main_stack">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="transition_type">slide-left-right</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">10</property>
+                <property name="margin_bottom">10</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">10</property>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Roblox Studio</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_roblox_studio</property>
+                    <signal name="clicked" handler="run_roblox_studio" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="name">page_main</property>
+                <property name="title" translatable="yes">Launcher</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_left">10</property>
+                <property name="margin_right">10</property>
+                <property name="margin_top">10</property>
+                <property name="margin_bottom">10</property>
+                <property name="row_spacing">5</property>
+                <property name="column_spacing">5</property>
+                <property name="row_homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Install Roblox</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_install</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="run_roblox_installer" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Update desktop files</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_desktop</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="update_desktop_files" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Update protocol handlers</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_link</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="update_protocol_handlers" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="name">page_maintenance</property>
+                <property name="title" translatable="yes">Maintenance</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkGrid">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="row_spacing">5</property>
+                <property name="column_spacing">5</property>
+                <property name="row_homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Wine Explorer</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_file_manager</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="wine_explorer" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Sandbox</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_sandbox</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="sandbox" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Disable MIME Associations</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_mime</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="disable_mime_assoc" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Registry Editor</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_registry_editor</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="run_regedit" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Wine Configuration</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_wine_config</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="run_winecfg" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Apply DLL overrides</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_library</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="apply_dll_overrides" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Winetricks</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_winetricks</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="run_winetricks" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Open Drive C</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_drive</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="open_drive_c" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="name">page_wine</property>
+                <property name="title" translatable="yes">WINE</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

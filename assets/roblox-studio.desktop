@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Roblox Studio
+Comment=Develop Roblox games
+Icon=$APPLICATION_DIR/assets/roblox-studio.svg
+Exec=$APPLICATION_DIR/bin/grapejuice --studio --uri "%U"
+Actions=
+Categories=Development;
+StartupWMClass=RobloxStudioLauncherBeta.exe
+MimeType=x-scheme-handler/roblox-studio

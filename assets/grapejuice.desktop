@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Grapejuice
+Comment=Manage Roblox
+Icon=$APPLICATION_DIR/assets/grapejuice.svg
+Exec=$APPLICATION_DIR/bin/grapejuice --gui
+Actions=
+Categories=Development;
