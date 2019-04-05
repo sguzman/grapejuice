@@ -74,12 +74,6 @@
     <property name="pixel_size">48</property>
     <property name="icon_name">library</property>
   </object>
-  <object class="GtkImage" id="icon_link">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixel_size">48</property>
-    <property name="icon_name">link</property>
-  </object>
   <object class="GtkImage" id="icon_mime">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -87,6 +81,18 @@
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
     <property name="icon_name">mime-ascii</property>
+  </object>
+  <object class="GtkImage" id="icon_mime2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">mime-ascii</property>
+  </object>
+  <object class="GtkImage" id="icon_protocol">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">link</property>
   </object>
   <object class="GtkImage" id="icon_registry_editor">
     <property name="visible">True</property>
@@ -125,6 +131,12 @@
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
     <property name="icon_name">winetricks</property>
+  </object>
+  <object class="GtkImage" id="icons_file_assoc">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">file</property>
   </object>
   <object class="GtkPopoverMenu" id="main_menu">
     <property name="can_focus">False</property>
@@ -323,6 +335,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="image">icon_protocol</property>
                     <property name="image_position">top</property>
                     <signal name="clicked" handler="update_protocol_handlers" swapped="no"/>
                   </object>
@@ -351,7 +364,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="image">icon_link</property>
+                    <property name="image">icons_file_assoc</property>
                     <property name="image_position">top</property>
                   </object>
                   <packing>
@@ -419,6 +432,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="image">icon_mime2</property>
                     <property name="image_position">top</property>
                     <signal name="clicked" handler="disable_mime_assoc" swapped="no"/>
                   </object>
