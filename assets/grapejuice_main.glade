@@ -2,6 +2,40 @@
 <!-- Generated with glade 3.22.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkAboutDialog" id="grapejuice_about">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <property name="program_name">Grapejuice</property>
+    <property name="copyright" translatable="yes">BrinkerVII</property>
+    <property name="comments" translatable="yes">A simple GUI and wrapper to manage Roblox on Linux running under Wine.</property>
+    <property name="authors">BrinkerVII &lt;brinkervii@gmail.com&gt;</property>
+    <property name="logo">grapejuice-128.png</property>
+    <property name="license_type">gpl-3-0</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkImage" id="icon_desktop">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -94,6 +128,7 @@
   </object>
   <object class="GtkPopoverMenu" id="main_menu">
     <property name="can_focus">False</property>
+    <property name="position">bottom</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -107,6 +142,20 @@
         <property name="spacing">10</property>
         <child>
           <object class="GtkButton">
+            <property name="label" translatable="yes">About</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <signal name="clicked" handler="show_about" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
             <property name="label" translatable="yes">Exit</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -116,11 +165,8 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">0</property>
+            <property name="position">1</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
         </child>
         <child>
           <placeholder/>
@@ -137,15 +183,14 @@
     <property name="resizable">False</property>
     <property name="default_width">550</property>
     <property name="default_height">300</property>
+    <property name="icon">grapejuice.svg</property>
+    <property name="startup_id">grapejuice</property>
     <signal name="destroy" handler="on_destroy" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="valign">center</property>
         <property name="title" translatable="yes">Grapejuice</property>
-        <property name="show_close_button">True</property>
-        <property name="decoration_layout">menu:minimize,close</property>
         <child>
           <object class="GtkMenuButton">
             <property name="visible">True</property>
@@ -156,13 +201,9 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="margin_left">2</property>
-                <property name="margin_right">2</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
+                <property name="margin_top">3</property>
+                <property name="margin_bottom">3</property>
                 <property name="pixbuf">grapejuice-24.png</property>
-                <property name="icon_size">0</property>
               </object>
             </child>
           </object>
@@ -195,7 +236,7 @@
             <property name="can_focus">False</property>
             <property name="transition_type">slide-left-right</property>
             <child>
-              <object class="GtkBox">
+              <object class="GtkBox" id="page_main">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">10</property>
@@ -232,7 +273,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkGrid">
+              <object class="GtkGrid" id="page_maintenance">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">10</property>
@@ -288,24 +329,6 @@
                     <property name="top_attach">0</property>
                   </packing>
                 </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
               </object>
               <packing>
                 <property name="name">page_maintenance</property>
@@ -314,7 +337,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkGrid">
+              <object class="GtkGrid" id="page_wine">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
@@ -449,7 +472,7 @@
               </object>
               <packing>
                 <property name="name">page_wine</property>
-                <property name="title" translatable="yes">WINE</property>
+                <property name="title" translatable="yes">Wine</property>
                 <property name="position">2</property>
               </packing>
             </child>

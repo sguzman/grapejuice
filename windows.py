@@ -59,6 +59,11 @@ class MainWindowHandlers:
     def update_protocol_handlers(self, *args):
         install.update_protocol_handlers()
 
+    def show_about(self, *args):
+        about = about_window(self.window)
+        about.run()
+        about.destroy()
+
 
 def move_children(source, target):
     for child in source.get_children():
@@ -66,24 +71,46 @@ def move_children(source, target):
         target.add(child)
 
 
-def load_window(glade_file, handlers, window_name):
-    builder = Gtk.Builder()
-    builder.add_from_file(glade_file)
+GTK_BUILDER_CACHE = dict()
 
-    h = handlers()
-    builder.connect_signals(h)
+
+def get_gtk_builder(glade_file):
+    if glade_file in GTK_BUILDER_CACHE.keys():
+        builder = GTK_BUILDER_CACHE[glade_file]
+    else:
+        builder = Gtk.Builder()
+        builder.add_from_file(glade_file)
+        GTK_BUILDER_CACHE[glade_file] = builder
+
+    return builder
+
+
+def load_window(glade_file, handlers, window_name):
+    builder = get_gtk_builder(glade_file)
+
+    h = None
+    if handlers:
+        h = handlers()
+        builder.connect_signals(h)
+
     window = builder.get_object(window_name)
 
-    try:
+    if h is not None:
         h.window = window
-    except:
-        pass
 
     return window, builder
 
 
-def main_window():
-    global uri_label
-    window, builder = load_window("assets/grapejuice_main.glade", MainWindowHandlers, "main_window")
+GRAPEJUICE_MAIN_GLADE = "assets/grapejuice_main.glade"
 
+
+def main_window():
+    window, builder = load_window(GRAPEJUICE_MAIN_GLADE, MainWindowHandlers, "main_window")
+
+    return window
+
+
+def about_window(parent):
+    window, builder = load_window(GRAPEJUICE_MAIN_GLADE, None, "grapejuice_about")
+    window.set_parent(parent)
     return window
