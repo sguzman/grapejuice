@@ -64,6 +64,12 @@ class MainWindowHandlers:
         about.run()
         about.hide()
 
+    def install_mime_files(self, *args):
+        install.install_mime_files()
+
+    def update_file_assoc(self, *args):
+        install.update_file_associations()
+
 
 def move_children(source, target):
     for child in source.get_children():

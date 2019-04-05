@@ -352,6 +352,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_mime</property>
                     <property name="image_position">top</property>
+                    <signal name="clicked" handler="install_mime_files" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -366,6 +367,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icons_file_assoc</property>
                     <property name="image_position">top</property>
+                    <signal name="clicked" handler="update_file_assoc" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
