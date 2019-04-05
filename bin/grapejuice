@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+SCRIPT=$(readlink -f $0)
+SCRIPT_DIR=`dirname ${SCRIPT}`
+APPLICATION_DIR=`dirname ${SCRIPT_DIR}`
+
+cd ${APPLICATION_DIR}
+source ${APPLICATION_DIR}/venv/bin/activate
+exec ${APPLICATION_DIR}/grapejuice.py "$@"
