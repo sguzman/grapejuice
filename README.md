@@ -4,9 +4,15 @@ Installing an managing Roblox under Wine can be quite the hassle as Wine itself 
 uri's are not supported by default. Grapejuice aims to address these problems and make Roblox easy to get setup op Linux.
 
 ## Requirements
+You need a recent version of `wine` in order to run Roblox. A Wine version in the 4.x series or higher is recommended.
+The [WineHQ website](https://wiki.winehq.org/Ubuntu) has a guide on getting a newer version of Wine installed on Ubuntu.
+
 Grapejuice is written using Python 3. The only two requirements for running Grapejuice are `python-pip`
 and `python-virtualenv`. Depending on your Linux distribution you might have to install `python3-pip` and
 `python3-virtualenv` instead.
+
+`gtk3` is required for the graphical user interface, but this should already be installed on most modern Linux
+distributions.
 
 ## Installation
 - Clone this repository
