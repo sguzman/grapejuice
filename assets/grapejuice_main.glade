@@ -42,7 +42,7 @@
     <property name="margin_top">5</property>
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">desktop-effect</property>
+    <property name="icon_name">update-manager</property>
   </object>
   <object class="GtkImage" id="icon_drive">
     <property name="visible">True</property>
@@ -64,7 +64,7 @@
     <property name="margin_top">5</property>
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">package-install</property>
+    <property name="icon_name">package-x-generic</property>
   </object>
   <object class="GtkImage" id="icon_library">
     <property name="visible">True</property>
@@ -72,7 +72,7 @@
     <property name="margin_top">5</property>
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">library</property>
+    <property name="icon_name">text</property>
   </object>
   <object class="GtkImage" id="icon_mime">
     <property name="visible">True</property>
@@ -80,19 +80,19 @@
     <property name="margin_top">5</property>
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">mime-ascii</property>
+    <property name="icon_name">text</property>
   </object>
   <object class="GtkImage" id="icon_mime2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">mime-ascii</property>
+    <property name="icon_name">ascii</property>
   </object>
   <object class="GtkImage" id="icon_protocol">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">link</property>
+    <property name="icon_name">exec</property>
   </object>
   <object class="GtkImage" id="icon_registry_editor">
     <property name="visible">True</property>
@@ -114,7 +114,7 @@
     <property name="margin_top">5</property>
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">boxes</property>
+    <property name="icon_name">package</property>
   </object>
   <object class="GtkImage" id="icon_wine_config">
     <property name="visible">True</property>
@@ -136,7 +136,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">file</property>
+    <property name="icon_name">filenew</property>
   </object>
   <object class="GtkPopoverMenu" id="main_menu">
     <property name="can_focus">False</property>
