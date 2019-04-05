@@ -37,9 +37,10 @@ def locate_in_versions(exe_name):
 
 
 def locate_studio_launcher():
-    versioned_launcher = locate_in_versions("RobloxStudioLauncherBeta.exe")
+    exe_name = "RobloxStudioLauncherBeta.exe"
+    versioned_launcher = locate_in_versions(exe_name)
     if not versioned_launcher:
-        launcher = os.path.join(variables.wine_roblox_prog(), "Versions", "RobloxStudioBetaLauncher.exe")
+        launcher = os.path.join(variables.wine_roblox_prog(), "Versions", exe_name)
         if os.path.exists(launcher):
             return launcher
 
