@@ -59,6 +59,7 @@ def main():
             return
 
         robloxctrl.run_player(uri)
+        return
 
     if args.gui:
         main_gui()
