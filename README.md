@@ -43,3 +43,4 @@ Bugs:
 What doesn't work:
 - The Roblox game client
 - Test server
+- Plugin gui's may cause seizures
