@@ -39,13 +39,21 @@ def copy_files():
             shutil.copytree(src_fp, dest_fp)
 
 
-def install_packages():
+def run_shell_script(script):
     old_cwd = os.getcwd()
     os.chdir(variables.application_dir())
 
-    os.spawnlp(os.P_WAIT, "bash", "bash", "install-packages.sh")
+    os.spawnlp(os.P_WAIT, "bash", "bash", script)
 
     os.chdir(old_cwd)
+
+
+def install_packages():
+    run_shell_script("install-packages.sh")
+
+
+def set_bits():
+    run_shell_script("set-bits.sh")
 
 
 def install_desktop_file(source, target_dir):
@@ -122,6 +130,7 @@ def update_file_associations():
 def install_main():
     copy_files()
     install_packages()
+    set_bits()
     install_mime_files()
     install_desktop_files()
     update_protocol_handlers()
