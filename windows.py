@@ -62,7 +62,7 @@ class MainWindowHandlers:
     def show_about(self, *args):
         about = about_window(self.window)
         about.run()
-        about.destroy()
+        about.hide()
 
 
 def move_children(source, target):
@@ -74,19 +74,20 @@ def move_children(source, target):
 GTK_BUILDER_CACHE = dict()
 
 
-def get_gtk_builder(glade_file):
+def get_gtk_builder(glade_file, cache_builder=True):
     if glade_file in GTK_BUILDER_CACHE.keys():
         builder = GTK_BUILDER_CACHE[glade_file]
     else:
         builder = Gtk.Builder()
         builder.add_from_file(glade_file)
-        GTK_BUILDER_CACHE[glade_file] = builder
+        if cache_builder:
+            GTK_BUILDER_CACHE[glade_file] = builder
 
     return builder
 
 
-def load_window(glade_file, handlers, window_name):
-    builder = get_gtk_builder(glade_file)
+def load_window(glade_file, handlers, window_name, cache_builder=True):
+    builder = get_gtk_builder(glade_file, cache_builder)
 
     h = None
     if handlers:
