@@ -64,13 +64,16 @@ def install_desktop_file(source, target_dir):
             target_file.writelines(lines)
 
 
+def desktop_entries():
+    return [DESKTOP_GRAPEJUICE, DESKTOP_STUDIO, DESKTOP_PLAYER]
+
+
 def install_desktop_files():
     applications_dir = variables.xdg_applications_dir()
     if not os.path.exists(applications_dir):
         os.makedirs(applications_dir)
 
-    entries = [DESKTOP_GRAPEJUICE, DESKTOP_STUDIO, DESKTOP_PLAYER]
-    for entry in entries:
+    for entry in desktop_entries():
         install_desktop_file(
             os.path.join(variables.application_dir(), "assets", entry),
             applications_dir
@@ -87,12 +90,19 @@ def install_mime_def(src, target_dir):
     shutil.copy(src, target)
 
 
+def update_mime_database():
+    os.spawnlp(os.P_WAIT, "update-mime-database", "update-mime-database", variables.xdg_mime_dir())
+
+
+def mime_files():
+    return [MIME_RBXL, MIME_RBXLX]
+
+
 def install_mime_files():
-    mime_files = [MIME_RBXL, MIME_RBXLX]
-    for f in mime_files:
+    for f in mime_files():
         install_mime_def(os.path.join(variables.application_dir(), "assets", f), variables.xdg_mime_packages())
 
-    os.spawnlp(os.P_WAIT, "update-mime-database", "update-mime-database", variables.xdg_mime_dir())
+    update_mime_database()
 
 
 def mime_assoc(desktop, mime_type):
