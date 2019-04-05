@@ -12,6 +12,8 @@ and `python-virtualenv`. Depending on your Linux distribution you might have to 
 - Clone this repository
 - `cd` into it
 - Run `./install.py`
+- Open Grapejuice
+- Click "Install Roblox" under the Maintenance tab
 
 That's all!
 
