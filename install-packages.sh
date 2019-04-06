@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-virtualenv3 venv
+virtualenv -p `which python3` venv
 source ./venv/bin/activate
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 
 deactivate

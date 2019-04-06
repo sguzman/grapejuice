@@ -99,7 +99,11 @@ def install_mime_def(src, target_dir):
 
 
 def update_mime_database():
-    os.spawnlp(os.P_WAIT, "update-mime-database", "update-mime-database", variables.xdg_mime_dir())
+    xdg_mime = variables.xdg_mime_dir()
+    if not os.path.exists(xdg_mime):
+        os.makedirs(xdg_mime)
+
+    os.spawnlp(os.P_WAIT, "update-mime-database", "update-mime-database", xdg_mime)
 
 
 def mime_files():
@@ -107,8 +111,12 @@ def mime_files():
 
 
 def install_mime_files():
+    pkgs = variables.xdg_mime_packages()
+    if not os.path.exists(pkgs):
+        os.makedirs(pkgs)
+
     for f in mime_files():
-        install_mime_def(os.path.join(variables.application_dir(), "assets", f), variables.xdg_mime_packages())
+        install_mime_def(os.path.join(variables.application_dir(), "assets", f), pkgs)
 
     update_mime_database()
 
