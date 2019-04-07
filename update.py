@@ -9,6 +9,8 @@ import variables
 VERSION_PATTERN = re.compile(r'__version__\s*=\s*"(.+)?".*')
 HTTP = None
 
+cached_remote_version = None
+
 
 def http():
     global HTTP
@@ -50,7 +52,10 @@ def remote_version():
     if match is None:
         return None
 
-    return version.parse(match.group(1))
+    global cached_remote_version
+    cached_remote_version = version.parse(match.group(1))
+
+    return cached_remote_version
 
 
 def update_available():

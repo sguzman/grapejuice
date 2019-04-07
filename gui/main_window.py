@@ -4,10 +4,11 @@ from gi.repository import Gtk
 
 import install
 import robloxctrl
+import update
 import variables
 import winectrl
-from gui.window_base import WindowBase
 from gui.about_window import AboutWindow
+from gui.window_base import WindowBase
 
 
 class MainWindowHandlers:
@@ -71,6 +72,9 @@ class MainWindowHandlers:
     def update_file_assoc(self, *args):
         install.update_file_associations()
 
+    def perform_update(self, *args):
+        pass
+
 
 class MainWindow(WindowBase):
     def __init__(self):
@@ -79,8 +83,30 @@ class MainWindow(WindowBase):
             MainWindowHandlers
         )
 
+        self.update_update_status()
+
+    def update_status_label(self):
+        return self.builder.get_object("update_status_label")
+
+    def update_button(self):
+        return self.builder.get_object('update_button')
+
+    def update_update_status(self):
+        if update.update_available():
+            s = "This version of Grapejuice is out of date\n{} -> {}".format(
+                str(update.local_version()),
+                str(update.cached_remote_version)
+            )
+
+            self.update_status_label().set_text(s)
+            self.update_button().show()
+        else:
+            s = "Grapejuice is up to date\n{}".format(str(update.local_version()))
+            self.update_status_label().set_text(s)
+            self.update_button().hide()
+
     def window(self):
         return self.builder.get_object("main_window")
 
     def show(self):
-        self.window().show_all()
+        self.window().show()
