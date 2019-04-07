@@ -1,4 +1,5 @@
 import os
+import inspect
 
 
 def home():
@@ -7,6 +8,14 @@ def home():
 
 def application_dir():
     return os.path.join(home(), ".local", "share", "grapejuice")
+
+
+def src_dir():
+    return os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+
+def src_init_py():
+    return os.path.join(src_dir(), "__init__.py")
 
 
 def wineprefix_dir():
@@ -47,3 +56,11 @@ def xdg_mime_dir():
 
 def xdg_mime_packages():
     return os.path.join(xdg_mime_dir(), "packages")
+
+
+def git_repository():
+    return "https://gitlab.com/brinkervii/grapejuice/"
+
+
+def git_init_py_url():
+    return git_repository() + "raw/master/__init__.py"
