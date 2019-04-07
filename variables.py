@@ -11,7 +11,7 @@ def application_dir():
 
 
 def assets_dir():
-    return os.path.join(application_dir(), "assets")
+    return os.path.join(src_dir(), "assets")
 
 
 def src_dir():
