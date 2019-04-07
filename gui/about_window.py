@@ -1,3 +1,4 @@
+import update
 import variables
 from gui.window_base import WindowBase
 
@@ -11,5 +12,7 @@ class AboutWindow(WindowBase):
 
     def run(self):
         w = self.window()
+        w.set_version(str(update.local_version()))
+
         w.run()
         w.hide()
