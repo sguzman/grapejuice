@@ -6,6 +6,8 @@ import install
 import robloxctrl
 import variables
 import winectrl
+from gui.window_base import WindowBase
+from gui.about_window import AboutWindow
 
 
 class MainWindowHandlers:
@@ -60,9 +62,8 @@ class MainWindowHandlers:
         install.update_protocol_handlers()
 
     def show_about(self, *args):
-        about = about_window(self.window)
+        about = AboutWindow()
         about.run()
-        about.hide()
 
     def install_mime_files(self, *args):
         install.install_mime_files()
@@ -71,53 +72,15 @@ class MainWindowHandlers:
         install.update_file_associations()
 
 
-def move_children(source, target):
-    for child in source.get_children():
-        source.remove(child)
-        target.add(child)
+class MainWindow(WindowBase):
+    def __init__(self):
+        super().__init__(
+            variables.grapejuice_main_glade(),
+            MainWindowHandlers
+        )
 
+    def window(self):
+        return self.builder.get_object("main_window")
 
-GTK_BUILDER_CACHE = dict()
-
-
-def get_gtk_builder(glade_file, cache_builder=True):
-    if glade_file in GTK_BUILDER_CACHE.keys():
-        builder = GTK_BUILDER_CACHE[glade_file]
-    else:
-        builder = Gtk.Builder()
-        builder.add_from_file(glade_file)
-        if cache_builder:
-            GTK_BUILDER_CACHE[glade_file] = builder
-
-    return builder
-
-
-def load_window(glade_file, handlers, window_name, cache_builder=True):
-    builder = get_gtk_builder(glade_file, cache_builder)
-
-    h = None
-    if handlers:
-        h = handlers()
-        builder.connect_signals(h)
-
-    window = builder.get_object(window_name)
-
-    if h is not None:
-        h.window = window
-
-    return window, builder
-
-
-GRAPEJUICE_MAIN_GLADE = "assets/grapejuice_main.glade"
-
-
-def main_window():
-    window, builder = load_window(GRAPEJUICE_MAIN_GLADE, MainWindowHandlers, "main_window")
-
-    return window
-
-
-def about_window(parent):
-    window, builder = load_window(GRAPEJUICE_MAIN_GLADE, None, "grapejuice_about")
-    window.set_parent(parent)
-    return window
+    def show(self):
+        self.window().show_all()

@@ -8,11 +8,10 @@ def main_gui():
     import gi
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk
+    from gui import MainWindow
 
-    import windows
-
-    main_window = windows.main_window()
-    main_window.show_all()
+    main_window = MainWindow()
+    main_window.show()
     Gtk.main()
 
 

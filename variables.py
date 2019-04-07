@@ -1,5 +1,5 @@
-import os
 import inspect
+import os
 
 
 def home():
@@ -10,8 +10,16 @@ def application_dir():
     return os.path.join(home(), ".local", "share", "grapejuice")
 
 
+def assets_dir():
+    return os.path.join(application_dir(), "assets")
+
+
 def src_dir():
     return os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+
+def grapejuice_main_glade():
+    return os.path.join(assets_dir(), "grapejuice_main.glade")
 
 
 def src_init_py():
