@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import inspect
 import os
 import shutil
 
@@ -16,9 +15,8 @@ MIME_RBXL = "x-roblox-rbxl.xml"
 MIME_RBXLX = "x-roblox-rbxlx.xml"
 
 
-def copy_files():
-    source = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-    target = variables.application_dir()
+def copy_files(target):
+    source = variables.src_dir()
 
     if not os.path.exists(target):
         os.makedirs(target)
@@ -39,24 +37,24 @@ def copy_files():
             shutil.copytree(src_fp, dest_fp)
 
 
-def run_shell_script(script):
+def run_shell_script(cwd, script):
     old_cwd = os.getcwd()
-    os.chdir(variables.application_dir())
+    os.chdir(cwd)
 
     os.spawnlp(os.P_WAIT, "bash", "bash", script)
 
     os.chdir(old_cwd)
 
 
-def install_packages():
-    run_shell_script("install-packages.sh")
+def install_packages(target):
+    run_shell_script(target, "install-packages.sh")
 
 
-def set_bits():
-    run_shell_script("set-bits.sh")
+def set_bits(target):
+    run_shell_script(target, "set-bits.sh")
 
 
-def install_desktop_file(source, target_dir):
+def install_desktop_file(source, install_target, target_dir):
     name = os.path.basename(source)
 
     target = os.path.join(target_dir, name)
@@ -66,7 +64,7 @@ def install_desktop_file(source, target_dir):
     with open(source, "r") as source_file:
         lines = []
         for line in source_file.readlines():
-            lines.append(line.replace("$APPLICATION_DIR", variables.application_dir()))
+            lines.append(line.replace("$APPLICATION_DIR", install_target))
 
         with open(target, "w+") as target_file:
             target_file.writelines(lines)
@@ -76,14 +74,15 @@ def desktop_entries():
     return [DESKTOP_GRAPEJUICE, DESKTOP_STUDIO, DESKTOP_PLAYER]
 
 
-def install_desktop_files():
+def install_desktop_files(install_target):
     applications_dir = variables.xdg_applications_dir()
     if not os.path.exists(applications_dir):
         os.makedirs(applications_dir)
 
     for entry in desktop_entries():
         install_desktop_file(
-            os.path.join(variables.application_dir(), "assets", entry),
+            os.path.join(variables.assets_dir(), entry),
+            install_target,
             applications_dir
         )
 
@@ -116,7 +115,7 @@ def install_mime_files():
         os.makedirs(pkgs)
 
     for f in mime_files():
-        install_mime_def(os.path.join(variables.application_dir(), "assets", f), pkgs)
+        install_mime_def(os.path.join(variables.assets_dir(), f), pkgs)
 
     update_mime_database()
 
@@ -135,12 +134,14 @@ def update_file_associations():
     mime_assoc(DESKTOP_STUDIO, "application/x-roblox-rbxlx")
 
 
-def install_main():
-    copy_files()
-    install_packages()
-    set_bits()
+def install_main(install_target=variables.application_dir()):
+    abs_install_target = os.path.abspath(install_target)
+
+    copy_files(abs_install_target)
+    install_packages(abs_install_target)
+    set_bits(abs_install_target)
     install_mime_files()
-    install_desktop_files()
+    install_desktop_files(abs_install_target)
     update_protocol_handlers()
     update_file_associations()
 

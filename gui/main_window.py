@@ -57,7 +57,7 @@ class MainWindowHandlers:
         os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", variables.wine_drive_c())
 
     def update_desktop_files(self, *args):
-        install.install_desktop_files()
+        install.install_desktop_files(variables.src_dir())
 
     def update_protocol_handlers(self, *args):
         install.update_protocol_handlers()
