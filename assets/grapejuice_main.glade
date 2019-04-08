@@ -57,7 +57,7 @@
     <property name="margin_top">5</property>
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">file-manager</property>
+    <property name="icon_name">system-file-manager</property>
   </object>
   <object class="GtkImage" id="icon_install">
     <property name="visible">True</property>
@@ -93,7 +93,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">exec</property>
+    <property name="icon_name">redhat-tools</property>
   </object>
   <object class="GtkImage" id="icon_registry_editor">
     <property name="visible">True</property>
@@ -101,7 +101,7 @@
     <property name="margin_top">5</property>
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">dconf-editor</property>
+    <property name="icon_name">redhat-tools</property>
   </object>
   <object class="GtkImage" id="icon_reinstall">
     <property name="visible">True</property>
@@ -109,7 +109,7 @@
     <property name="margin_top">5</property>
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
-    <property name="icon_name">downloading</property>
+    <property name="icon_name">view-refresh</property>
   </object>
   <object class="GtkImage" id="icon_roblox_studio">
     <property name="height_request">16</property>
@@ -283,6 +283,7 @@
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="image">icon_roblox_studio</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="run_roblox_studio" swapped="no"/>
                   </object>
                   <packing>
@@ -331,6 +332,7 @@
                         <property name="halign">center</property>
                         <property name="margin_top">15</property>
                         <property name="image">icon_updatebtn</property>
+                        <property name="always_show_image">True</property>
                         <signal name="clicked" handler="perform_update" swapped="no"/>
                       </object>
                       <packing>
@@ -372,6 +374,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_install</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="run_roblox_installer" swapped="no"/>
                   </object>
                   <packing>
@@ -387,6 +390,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_desktop</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="update_desktop_files" swapped="no"/>
                   </object>
                   <packing>
@@ -402,6 +406,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_protocol</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="update_protocol_handlers" swapped="no"/>
                   </object>
                   <packing>
@@ -417,6 +422,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_mime</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="install_mime_files" swapped="no"/>
                   </object>
                   <packing>
@@ -432,6 +438,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icons_file_assoc</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="update_file_assoc" swapped="no"/>
                   </object>
                   <packing>
@@ -447,6 +454,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_reinstall</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="reinstall" swapped="no"/>
                   </object>
                   <packing>
@@ -483,6 +491,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_file_manager</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="wine_explorer" swapped="no"/>
                   </object>
                   <packing>
@@ -498,6 +507,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_sandbox</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="sandbox" swapped="no"/>
                   </object>
                   <packing>
@@ -513,6 +523,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_mime2</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="disable_mime_assoc" swapped="no"/>
                   </object>
                   <packing>
@@ -528,6 +539,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_registry_editor</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="run_regedit" swapped="no"/>
                   </object>
                   <packing>
@@ -543,6 +555,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_wine_config</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="run_winecfg" swapped="no"/>
                   </object>
                   <packing>
@@ -558,6 +571,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_library</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="apply_dll_overrides" swapped="no"/>
                   </object>
                   <packing>
@@ -573,6 +587,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_winetricks</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="run_winetricks" swapped="no"/>
                   </object>
                   <packing>
@@ -588,6 +603,7 @@
                     <property name="receives_default">True</property>
                     <property name="image">icon_drive</property>
                     <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
                     <signal name="clicked" handler="open_drive_c" swapped="no"/>
                   </object>
                   <packing>
