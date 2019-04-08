@@ -73,7 +73,10 @@ class MainWindowHandlers:
         install.update_file_associations()
 
     def perform_update(self, *args):
-        pass
+        update.update_and_reopen()
+
+    def reinstall(self, *args):
+        update.update_and_reopen()
 
 
 class MainWindow(WindowBase):

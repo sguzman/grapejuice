@@ -1,7 +1,16 @@
 import argparse
+import atexit
 import os
+import shutil
 
 import robloxctrl
+import variables
+
+
+def on_exit():
+    p = variables.tmp_path()
+    if os.path.exists(p) and os.path.isdir(p):
+        shutil.rmtree(variables.tmp_path())
 
 
 def main_gui():
@@ -60,6 +69,7 @@ def main():
 
     if args.gui:
         main_gui()
+        atexit.register(on_exit)
         return
 
     parser.print_help()
