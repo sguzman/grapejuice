@@ -3,8 +3,8 @@ import atexit
 import os
 import shutil
 
-import robloxctrl
-import variables
+import grapejuice._internal.robloxctrl as robloxctrl
+import grapejuice._internal.variables as variables
 
 
 def on_exit():
@@ -17,7 +17,7 @@ def main_gui():
     import gi
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk
-    from gui import MainWindow
+    from grapejuice._internal.gui import MainWindow
 
     main_window = MainWindow()
     main_window.show()
@@ -28,15 +28,16 @@ def main_cli():
     pass
 
 
-def main():
+def main(in_args):
     parser = argparse.ArgumentParser(description="Manage Roblox on Linux")
 
     parser.add_argument("--gui", help="Run Grapejuice in GUI mode", action="store_true")
+    parser.add_argument("--post_install", help="Post-install command", action="store_true")
     parser.add_argument("--player", help="Run Roblox Player", action="store_true")
     parser.add_argument("--studio", help="Run Roblox Studio", action="store_true")
     parser.add_argument("--uri", help="A Roblox URI", required=False)
 
-    args = parser.parse_args()
+    args = parser.parse_args(in_args)
 
     def get_uri():
         if args.uri is not None and args.uri:
@@ -44,11 +45,16 @@ def main():
 
         return None
 
+    if args.post_install:
+        from grapejuice._internal.install import post_install as post_install
+        post_install()
+        return 0
+
     if args.studio:
         uri = get_uri()
         if uri is None:
             print("Please supply a URI")
-            return
+            return 1
 
         ide = False
         if not uri.startswith("roblox-studio"):
@@ -56,24 +62,21 @@ def main():
             ide = True
 
         robloxctrl.run_studio(uri, ide)
-        return
+        return 0
 
     if args.player:
         uri = get_uri()
         if uri is None:
             os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", "https://roblox.com/games")
-            return
+            return 0
 
         robloxctrl.run_player(uri)
-        return
+        return 0
 
     if args.gui:
         main_gui()
         atexit.register(on_exit)
-        return
+        return 0
 
     parser.print_help()
-
-
-if __name__ == "__main__":
-    main()
+    return 1

@@ -1,5 +1,5 @@
-import inspect
 import os
+import sys
 
 
 def home():
@@ -15,11 +15,21 @@ def run_script_path():
 
 
 def assets_dir():
-    return os.path.join(src_dir(), "assets")
+    src_assets = os.path.join(src_dir(), "assets")
+    if os.path.exists(src_assets):
+        return os.path.abspath(src_assets)
+
+    cwd_assets = os.path.join(os.getcwd(), "assets")
+    if os.path.exists(cwd_assets):
+        return os.path.abspath(cwd_assets)
+
+    app_assets = os.path.join(application_dir(), "assets")
+    if os.path.exists(app_assets):
+        return os.path.abspath(app_assets)
 
 
 def src_dir():
-    return os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+    return os.path.dirname(os.path.abspath(sys.argv[0]))
 
 
 def grapejuice_main_glade():
@@ -27,7 +37,13 @@ def grapejuice_main_glade():
 
 
 def src_init_py():
-    return os.path.join(src_dir(), "__init__.py")
+    current = os.path.join(src_dir(), "__init__.py")
+    if os.path.exists(current):
+        return current
+
+    current = os.path.join(src_dir(), "src", "grapejuice", "__init__.py")
+    if os.path.exists(current):
+        return current
 
 
 def wineprefix_dir():

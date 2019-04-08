@@ -2,7 +2,7 @@ import os
 import shutil
 import time
 
-import variables
+import grapejuice._internal.variables as variables
 
 
 def prepare():
@@ -48,11 +48,11 @@ def wine_tricks():
 
 
 def disable_mime_assoc():
-    load_reg("assets/disable_mime_assoc.reg")
+    load_reg(os.path.join(variables.assets_dir(), "disable_mime_assoc.reg"))
 
 
 def load_dll_overrides():
-    load_reg("assets/dll_overrides.reg")
+    load_reg(os.path.join(variables.assets_dir(), "dll_overrides.reg"))
 
 
 def sandbox():
