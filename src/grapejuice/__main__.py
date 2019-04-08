@@ -1,6 +1,6 @@
 import sys
 
-from grapejuice._internal import main as _main
+from grapejuice._internal import main as main
 
 if __name__ == "__main__":
-    sys.exit(_main(sys.argv[1:]))
+    sys.exit(main(sys.argv[1:]))
