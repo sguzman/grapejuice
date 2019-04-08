@@ -105,7 +105,12 @@ class MainWindow(WindowBase):
             self.update_status_label().set_text(s)
             self.update_button().show()
         else:
-            s = "Grapejuice is up to date\n{}".format(str(update.local_version()))
+            local_ver = update.local_version()
+            if local_ver > update.cached_remote_version:
+                s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
+            else:
+                s = "Grapejuice is up to date\n{}".format(str(local_ver))
+
             self.update_status_label().set_text(s)
             self.update_button().hide()
 
