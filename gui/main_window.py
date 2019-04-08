@@ -4,8 +4,11 @@ from gi.repository import Gtk
 
 import install
 import robloxctrl
+import update
 import variables
 import winectrl
+from gui.about_window import AboutWindow
+from gui.window_base import WindowBase
 
 
 class MainWindowHandlers:
@@ -60,9 +63,8 @@ class MainWindowHandlers:
         install.update_protocol_handlers()
 
     def show_about(self, *args):
-        about = about_window(self.window)
+        about = AboutWindow()
         about.run()
-        about.hide()
 
     def install_mime_files(self, *args):
         install.install_mime_files()
@@ -70,54 +72,44 @@ class MainWindowHandlers:
     def update_file_assoc(self, *args):
         install.update_file_associations()
 
+    def perform_update(self, *args):
+        update.update_and_reopen()
 
-def move_children(source, target):
-    for child in source.get_children():
-        source.remove(child)
-        target.add(child)
-
-
-GTK_BUILDER_CACHE = dict()
+    def reinstall(self, *args):
+        update.update_and_reopen()
 
 
-def get_gtk_builder(glade_file, cache_builder=True):
-    if glade_file in GTK_BUILDER_CACHE.keys():
-        builder = GTK_BUILDER_CACHE[glade_file]
-    else:
-        builder = Gtk.Builder()
-        builder.add_from_file(glade_file)
-        if cache_builder:
-            GTK_BUILDER_CACHE[glade_file] = builder
+class MainWindow(WindowBase):
+    def __init__(self):
+        super().__init__(
+            variables.grapejuice_main_glade(),
+            MainWindowHandlers
+        )
 
-    return builder
+        self.update_update_status()
 
+    def update_status_label(self):
+        return self.builder.get_object("update_status_label")
 
-def load_window(glade_file, handlers, window_name, cache_builder=True):
-    builder = get_gtk_builder(glade_file, cache_builder)
+    def update_button(self):
+        return self.builder.get_object('update_button')
 
-    h = None
-    if handlers:
-        h = handlers()
-        builder.connect_signals(h)
+    def update_update_status(self):
+        if update.update_available():
+            s = "This version of Grapejuice is out of date\n{} -> {}".format(
+                str(update.local_version()),
+                str(update.cached_remote_version)
+            )
 
-    window = builder.get_object(window_name)
+            self.update_status_label().set_text(s)
+            self.update_button().show()
+        else:
+            s = "Grapejuice is up to date\n{}".format(str(update.local_version()))
+            self.update_status_label().set_text(s)
+            self.update_button().hide()
 
-    if h is not None:
-        h.window = window
+    def window(self):
+        return self.builder.get_object("main_window")
 
-    return window, builder
-
-
-GRAPEJUICE_MAIN_GLADE = "assets/grapejuice_main.glade"
-
-
-def main_window():
-    window, builder = load_window(GRAPEJUICE_MAIN_GLADE, MainWindowHandlers, "main_window")
-
-    return window
-
-
-def about_window(parent):
-    window, builder = load_window(GRAPEJUICE_MAIN_GLADE, None, "grapejuice_about")
-    window.set_parent(parent)
-    return window
+    def show(self):
+        self.window().show()

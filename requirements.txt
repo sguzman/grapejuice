@@ -2,3 +2,6 @@ pip>=19.0.3
 PyGObject>=3.32.0
 PyGObject-stubs
 wget
+packaging
+urllib3
+certifi

@@ -1,18 +1,26 @@
 import argparse
+import atexit
 import os
+import shutil
 
 import robloxctrl
+import variables
+
+
+def on_exit():
+    p = variables.tmp_path()
+    if os.path.exists(p) and os.path.isdir(p):
+        shutil.rmtree(variables.tmp_path())
 
 
 def main_gui():
     import gi
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk
+    from gui import MainWindow
 
-    import windows
-
-    main_window = windows.main_window()
-    main_window.show_all()
+    main_window = MainWindow()
+    main_window.show()
     Gtk.main()
 
 
@@ -61,6 +69,7 @@ def main():
 
     if args.gui:
         main_gui()
+        atexit.register(on_exit)
         return
 
     parser.print_help()

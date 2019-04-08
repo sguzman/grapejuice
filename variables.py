@@ -1,3 +1,4 @@
+import inspect
 import os
 
 
@@ -7,6 +8,26 @@ def home():
 
 def application_dir():
     return os.path.join(home(), ".local", "share", "grapejuice")
+
+
+def run_script_path():
+    return os.path.join(application_dir(), "bin", "grapejuice")
+
+
+def assets_dir():
+    return os.path.join(src_dir(), "assets")
+
+
+def src_dir():
+    return os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+
+def grapejuice_main_glade():
+    return os.path.join(assets_dir(), "grapejuice_main.glade")
+
+
+def src_init_py():
+    return os.path.join(src_dir(), "__init__.py")
 
 
 def wineprefix_dir():
@@ -47,3 +68,33 @@ def xdg_mime_dir():
 
 def xdg_mime_packages():
     return os.path.join(xdg_mime_dir(), "packages")
+
+
+def git_repository():
+    return "https://gitlab.com/brinkervii/grapejuice"
+
+
+def git_init_py_url():
+    return git_repository() + "/raw/master/__init__.py"
+
+
+def git_zip_download():
+    return git_repository() + "/-/archive/master/grapejuice-master.zip"
+
+
+def tmp_path():
+    d = "grapejuice-{}".format(os.getpid())
+    p = os.path.join("/tmp", d)
+
+    if not os.path.exists(p):
+        os.makedirs(p)
+    else:
+        if not os.path.isdir(p):
+            os.remove(p)
+            os.makedirs(p)
+
+    return p
+
+
+def tmp_zip_path():
+    return os.path.join(tmp_path(), "grapejuice-download.zip")

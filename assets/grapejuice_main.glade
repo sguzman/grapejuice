@@ -6,6 +6,7 @@
     <property name="can_focus">False</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">Grapejuice</property>
+    <property name="version">version_string</property>
     <property name="copyright" translatable="yes">BrinkerVII</property>
     <property name="comments" translatable="yes">A simple GUI and wrapper to manage Roblox on Linux running under Wine.</property>
     <property name="authors">BrinkerVII &lt;brinkervii@gmail.com&gt;</property>
@@ -102,6 +103,14 @@
     <property name="pixel_size">48</property>
     <property name="icon_name">dconf-editor</property>
   </object>
+  <object class="GtkImage" id="icon_reinstall">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">downloading</property>
+  </object>
   <object class="GtkImage" id="icon_roblox_studio">
     <property name="height_request">16</property>
     <property name="visible">True</property>
@@ -115,6 +124,13 @@
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
     <property name="icon_name">package</property>
+  </object>
+  <object class="GtkImage" id="icon_updatebtn">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_left">5</property>
+    <property name="margin_right">5</property>
+    <property name="icon_name">download</property>
   </object>
   <object class="GtkImage" id="icon_wine_config">
     <property name="visible">True</property>
@@ -261,9 +277,6 @@
                 <property name="orientation">vertical</property>
                 <property name="spacing">10</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
                   <object class="GtkButton">
                     <property name="label" translatable="yes">Roblox Studio</property>
                     <property name="visible">True</property>
@@ -275,11 +288,63 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFixed">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="vexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="update_status_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="label" translatable="yes">update_status</property>
+                        <property name="justify">center</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="update_button">
+                        <property name="label" translatable="yes">Update now</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="halign">center</property>
+                        <property name="margin_top">15</property>
+                        <property name="image">icon_updatebtn</property>
+                        <signal name="clicked" handler="perform_update" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -375,7 +440,19 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Reinstall Grapejuice</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_reinstall</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="reinstall" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">1</property>
+                  </packing>
                 </child>
               </object>
               <packing>
