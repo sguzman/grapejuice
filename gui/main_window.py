@@ -86,6 +86,7 @@ class MainWindow(WindowBase):
             MainWindowHandlers
         )
 
+        self.update_status_label().set_text("Checking for updates...")
         self.update_update_status()
 
     def update_status_label(self):
