@@ -15,4 +15,4 @@ class AboutWindow(WindowBase):
         w.set_version(str(update.local_version()))
 
         w.run()
-        w.hide()
+        w.destroy()
