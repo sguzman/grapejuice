@@ -32,7 +32,7 @@ class MainWindowHandlers:
 
     def run_roblox_studio(self, *args):
         from gi.repository import Gtk
-        
+
         if not robloxctrl.run_studio():
             dialog_text = "Roblox Studio could not be launched. You might have to install it first by going to "
             "the Maintanance tab."
@@ -55,28 +55,22 @@ class MainWindowHandlers:
     def open_drive_c(self, *args):
         os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", variables.wine_drive_c())
 
-    def update_desktop_files(self, *args):
-        install.install_desktop_files(variables.src_dir())
-
-    def update_protocol_handlers(self, *args):
-        install.update_protocol_handlers()
-
     def show_about(self, *args):
         import grapejuice._internal.gui as gui
         about = gui.AboutWindow()
         about.run()
-
-    def install_mime_files(self, *args):
-        install.install_mime_files()
-
-    def update_file_assoc(self, *args):
-        install.update_file_associations()
 
     def perform_update(self, *args):
         update.update_and_reopen()
 
     def reinstall(self, *args):
         update.update_and_reopen()
+
+    def deploy_assocs(self, *args):
+        install.install_desktop_files(variables.src_dir())
+        install.update_protocol_handlers()
+        install.install_mime_files()
+        install.update_file_associations()
 
 
 def MainWindow():
