@@ -20,6 +20,10 @@ APPIMAGE_TOOL=${DIST_DIR}/AppImageTool.AppImage
 
 export PYTHONPATH=${PROJECT_DIR}/src
 
+locate_lib () {
+    echo "`(ldconfig -p | grep $1 | tr ' ' '\n' | grep /)`"
+}
+
 cd ${PROJECT_DIR}
 rm -rf ${DIST_DIR}
 
@@ -37,7 +41,8 @@ deactivate
 cp -frax ${ASSETS_DIR} ${APP_DIST_DIR}
 cp ${ASSETS_DIR}/grapejuice-128.png ${APP_DIST_DIR}/grapejuice.png
 cp ${VERSION_FILE} ${APP_DIST_DIR}
-cp -frax ${PKG_SRC_DIR}/* ${APP_DIST_DIR}
+cp `locate_lib libgdk-3.so.0` ${APP_DIST_DIR}
+cp `locate_lib libgtk-3.so.0` ${APP_DIST_DIR}
 
 rm -rf ${APP_DIST_DIR}/share/icons
 rm -rf ${APP_DIST_DIR}/share/themes
