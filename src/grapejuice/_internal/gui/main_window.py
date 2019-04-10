@@ -67,10 +67,7 @@ class MainWindowHandlers:
         update.update_and_reopen()
 
     def deploy_assocs(self, *args):
-        install.install_desktop_files(variables.src_dir())
-        install.update_protocol_handlers()
-        install.install_mime_files()
-        install.update_file_associations()
+        install.post_install()
 
 
 def MainWindow():
