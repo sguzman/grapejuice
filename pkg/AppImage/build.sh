@@ -21,7 +21,7 @@ APPIMAGE_TOOL=${DIST_DIR}/AppImageTool.AppImage
 export PYTHONPATH=${PROJECT_DIR}/src
 
 locate_lib () {
-    if [ ldconfig ]; then
+    if [[ ldconfig ]]; then
         echo `ldconfig -p | grep $1 | tr ' ' '\n' | grep /`
     else
         echo `sudo ldconfig -p | grep $1 | tr ' ' '\n' | grep /`
