@@ -21,7 +21,7 @@ APPIMAGE_TOOL=${DIST_DIR}/AppImageTool.AppImage
 export PYTHONPATH=${PROJECT_DIR}/src
 
 locate_lib () {
-    echo `(ldconfig -p | grep $1 | tr ' ' '\n' | grep /)`
+    echo `ldconfig -p | grep $1 | tr ' ' '\n' | grep /`
 }
 
 cd ${PROJECT_DIR}
