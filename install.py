@@ -53,7 +53,7 @@ def err_py37():
     import sys
     show_err("Out of date",
              "Your current version of python is out of date and therefore Grapejuice cannot be installed. Python 3.7 "
-             "is required.\n\nYou have:\n" + sys.version)
+             "is required.Check the Grapejuice source repository for new installation instructions.\n\nYou have:\n" + sys.version)
 
 
 def have_py37():
