@@ -13,6 +13,11 @@ cp -frax . ${APPLICATION_DIR}
 export PYTHONPATH=${APPLICATION_DIR}/src
 
 cd ${APPLICATION_DIR}
+rm -rf ./venv
+rm -rf ./.git
+rm -rf ./dist
+rm -rf ./build
+
 virtualenv -p ${PYTHON} venv
 source ./venv/bin/activate
 pip install -r requirements.txt
