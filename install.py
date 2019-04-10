@@ -34,11 +34,19 @@ def err_zenity(title, message):
     os.spawnlp(os.P_WAIT, "zenity", "zenity", "--error", title, "--no-wrap", "--text={}".format(message))
 
 
+def err_desperation(message):
+    import os
+
+    os.spawnlp(os.P_WAIT, "xmessage", "xmessage", message)
+
+
 def show_err(title, message):
     if have_tkinter():
         err_tkinter(title, message)
     elif have_zenity():
         err_zenity(title, message)
+    else:
+        err_desperation(message)
 
 
 def err_py37():
