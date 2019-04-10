@@ -4,10 +4,10 @@ SCRIPT=$(readlink -f $0)
 SCRIPT_DIR=`dirname ${SCRIPT}`
 PROJECT_DIR=`dirname ${SCRIPT_DIR}`
 SRC_DIR=${PROJECT_DIR}/src
-APPLICATION_DIR=${SRC_DIR}/grapejuice
+APPLICATION_DIR=${PROJECT_DIR}
 
 export PYTHONPATH=${SRC_DIR}
 
 cd ${PROJECT_DIR}
 source ${PROJECT_DIR}/venv/bin/activate
-exec python ${APPLICATION_DIR}/__main__.py "$@"
+exec python ${SRC_DIR}/grapejuice/__main__.py "$@"
