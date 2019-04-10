@@ -5,15 +5,47 @@ def perform_install():
     os.execlp("bash", "bash", "./install.sh")
 
 
-def err_py37():
+def have_tkinter():
+    try:
+        import tkinter
+        return True
+    except ImportError:
+        return False
+
+
+def err_tkinter(title, message):
     import tkinter
     from tkinter import messagebox
 
     root = tkinter.Tk()
     root.withdraw()
 
-    messagebox.showerror("Out of date",
-                         "Your current version of python is out of date and therefore Grapejuice cannot be installer")
+    messagebox.showerror(title, message)
+
+
+def have_zenity():
+    import os
+    return os.path.exists("/usr/bin/zenity")
+
+
+def err_zenity(title, message):
+    import os
+
+    os.spawnlp(os.P_WAIT, "zenity", "zenity", "--error", title, "--text={}".format(message))
+
+
+def show_err(title, message):
+    if have_tkinter():
+        err_tkinter(title, message)
+    elif have_zenity():
+        err_zenity(title, message)
+
+
+def err_py37():
+    import sys
+    show_err("Out of date",
+             "Your current version of python is out of date and therefore Grapejuice cannot be installed. Python 3.7 "
+             "is required.\n\nYou have:\n" + sys.version)
 
 
 def have_py37():
