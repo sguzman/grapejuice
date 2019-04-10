@@ -32,7 +32,7 @@ if [[ ! -d ${VENV} ]]; then
 fi
 source ${VENV}/bin/activate
 pip install -r ${PROJECT_DIR}/requirements.txt
-python bdist_wheel
+python setup.py bdist_wheel
 find dist -iname \*.whl -exec pip install {} \;
 pyinstaller ${PY_RUNNER}
 
