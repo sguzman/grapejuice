@@ -31,7 +31,7 @@ def have_zenity():
 def err_zenity(title, message):
     import os
 
-    os.spawnlp(os.P_WAIT, "zenity", "zenity", "--error", title, "--text={}".format(message))
+    os.spawnlp(os.P_WAIT, "zenity", "zenity", "--nowrap", "--error", title, "--text={}".format(message))
 
 
 def show_err(title, message):
