@@ -74,7 +74,12 @@ You can acquire the Grapejuice source code through two methods
 
 **02.** Navigate to the source code with your terminal
 
-**03.** Run the Grapejuice installer `./install.py`
+**03.**
+Depending on the earlier steps, you have to run the install script with the appropriate python interpreter
+
+**If you installed Python 3.7 manually:** `python3.7 ./install.py`
+
+**else**: `./install.py` 
 
 **Sidenote:** You can doubleclick on `install.py` in your file manager, but you will not get any output regarding the installation progress
 
