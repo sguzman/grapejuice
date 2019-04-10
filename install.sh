@@ -18,6 +18,8 @@ rm -rf ./.git
 rm -rf ./dist
 rm -rf ./build
 
+chmod +x ${APPLICATION_DOR}/bin/grapejuice
+
 virtualenv -p ${PYTHON} venv
 source ./venv/bin/activate
 pip install -r requirements.txt
