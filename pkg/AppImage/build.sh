@@ -41,6 +41,7 @@ deactivate
 cp -frax ${ASSETS_DIR} ${APP_DIST_DIR}
 cp ${ASSETS_DIR}/grapejuice-128.png ${APP_DIST_DIR}/grapejuice.png
 cp ${VERSION_FILE} ${APP_DIST_DIR}
+cp -frax ${PKG_SRC_DIR}/* ${APP_DIST_DIR}
 cp `locate_lib libgdk-3.so.0` ${APP_DIST_DIR}
 cp `locate_lib libgtk-3.so.0` ${APP_DIST_DIR}
 
