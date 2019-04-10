@@ -1,4 +1,6 @@
 **/*.glade~
+Python*
+*.tgz
 
 # Created by https://www.gitignore.io/api/python,virtualenv,pycharm+all
 # Edit at https://www.gitignore.io/?templates=python,virtualenv,pycharm+all
