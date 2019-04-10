@@ -18,6 +18,8 @@ VENV=${PROJECT_DIR}/venv
 APPIMAGE_DIR=${DIST_DIR}/grapejuice.AppDir
 APPIMAGE_TOOL=${DIST_DIR}/AppImageTool.AppImage
 
+export PYTHONPATH=${PROJECT_DIR}/src
+
 cd ${PROJECT_DIR}
 rm -rf ${DIST_DIR}
 
@@ -26,6 +28,8 @@ if [[ ! -d ${VENV} ]]; then
 fi
 source ${VENV}/bin/activate
 pip install -r ${PROJECT_DIR}/requirements.txt
+python bdist_wheel
+find dist -iname \*.whl -exec pip install {} \;
 pyinstaller ${PY_RUNNER}
 
 deactivate
