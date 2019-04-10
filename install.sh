@@ -2,12 +2,12 @@
 
 OLD_CWD=`pwd`
 
-PYTHON=`/usr/bin/python3.7`
+PYTHON=/usr/bin/python3.7
 if [[ ! -f ${PYTHON} ]]; then
-    PYTHON=`/usr/bin/python3`
+    PYTHON=/usr/bin/python3
 fi
 if [[ ! -f ${PYTHON} ]]; then
-    PYTHON=`which python3`
+    PYTHON=which python3
 fi
 
 APPLICATION_DIR=$HOME/.local/share/grapejuice
