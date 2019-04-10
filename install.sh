@@ -18,7 +18,7 @@ rm -rf ./.git
 rm -rf ./dist
 rm -rf ./build
 
-chmod +x ${APPLICATION_DOR}/bin/grapejuice
+chmod +x ${APPLICATION_DIR}/bin/grapejuice
 
 virtualenv -p ${PYTHON} venv
 source ./venv/bin/activate
