@@ -3,6 +3,8 @@ Since recent releases of Wine, Roblox Studio has started being able to run under
 Installing an managing Roblox under Wine can be quite the hassle as Wine itself can create a mess and binding protocol
 uri's are not supported by default. Grapejuice aims to address these problems and make Roblox easy to get setup op Linux.
 
+Please note that this project is highly experimental, not everything will work perfectly.
+
 ## Installation
 
 Installation differs per distributions, please follow the appropriate installation guide for yours.
