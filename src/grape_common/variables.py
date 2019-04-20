@@ -32,8 +32,12 @@ def src_dir():
     return os.path.dirname(os.path.abspath(sys.argv[0]))
 
 
+def glade_dir():
+    return os.path.join(assets_dir(), "glade")
+
+
 def grapejuice_main_glade():
-    return os.path.join(assets_dir(), "grapejuice_main.glade")
+    return os.path.join(glade_dir(), "grapejuice_main.glade")
 
 
 def src_init_py():
