@@ -1,4 +1,4 @@
-from grape_reglib._internal.reg_file import RegFile, RegistryKey
+from grape_reglib.reg_file import RegFile, RegistryKey
 
 
 class RegDiff:
