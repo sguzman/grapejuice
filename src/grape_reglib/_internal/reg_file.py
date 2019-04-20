@@ -132,9 +132,6 @@ class RegistryProperty(RegistryItem):
         self.key = key
         self.type, self.value = get_registry_value_type(value)
 
-        if self.value is None:
-            brk = 0
-
     def __repr__(self):
         return self.key + " = " + repr(self.value)
 
@@ -239,8 +236,3 @@ def read_reg(rf: RegFile, p: str):
                 current_key.text_items.append(text)
             else:
                 rf.global_key.text_items.append(text)
-
-
-if __name__ == "__main__":
-    r = RegFile("assets/user_working.reg")
-    debug = 0
