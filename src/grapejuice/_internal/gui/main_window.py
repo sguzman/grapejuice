@@ -3,7 +3,7 @@ import os
 import grapejuice._internal.install as install
 import grapejuice._internal.robloxctrl as robloxctrl
 import grapejuice._internal.update as update
-import grapejuice._internal.variables as variables
+import grape_common.variables as variables
 import grapejuice._internal.winectrl as winectrl
 
 

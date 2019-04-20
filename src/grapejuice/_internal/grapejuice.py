@@ -4,7 +4,7 @@ import os
 import shutil
 
 import grapejuice._internal.robloxctrl as robloxctrl
-import grapejuice._internal.variables as variables
+import grape_common.variables as variables
 
 
 def on_exit():

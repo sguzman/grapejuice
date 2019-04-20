@@ -1,5 +1,5 @@
 import grapejuice._internal.update as update
-import grapejuice._internal.variables as variables
+import grape_common.variables as variables
 
 
 def AboutWindow():

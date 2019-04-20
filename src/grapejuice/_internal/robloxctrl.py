@@ -2,7 +2,7 @@ import os
 
 import wget
 
-import grapejuice._internal.variables as variables
+import grape_common.variables as variables
 import grapejuice._internal.winectrl as winectrl
 
 DOWNLOAD_URL = "https://www.roblox.com/install/setup.ashx"

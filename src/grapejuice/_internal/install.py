@@ -1,7 +1,7 @@
 import os
 import shutil
 
-import grapejuice._internal.variables as variables
+import grape_common.variables as variables
 
 EXCLUSIONS = ["venv", ".idea", ".git", "__pycache__", "wineprefix", ".gitignore"]
 

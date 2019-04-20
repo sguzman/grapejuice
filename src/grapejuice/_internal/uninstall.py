@@ -4,7 +4,7 @@ import os
 import shutil
 
 import grapejuice._internal.install as install
-import grapejuice._internal.variables as variables
+import grape_common.variables as variables
 
 
 def uninstall_desktop_files():
