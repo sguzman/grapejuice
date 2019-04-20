@@ -49,6 +49,11 @@ class RegDiff:
 
 
 if __name__ == "__main__":
-    diff = RegDiff(RegFile("assets/user_broken.reg"), RegFile("assets/user_working.reg"))
+    import os
+
+    broken = os.path.join(os.environ["HOME"], ".local/share/grapejuice", "wineprefix-broken/user.reg")
+    working = os.path.join(os.environ["HOME"], ".local/share/grapejuice", "wineprefix-working/user.reg")
+
+    diff = RegDiff(RegFile(broken), RegFile(working))
     diff.do_diff()
     debug = 0

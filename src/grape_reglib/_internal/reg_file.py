@@ -37,13 +37,13 @@ def get_registry_value_type(value):
     if dword_match:
         return DWORDRegistryType(), dword_match.group(1)
 
-    string_match = re.match(r"\"(.+)?\"", value)
-    if string_match:
-        return StringRegistryType(), string_match.group(1)
-
     hex_match = re.match(r"hex:(.+)", value)
     if hex_match:
         return HexRegistryType(), hex_match.group(1)
+
+    string_match = re.match(r"\"(.*)?\"", value)
+    if string_match:
+        return StringRegistryType(), string_match.group(1)
 
     return UndefinedRegistryType(), value
 
@@ -131,6 +131,9 @@ class RegistryProperty(RegistryItem):
         super().__init__()
         self.key = key
         self.type, self.value = get_registry_value_type(value)
+
+        if self.value is None:
+            brk = 0
 
     def __repr__(self):
         return self.key + " = " + repr(self.value)
