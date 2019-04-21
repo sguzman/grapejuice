@@ -1,10 +1,11 @@
 import os
 
+import grape_common.variables as variables
 import grapejuice._internal.install as install
 import grapejuice._internal.robloxctrl as robloxctrl
 import grapejuice._internal.update as update
-import grape_common.variables as variables
 import grapejuice._internal.winectrl as winectrl
+from grape_common import WindowBase
 
 
 class MainWindowHandlers:
@@ -70,48 +71,44 @@ class MainWindowHandlers:
         install.post_install()
 
 
-def MainWindow():
-    from grapejuice._internal import WindowBase
+class MainWindow(WindowBase):
+    def __init__(self):
+        super().__init__(
+            variables.grapejuice_main_glade(),
+            MainWindowHandlers
+        )
+        self._build()
 
-    class MainWindowC(WindowBase):
-        def __init__(self):
-            super().__init__(
-                variables.grapejuice_main_glade(),
-                MainWindowHandlers
+        self.update_status_label().set_text("Checking for updates...")
+        self.update_update_status()
+
+    def update_status_label(self):
+        return self.builder.get_object("update_status_label")
+
+    def update_button(self):
+        return self.builder.get_object('update_button')
+
+    def update_update_status(self):
+        if update.update_available():
+            s = "This version of Grapejuice is out of date\n{} -> {}".format(
+                str(update.local_version()),
+                str(update.cached_remote_version)
             )
 
-            self.update_status_label().set_text("Checking for updates...")
-            self.update_update_status()
-
-        def update_status_label(self):
-            return self.builder.get_object("update_status_label")
-
-        def update_button(self):
-            return self.builder.get_object('update_button')
-
-        def update_update_status(self):
-            if update.update_available():
-                s = "This version of Grapejuice is out of date\n{} -> {}".format(
-                    str(update.local_version()),
-                    str(update.cached_remote_version)
-                )
-
-                self.update_status_label().set_text(s)
-                self.update_button().show()
+            self.update_status_label().set_text(s)
+            self.update_button().show()
+        else:
+            local_ver = update.local_version()
+            if local_ver > update.cached_remote_version:
+                s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
             else:
-                local_ver = update.local_version()
-                if local_ver > update.cached_remote_version:
-                    s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
-                else:
-                    s = "Grapejuice is up to date\n{}".format(str(local_ver))
+                s = "Grapejuice is up to date\n{}".format(str(local_ver))
 
-                self.update_status_label().set_text(s)
-                self.update_button().hide()
+            self.update_status_label().set_text(s)
+            self.update_button().hide()
 
-        def window(self):
-            return self.builder.get_object("main_window")
+    def window(self):
+        return self.builder.get_object("main_window")
 
-        def show(self):
-            self.window().show()
-
-    return MainWindowC()
+    def show(self):
+        self.window().show()

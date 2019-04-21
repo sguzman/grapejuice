@@ -1,22 +1,19 @@
-import grapejuice._internal.update as update
 import grape_common.variables as variables
+import grapejuice._internal.update as update
+from grape_common import WindowBase
 
 
-def AboutWindow():
-    from grapejuice._internal import WindowBase
+class AboutWindow(WindowBase):
+    def __init__(self):
+        super().__init__(variables.grapejuice_main_glade())
+        self._build()
 
-    class AboutWindowC(WindowBase):
-        def __init__(self):
-            super().__init__(variables.grapejuice_main_glade())
+    def window(self):
+        return self.builder.get_object("grapejuice_about")
 
-        def window(self):
-            return self.builder.get_object("grapejuice_about")
+    def run(self):
+        w = self.window()
+        w.set_version(str(update.local_version()))
 
-        def run(self):
-            w = self.window()
-            w.set_version(str(update.local_version()))
-
-            w.run()
-            w.destroy()
-
-    return AboutWindowC()
+        w.run()
+        w.destroy()
