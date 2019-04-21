@@ -63,6 +63,10 @@ def grapejuice_config_dir():
     return ensure_dir(os.path.join(config_base_dir(), "grapejuice"))
 
 
+def sparklepop_snapshots_dir():
+    return ensure_dir(os.path.join(sparklepop_config_dir(), "snapshots"))
+
+
 def src_init_py():
     current = os.path.join(src_dir(), "__init__.py")
     if os.path.exists(current):
