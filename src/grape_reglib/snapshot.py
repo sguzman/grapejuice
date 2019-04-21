@@ -12,14 +12,23 @@ cached_snapshot_index = None
 
 
 class Snapshot:
+    loaded = False
+
     def __init__(self, pfx_id, snapshot_id=str(uuid.uuid4())):
         self.metadata = {
             "id": snapshot_id,
             "name": "Untitled snapshot",
             "description": "Snapshot created at " + str(datetime.now()),
             "pfx_id": pfx_id,
-            "timestamp": int(time.time())
+            "timestamp": int(time.time()),
+            "broken": False
         }
+
+    def __lt__(self, other):
+        if isinstance(other, Snapshot):
+            return self.timestamp > other.timestamp
+
+        return False
 
     @property
     def id(self):
@@ -61,6 +70,18 @@ class Snapshot:
     def timestamp(self):
         return self.metadata["timestamp"] or int(time.time())
 
+    @property
+    def broken(self):
+        value = self.metadata["broken"]
+        if value is None:
+            value = False
+
+        return value
+
+    @broken.setter
+    def broken(self, value):
+        self.metadata["broken"] = value
+
     def create(self, source_list: [(str, str)]):
         p_zip = os.path.join(variables.sparklepop_snapshots_dir(), self.filename)
         with ZipFile(p_zip, "w") as z:
@@ -69,17 +90,28 @@ class Snapshot:
 
         self.save_metadata()
 
+    def _metadata_path(self):
+        return os.path.join(variables.sparklepop_snapshots_dir(), self.metadata_filename)
+
     def save_metadata(self):
-        p_metadata = os.path.join(variables.sparklepop_snapshots_dir(), self.metadata_filename)
-        with open(p_metadata, "w+") as f_metadata:
+        with open(self._metadata_path(), "w+") as f_metadata:
             self.metadata["archive"] = self.filename
             pretty_json_dump(self.metadata, f_metadata)
 
-        snapshot_index_append(self.pfx_id, self.id)
+        if not self.loaded:
+            snapshot_index_append(self.pfx_id, self.id)
+
+    def load(self):
+        with open(self._metadata_path(), "r") as f_metadata:
+            self.loaded = True
+            self.metadata = json.load(f_metadata)
+
+    def update(self):
+        self.save_metadata()
 
 
 def pretty_json_dump(obj: dict, fp):
-    json.dump(obj, fp, sort_keys=True, indent=4, separators={",", ": "})
+    json.dump(obj, fp, sort_keys=True, indent=4)
 
 
 def generate_pfx_metadata():
@@ -158,17 +190,21 @@ def save_snapshot_index(index):
 
 def snapshot_index_append(pfx_id, snap_id):
     index = snapshot_index()
+
     if pfx_id in index["snapshots"].keys():
-        snapshot_array = index["snapshots"][pfx_id]
+        snap_object = index["snapshots"][pfx_id]
     else:
-        snapshot_array = []
+        snap_object = {}
+        index["snapshots"][pfx_id] = snap_object
 
-    snapshot_array.append({
-        "last_updated": int(time.time()),
-        "snapshot_id": snap_id
-    })
+    if "snapshots" in snap_object.keys():
+        snap_array = snap_object["snapshots"]
+    else:
+        snap_array = []
+        snap_object["snapshots"] = snap_array
 
-    index["snapshots"][pfx_id] = snapshot_array
+    snap_array.append(snap_id)
+    snap_object["last_updated"] = int(time.time())
     save_snapshot_index(index)
 
 
