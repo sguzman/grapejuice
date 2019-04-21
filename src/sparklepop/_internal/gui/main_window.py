@@ -73,6 +73,7 @@ class MainWindow(WindowBase):
     snapshot_model = None
     selected_snap_widget: SnapshotWidget = None
     setting_snap_widget = False
+    made_changes = False
 
     def __init__(self):
         from sparklepop._internal.gui.sparklepop_handlers import SparklepopHandlers
@@ -84,6 +85,7 @@ class MainWindow(WindowBase):
 
         super().__init__(variables.sparklepop_glade(), create_handlers)
         self._build()
+        self.hide_info_panel()
 
     def _snapshot_box(self):
         return self.builder.get_object("snapshot_box")
@@ -160,6 +162,7 @@ class MainWindow(WindowBase):
             self._snapshot_info_description().set_buffer(buf)
             self.show_info_panel()
 
+        self.made_changes = False
         self.setting_snap_widget = False
 
     def _info_name(self):
@@ -180,8 +183,10 @@ class MainWindow(WindowBase):
         self.selected_snap_widget.displayed_broken = self._info_broken()
         self.selected_snap_widget.displayed_description = self._info_description()
 
+        self.made_changes = True
+
     def save_snap(self):
-        if self.selected_snap_widget is None:
+        if self.selected_snap_widget is None or not self.made_changes:
             return
 
         snap = self.selected_snap_widget.snap
