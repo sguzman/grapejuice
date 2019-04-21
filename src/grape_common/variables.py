@@ -2,6 +2,13 @@ import os
 import sys
 
 
+def ensure_dir(p):
+    if not os.path.exists(p):
+        os.makedirs(p)
+
+    return p
+
+
 def home():
     return os.environ["HOME"]
 
@@ -44,6 +51,18 @@ def sparklepop_glade():
     return os.path.join(glade_dir(), "sparklepop.glade")
 
 
+def config_base_dir():
+    return ensure_dir(os.path.join(xdg_config_home(), "brinkervii"))
+
+
+def sparklepop_config_dir():
+    return ensure_dir(os.path.join(config_base_dir(), "sparklepop"))
+
+
+def grapejuice_config_dir():
+    return ensure_dir(os.path.join(config_base_dir(), "grapejuice"))
+
+
 def src_init_py():
     current = os.path.join(src_dir(), "__init__.py")
     if os.path.exists(current):
@@ -67,11 +86,7 @@ def wine_roblox_prog():
 
 
 def wine_temp():
-    p = os.path.join(wine_drive_c(), "windows", "temp")
-    if not os.path.exists(p):
-        os.makedirs(p)
-
-    return p
+    return ensure_dir(os.path.join(wine_drive_c(), "windows", "temp"))
 
 
 def wine_user():
