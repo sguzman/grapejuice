@@ -198,6 +198,13 @@ def read_reg(rf: RegFile, p: str):
                 rf.keys.append(current_key)
                 continue
 
+            property_match = re.match(r"\"(.+)?\"=(.+)", line)
+            if property_match:
+                if current_key:
+                    prop = RegistryProperty(property_match.group(1), property_match.group(2))
+                    current_key.properties.append(prop)
+                continue
+
             tag_match = re.match(r"#(.+)?=(.*)", line)
             if tag_match:
                 tag = RegistryTag(tag_match.group(1), tag_match.group(2))
@@ -205,13 +212,6 @@ def read_reg(rf: RegFile, p: str):
                     current_key.tags.append(tag)
                 else:
                     rf.global_key.tags.append(tag)
-                continue
-
-            property_match = re.match(r"\"(.+)?\"=(.+)", line)
-            if property_match:
-                if current_key:
-                    prop = RegistryProperty(property_match.group(1), property_match.group(2))
-                    current_key.properties.append(prop)
                 continue
 
             comment_match = re.match(r";;\s*(.*)", line)
