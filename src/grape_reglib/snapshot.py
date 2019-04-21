@@ -71,6 +71,10 @@ class Snapshot:
         return self.metadata["timestamp"] or int(time.time())
 
     @property
+    def datetime(self):
+        return datetime.utcfromtimestamp(self.timestamp).strftime("%Y-%m-%d %H:%M:%S")
+
+    @property
     def broken(self):
         value = self.metadata["broken"]
         if value is None:

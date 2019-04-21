@@ -23,8 +23,12 @@ class SnapshotWidget:
 
         self.name_label = Gtk.Label(label=snap.name)
         self.name_label.set_xalign(0)
-        self.name_label.set_margin_bottom(5)
         self.box.add(self.name_label)
+
+        self.datetime_label = Gtk.Label(label=snap.datetime)
+        self.datetime_label.set_xalign(0)
+        self.datetime_label.set_margin_bottom(5)
+        self.box.add(self.datetime_label)
 
         self.description_label = Gtk.Label(label=snap.description)
         self.description_label.set_xalign(0)
