@@ -26,11 +26,12 @@ Look up your distribution version below and enter the correct command into your 
 | Ubuntu 18.04 Linux Mint 19.x | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main' |
 | Ubuntu 16.04 Linux Mint 18.x | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main' |
 | Ubuntu 14.04 Linux Mint 17.x | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ trusty main' |
+| Ubuntu 19.04                 | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ disco main'  |
 
 **04.** Install Wine
 ```bash
 sudo apt update
-sudo apt install --install-recommends winehq-stable
+sudo apt install --install-recommends wine-stable
 ```
 
 ## Upgrade Python (Ubuntu 18.09 and older)
