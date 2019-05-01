@@ -70,6 +70,9 @@ class MainWindowHandlers:
     def deploy_assocs(self, *args):
         install.post_install()
 
+    def launch_sparklepop(selfs, *args):
+        os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "sparklepop")
+
 
 class MainWindow(WindowBase):
     def __init__(self):
