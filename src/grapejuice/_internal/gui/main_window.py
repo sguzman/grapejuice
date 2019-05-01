@@ -69,8 +69,11 @@ class MainWindowHandlers:
     def deploy_assocs(self, *args):
         install.post_install()
 
-    def launch_sparklepop(selfs, *args):
+    def launch_sparklepop(self, *args):
         os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "sparklepop")
+
+    def graphicsmode_opengl(self, *args):
+        robloxctrl.set_graphics_mode_opengl()
 
 
 class MainWindow(WindowBase):

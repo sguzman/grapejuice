@@ -51,6 +51,14 @@
     <property name="pixel_size">48</property>
     <property name="icon_name">system-file-manager</property>
   </object>
+  <object class="GtkImage" id="icon_graphics_gl">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_top">5</property>
+    <property name="margin_bottom">5</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">image-bmp</property>
+  </object>
   <object class="GtkImage" id="icon_install">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -408,6 +416,27 @@
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
                   </packing>
+                </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">GraphicsMode OpenGL</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_graphics_gl</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="graphicsmode_opengl" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
               </object>
               <packing>

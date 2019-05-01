@@ -98,6 +98,14 @@ def wine_user():
     return os.path.join(wine_drive_c(), "users", os.environ["USER"])
 
 
+def wine_roblox_appdata():
+    return os.path.join(wine_user(), "Local Settings", "Application Data", "Roblox")
+
+
+def wine_roblox_global_settings_13():
+    return os.path.join(wine_roblox_appdata(), "GlobalSettings_13.xml")
+
+
 def installer_path():
     return os.path.join(wine_temp(), "Roblox_Installer.exe")
 

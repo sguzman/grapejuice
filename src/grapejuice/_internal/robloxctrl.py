@@ -1,4 +1,5 @@
 import os
+import re
 
 import wget
 
@@ -6,6 +7,30 @@ import grape_common.variables as variables
 import grapejuice._internal.winectrl as winectrl
 
 DOWNLOAD_URL = "https://www.roblox.com/install/setup.ashx"
+
+
+def set_graphics_mode(mode: int):
+    settings_path = variables.wine_roblox_global_settings_13()
+    if not os.path.exists(settings_path):
+        return False
+
+    ptn = r'token name=\"GraphicsMode\">(\d+)</token'
+    gl = 'token name="GraphicsMode">' + str(mode) + '</token'
+
+    output_lines = []
+    with open(settings_path, "r") as fp:
+        for line in fp.readlines():
+            if "GraphicsMode" in line:
+                line = re.sub(ptn, gl, line)
+
+            output_lines.append(line)
+
+    with open(settings_path, "w") as fp:
+        fp.writelines(output_lines)
+
+
+def set_graphics_mode_opengl():
+    set_graphics_mode(4)
 
 
 def get_installer():
