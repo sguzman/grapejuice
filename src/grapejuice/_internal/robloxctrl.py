@@ -18,7 +18,7 @@ def get_installer():
 
 
 def run_installer():
-    winectrl.create_prefix()
+    winectrl.configure_prefix()
     get_installer()
     winectrl.run_exe(variables.installer_path())
 

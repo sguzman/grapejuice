@@ -42,6 +42,33 @@ def load_reg(srcfile):
     os.remove(target_path)
 
 
+def load_regs(s: [str], patches: dict = None):
+    prepare()
+    target_filename = str(int(time.time())) + ".reg"
+    target_path = os.path.join(variables.wine_temp(), target_filename)
+
+    with open(target_path, "w+") as fp:
+        if patches is None:
+            fp.write("\r\n".join(s))
+        else:
+            out_lines = []
+            for line in s:
+                for k, v in patches.items():
+                    varkey = "$" + k
+                    if varkey in line:
+                        line = line.replace(varkey, v)
+
+                out_lines.append(line)
+
+            fp.writelines(out_lines)
+
+    winreg = "C:\\windows\\temp\\{}".format(target_filename)
+    os.spawnlp(os.P_WAIT, "wine", "wine", "regedit", "/S", winreg)
+    os.spawnlp(os.P_WAIT, "wine64", "wine64", "regedit", "/S", winreg)
+
+    os.remove(target_path)
+
+
 def wine_tricks():
     prepare()
     os.spawnlp(os.P_NOWAIT, "winetricks", "winetricks")
@@ -49,6 +76,15 @@ def wine_tricks():
 
 def disable_mime_assoc():
     load_reg(os.path.join(variables.assets_dir(), "disable_mime_assoc.reg"))
+
+
+def set_roblox_document_path():
+    src_path = os.path.join(variables.assets_dir(), "roblox_documents_folder.reg")
+    patches = dict()
+    patches["DOCUMENTS_DIR"] = "Z:" + variables.xdg_documents().replace("/", "\\\\")
+
+    with open(src_path, "r") as fp:
+        load_regs(fp.readlines(), patches)
 
 
 def load_dll_overrides():
@@ -64,10 +100,15 @@ def sandbox():
                 os.remove(p)
 
 
-def create_prefix():
+def configure_prefix():
     disable_mime_assoc()
     sandbox()
     load_dll_overrides()
+    set_roblox_document_path()
+
+
+def create_prefix():
+    configure_prefix()
 
 
 def prefix_exists():

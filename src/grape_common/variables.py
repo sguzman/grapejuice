@@ -1,4 +1,5 @@
 import os
+import subprocess
 import sys
 
 
@@ -137,6 +138,17 @@ def xdg_data_home():
         os.makedirs(data_home)
 
     return data_home
+
+
+def xdg_documents():
+    run = subprocess.run(["xdg-user-dir", "DOCUMENTS"], stdout=subprocess.PIPE)
+    documents_path = run.stdout.decode("utf-8").rstrip()
+
+    if os.path.exists(documents_path):
+        return documents_path
+
+    documents_path = os.path.join(home(), "Documents")
+    return ensure_dir(documents_path)
 
 
 def git_repository():
