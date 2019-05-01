@@ -10,7 +10,7 @@
     <property name="copyright" translatable="yes">BrinkerVII</property>
     <property name="comments" translatable="yes">A simple GUI and wrapper to manage Roblox on Linux running under Wine.</property>
     <property name="authors">BrinkerVII &lt;brinkervii@gmail.com&gt;</property>
-    <property name="logo">grapejuice-128.png</property>
+    <property name="logo">../grapejuice-128.png</property>
     <property name="license_type">gpl-3-0</property>
     <child type="titlebar">
       <placeholder/>
@@ -101,7 +101,7 @@
     <property name="height_request">16</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">roblox-studio-24.png</property>
+    <property name="pixbuf">../roblox-studio-24.png</property>
   </object>
   <object class="GtkImage" id="icon_sandbox">
     <property name="visible">True</property>
@@ -188,11 +188,12 @@
   </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
+    <property name="role">Grapejuice</property>
     <property name="resizable">False</property>
     <property name="default_width">550</property>
     <property name="default_height">300</property>
-    <property name="icon">grapejuice.svg</property>
-    <property name="startup_id">grapejuice</property>
+    <property name="icon">../grapejuice.svg</property>
+    <property name="startup_id">Grapejuice</property>
     <signal name="destroy" handler="on_destroy" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar">
@@ -214,7 +215,7 @@
                 <property name="can_focus">False</property>
                 <property name="margin_top">3</property>
                 <property name="margin_bottom">3</property>
-                <property name="pixbuf">grapejuice-24.png</property>
+                <property name="pixbuf">../grapejuice-24.png</property>
               </object>
             </child>
           </object>
@@ -393,15 +394,6 @@
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
                   </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
               </object>
               <packing>

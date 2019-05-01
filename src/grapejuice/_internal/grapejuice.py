@@ -4,7 +4,7 @@ import os
 import shutil
 
 import grapejuice._internal.robloxctrl as robloxctrl
-import grapejuice._internal.variables as variables
+import grape_common.variables as variables
 
 
 def on_exit():
@@ -37,7 +37,7 @@ def main(in_args):
     parser.add_argument("--studio", help="Run Roblox Studio", action="store_true")
     parser.add_argument("--uri", help="A Roblox URI", required=False)
 
-    args = parser.parse_args(in_args)
+    args = parser.parse_args(in_args[1:])
 
     def get_uri():
         if args.uri is not None and args.uri:
