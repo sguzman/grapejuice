@@ -35,11 +35,10 @@ class MainWindowHandlers:
         from gi.repository import Gtk
 
         if not robloxctrl.run_studio():
-            dialog_text = "Roblox Studio could not be launched. You might have to install it first by going to "
-            "the Maintanance tab."
+            dialog_text = "Roblox Studio could not be launched. You might have to install it first by going to the " \
+                          "Maintanance tab. "
 
             dialog = Gtk.MessageDialog(
-                parent=self.window,
                 message_type=Gtk.MessageType.INFO,
                 buttons=Gtk.ButtonsType.OK,
                 text=dialog_text
