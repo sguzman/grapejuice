@@ -14,7 +14,10 @@ cached_snapshot_index = None
 class Snapshot:
     loaded = False
 
-    def __init__(self, pfx_id, snapshot_id=str(uuid.uuid4())):
+    def __init__(self, pfx_id, snapshot_id=None):
+        if snapshot_id is None:
+            snapshot_id = str(uuid.uuid4())
+
         self.metadata = {
             "id": snapshot_id,
             "name": "Untitled snapshot",

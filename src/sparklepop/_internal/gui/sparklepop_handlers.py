@@ -21,3 +21,8 @@ class SparklepopHandlers:
 
     def snapshot_info_changed(self, *args):
         self.parent.on_snapshot_changed()
+
+    def create_snapshot(self, *args):
+        import grape_reglib.snapshot as snapshot
+        snapshot.create_snapshot()
+        self.parent.populate_snapshots()

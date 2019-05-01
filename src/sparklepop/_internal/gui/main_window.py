@@ -126,6 +126,9 @@ class MainWindow(WindowBase):
         from gi.repository import Gtk
         snapshot_box = self._snapshot_box()
 
+        for child in snapshot_box.get_children():
+            snapshot_box.remove(child)
+
         first_pfx = True
         self.snapshot_model = SnapshotViewModel()
         for pfx in self.snapshot_model:

@@ -113,7 +113,7 @@
                 <property name="homogeneous">True</property>
                 <child>
                   <object class="GtkButton">
-                    <property name="label" translatable="yes">button</property>
+                    <property name="label" translatable="yes">Toggle info panel</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -127,10 +127,11 @@
                 </child>
                 <child>
                   <object class="GtkButton">
-                    <property name="label" translatable="yes">button</property>
+                    <property name="label" translatable="yes">Create snapshot</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <signal name="clicked" handler="create_snapshot" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
