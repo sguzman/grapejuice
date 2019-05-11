@@ -2,7 +2,7 @@
 
 ## Install dependencies
 ```bash
-sudo pacman -S python-pip python-virtualenv cairo gtk3
+sudo pacman -S python-pip python-virtualenv cairo gtk3 gobject-introspection gobject-introspection-runtime
 ```
 
 ## Install Grapejuice
