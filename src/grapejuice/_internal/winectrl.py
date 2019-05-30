@@ -16,17 +16,17 @@ def prepare():
 
 def winecfg():
     prepare()
-    os.spawnlp(os.P_NOWAIT, "wine", "wine", "winecfg")
+    os.spawnlp(os.P_NOWAIT, variables.wine_binary(), variables.wine_binary(), "winecfg")
 
 
 def regedit():
     prepare()
-    os.spawnlp(os.P_NOWAIT, "wine", "wine", "regedit")
+    os.spawnlp(os.P_NOWAIT, variables.wine_binary(), variables.wine_binary(), "regedit")
 
 
 def explorer():
     prepare()
-    os.spawnlp(os.P_NOWAIT, "wine", "wine", "explorer")
+    os.spawnlp(os.P_NOWAIT, variables.wine_binary(), variables.wine_binary(), "explorer")
 
 
 def load_reg(srcfile):
@@ -36,8 +36,8 @@ def load_reg(srcfile):
     shutil.copyfile(srcfile, target_path)
 
     winreg = "C:\\windows\\temp\\{}".format(target_filename)
-    os.spawnlp(os.P_WAIT, "wine", "wine", "regedit", "/S", winreg)
-    os.spawnlp(os.P_WAIT, "wine64", "wine64", "regedit", "/S", winreg)
+    os.spawnlp(os.P_WAIT, variables.wine_binary(), variables.wine_binary(), "regedit", "/S", winreg)
+    os.spawnlp(os.P_WAIT, variables.wine_binary_64(), variables.wine_binary_64(), "regedit", "/S", winreg)
 
     os.remove(target_path)
 
@@ -63,8 +63,8 @@ def load_regs(s: [str], patches: dict = None):
             fp.writelines(out_lines)
 
     winreg = "C:\\windows\\temp\\{}".format(target_filename)
-    os.spawnlp(os.P_WAIT, "wine", "wine", "regedit", "/S", winreg)
-    os.spawnlp(os.P_WAIT, "wine64", "wine64", "regedit", "/S", winreg)
+    os.spawnlp(os.P_WAIT, variables.wine_binary(), variables.wine_binary(), "regedit", "/S", winreg)
+    os.spawnlp(os.P_WAIT, variables.wine_binary_64(), variables.wine_binary_64(), "regedit", "/S", winreg)
 
     os.remove(target_path)
 
@@ -118,6 +118,6 @@ def prefix_exists():
 def run_exe(exe_path, *args):
     prepare()
     if len(args) > 0:
-        os.spawnlp(os.P_NOWAIT, "wine", "wine", exe_path, *args)
+        os.spawnlp(os.P_NOWAIT, variables.wine_binary(), variables.wine_binary(), exe_path, *args)
     else:
-        os.spawnlp(os.P_NOWAIT, "wine", "wine", exe_path)
+        os.spawnlp(os.P_NOWAIT, variables.wine_binary(), variables.wine_binary(), exe_path)

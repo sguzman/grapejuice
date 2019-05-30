@@ -187,3 +187,19 @@ def tmp_path():
 
 def tmp_zip_path():
     return os.path.join(tmp_path(), "grapejuice-download.zip")
+
+
+def wine_binary(arch=""):
+    bin_path = "/usr/bin/wine" + arch
+    if os.path.exists(bin_path):
+        return bin_path
+
+    bin_path = "/opt/wine-stable/bin/wine" + arch
+    if os.path.exists(bin_path):
+        return bin_path
+
+    raise RuntimeError("A valid wine binary could not be found")
+
+
+def wine_binary_64():
+    return wine_binary("64")
