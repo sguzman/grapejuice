@@ -22,11 +22,11 @@ Look up your distribution version below and enter the correct command into your 
 
 | Version                      | Command                                                                             |
 |------------------------------|-------------------------------------------------------------------------------------|
+| Ubuntu 19.04                 | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ disco main'  |
 | Ubuntu 18.10                 | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ cosmic main' |
 | Ubuntu 18.04 Linux Mint 19.x | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main' |
 | Ubuntu 16.04 Linux Mint 18.x | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ xenial main' |
 | Ubuntu 14.04 Linux Mint 17.x | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ trusty main' |
-| Ubuntu 19.04                 | sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ disco main'  |
 
 **04.** Install Wine
 ```bash
@@ -57,6 +57,16 @@ sudo apt install python3.7 python3.7-dev python3.7-venv
 **04.** Additionally, check if the upgrade was successful
 ```bash
 python3.7 --version
+```
+
+## Installing the python development packages (Ubuntu 19.04 and newer)
+Grapejuice requires python development headers to be present in order for it to be installed, these are not installed
+on Ubuntu by default. You will need to follow this step using a terminal.
+
+The process is extremely simple, just run the following:
+```bash
+sudo apt update
+sudo apt install python3-dev
 ```
 
 ## Install Grapejuice dependencies
