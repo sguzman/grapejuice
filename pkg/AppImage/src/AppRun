@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-SCRIPT=$(readlink -f $0)
-SCRIPT_DIR=`dirname ${SCRIPT}`
-
-export FONTCONFIG_PATH=${SCRIPT_DIR}/etc/fonts
-exec ${SCRIPT_DIR}/01_grapejuice "$@"
