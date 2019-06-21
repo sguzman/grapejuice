@@ -1,4 +1,4 @@
-from grape_reglib.reg_file import RegFile, RegistryKey
+from grapejuice_registry.reg_file import RegFile, RegistryKey
 
 
 class RegDiff:

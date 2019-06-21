@@ -9,7 +9,7 @@ import urllib3 as u3
 import wget
 from packaging import version
 
-import grape_common.variables as variables
+import grapejuice_common.variables as variables
 
 VERSION_PATTERN = re.compile(r'__version__\s*=\s*"(.+)?".*')
 HTTP = None

@@ -1,4 +1,4 @@
-from grape_reglib import snapshot
+from grapejuice_registry import snapshot
 
 
 class PrefixModel(list):

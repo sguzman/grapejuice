@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime
 from zipfile import ZipFile
 
-from grape_common import variables
+from grapejuice_common import variables
 
 cached_snapshot_index = None
 
