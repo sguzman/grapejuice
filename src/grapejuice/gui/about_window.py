@@ -1,5 +1,5 @@
 import grape_common.variables as variables
-import grapejuice._internal.update as update
+import grapejuice.update as update
 from grape_common import WindowBase
 
 
