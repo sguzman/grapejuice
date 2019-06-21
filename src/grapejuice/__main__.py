@@ -1,11 +1,9 @@
 import argparse
-import atexit
 import os
 import shutil
 import sys
 
 import grapejuice_common.variables as variables
-from grapejuice import robloxctrl
 
 
 def on_exit():
@@ -15,6 +13,8 @@ def on_exit():
 
 
 def main_gui():
+    sys.argv[0] = "Grapejuice"
+
     import gi
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk
@@ -25,61 +25,75 @@ def main_gui():
     Gtk.main()
 
 
-def main_cli():
-    pass
-
-
-def main(in_args):
-    parser = argparse.ArgumentParser(description="Manage Roblox on Linux")
-
-    parser.add_argument("--gui", help="Run Grapejuice in GUI mode", action="store_true")
-    parser.add_argument("--post_install", help="Post-install command", action="store_true")
-    parser.add_argument("--player", help="Run Roblox Player", action="store_true")
-    parser.add_argument("--studio", help="Run Roblox Studio", action="store_true")
-    parser.add_argument("--uri", help="A Roblox URI", required=False)
-
-    args = parser.parse_args(in_args[1:])
-
-    def get_uri():
-        if args.uri is not None and args.uri:
-            return args.uri.replace("'", "")
-
+def prepare_uri(uri):
+    if uri is None:
         return None
 
-    if args.post_install:
-        from grapejuice.deployment import post_install as post_install
-        post_install()
+    prepared_uri = uri.replace("'", "")
+    if prepared_uri:
+        return prepared_uri
+    else:
+        return None
+
+
+def func_gui(args):
+    main_gui()
+
+
+def func_post_install(args):
+    from grapejuice import deployment
+    deployment.post_install()
+
+
+def func_player(args):
+    from grapejuice import robloxctrl
+    uri = prepare_uri(args.token)
+    if uri:
+        robloxctrl.run_player(uri)
         return 0
 
-    if args.studio:
-        uri = get_uri()
-        if uri is None:
-            print("Please supply a URI")
-            return 1
+    return 1
 
+
+def func_studio(args):
+    from grapejuice import robloxctrl
+    uri = prepare_uri(args.uri)
+    if uri:
         ide = False
-        if not uri.startswith("roblox-studio"):
+        if not uri.startswith("roblox-studio:"):
             uri = "Z:" + uri.replace("/", "\\")
             ide = True
 
         robloxctrl.run_studio(uri, ide)
-        return 0
 
-    if args.player:
-        uri = get_uri()
-        if uri is None:
-            os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", "https://roblox.com/games")
-            return 0
+    else:
+        robloxctrl.run_studio()
 
-        robloxctrl.run_player(uri)
-        return 0
 
-    if args.gui:
-        main_gui()
-        atexit.register(on_exit)
-        return 0
+def main(in_args):
+    parser = argparse.ArgumentParser(prog="grapejuice", description="Manage Roblox on Linux")
+    subparsers = parser.add_subparsers(title="subcommands", help="sub-command help")
 
-    parser.print_help()
+    parser_gui = subparsers.add_parser("gui")
+    parser_gui.set_defaults(func=func_gui)
+
+    parser_post_install = subparsers.add_parser("post_install")
+    parser_post_install.set_defaults(func=func_post_install)
+
+    parser_player = subparsers.add_parser("player")
+    parser_player.add_argument("token", type=str, help="Your Roblox token to join a game")
+    parser_player.set_defaults(func=func_player)
+
+    parser_studio = subparsers.add_parser("studio")
+    parser_studio.add_argument("--uri", type=str, help="The URI or file to open roblox studio with", required=False)
+    parser_studio.set_defaults(func=func_studio)
+
+    args = parser.parse_args(in_args[1:])
+    if hasattr(args, "func"):
+        return args.func(args)
+    else:
+        parser.print_help()
+
     return 1
 
 

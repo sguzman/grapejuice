@@ -122,5 +122,5 @@ def update_and_reopen():
         p = variables.run_script_path()
         if os.path.exists(p):
             delete_tmp()
-            os.spawnlp(os.P_NOWAIT, p, p, "--gui")
+            os.spawnlp(os.P_NOWAIT, p, p, "gui")
             sys.exit(0)

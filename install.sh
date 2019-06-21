@@ -29,6 +29,6 @@ pip install -r requirements.txt
 
 deactivate
 
-./bin/grapejuice --post_install
+./bin/grapejuice post_install
 
 cd ${OLD_CWD}
