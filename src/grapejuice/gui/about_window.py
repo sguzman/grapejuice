@@ -1,6 +1,6 @@
-import grape_common.variables as variables
+import grapejuice_common.variables as variables
 import grapejuice.update as update
-from grape_common import WindowBase
+from grapejuice_common import WindowBase
 
 
 class AboutWindow(WindowBase):

@@ -1,7 +1,7 @@
 import os
 
-from grape_common import WindowBase
-from grape_common import variables
+from grapejuice_common import WindowBase
+from grapejuice_common import variables
 from grapejuice import winectrl, robloxctrl, update, deployment
 
 

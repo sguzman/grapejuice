@@ -1,6 +1,6 @@
-from grape_common import WindowBase
-from grape_common import variables
-from grape_reglib.snapshot import Snapshot
+from grapejuice_common import WindowBase
+from grapejuice_common import variables
+from grapejuice_registry.snapshot import Snapshot
 from sparklepop.gui.snapshot_view_model import SnapshotViewModel
 
 

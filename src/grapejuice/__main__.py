@@ -4,7 +4,7 @@ import os
 import shutil
 import sys
 
-import grape_common.variables as variables
+import grapejuice_common.variables as variables
 from grapejuice import robloxctrl
 
 

@@ -23,6 +23,6 @@ class SparklepopHandlers:
         self.parent.on_snapshot_changed()
 
     def create_snapshot(self, *args):
-        import grape_reglib.snapshot as snapshot
+        import grapejuice_registry.snapshot as snapshot
         snapshot.create_snapshot()
         self.parent.populate_snapshots()

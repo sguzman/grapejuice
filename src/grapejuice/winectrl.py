@@ -2,7 +2,7 @@ import os
 import shutil
 import time
 
-import grape_common.variables as variables
+import grapejuice_common.variables as variables
 
 
 def prepare():
