@@ -1,10 +1,10 @@
 import os
 
 import grape_common.variables as variables
-import grapejuice._internal.install as install
-import grapejuice._internal.robloxctrl as robloxctrl
-import grapejuice._internal.update as update
-import grapejuice._internal.winectrl as winectrl
+import grapejuice.install as install
+import grapejuice.robloxctrl as robloxctrl
+import grapejuice.update as update
+import grapejuice.winectrl as winectrl
 from grape_common import WindowBase
 
 
@@ -60,7 +60,7 @@ class MainWindowHandlers:
         os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", variables.wine_drive_c())
 
     def show_about(self, *args):
-        import grapejuice._internal.gui as gui
+        import grapejuice.gui as gui
         about = gui.AboutWindow()
         about.run()
 

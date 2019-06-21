@@ -3,7 +3,7 @@
 import os
 import shutil
 
-import grapejuice._internal.install as install
+import grapejuice.install as install
 import grape_common.variables as variables
 
 
