@@ -1,7 +1,7 @@
 from grape_common import WindowBase
 from grape_common import variables
 from grape_reglib.snapshot import Snapshot
-from sparklepop._internal.gui.snapshot_view_model import SnapshotViewModel
+from sparklepop.gui.snapshot_view_model import SnapshotViewModel
 
 
 class SnapshotWidget:
@@ -80,7 +80,7 @@ class MainWindow(WindowBase):
     made_changes = False
 
     def __init__(self):
-        from sparklepop._internal.gui.sparklepop_handlers import SparklepopHandlers
+        from sparklepop.gui import SparklepopHandlers
 
         def create_handlers():
             handlers = SparklepopHandlers()
