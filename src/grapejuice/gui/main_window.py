@@ -1,7 +1,7 @@
 import os
 
 import grape_common.variables as variables
-import grapejuice.install as install
+import grapejuice.deployment as install
 import grapejuice.robloxctrl as robloxctrl
 import grapejuice.update as update
 import grapejuice.winectrl as winectrl
