@@ -1,11 +1,8 @@
 import os
 
-import grape_common.variables as variables
-import grapejuice.deployment as install
-import grapejuice.robloxctrl as robloxctrl
-import grapejuice.update as update
-import grapejuice.winectrl as winectrl
 from grape_common import WindowBase
+from grape_common import variables
+from grapejuice import winectrl, robloxctrl, update, deployment
 
 
 def dialog(dialog_text):
@@ -75,7 +72,7 @@ class MainWindowHandlers:
         update.update_and_reopen()
 
     def deploy_assocs(self, *args):
-        install.post_install()
+        deployment.post_install()
 
     def launch_sparklepop(self, *args):
         os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "sparklepop")
