@@ -101,7 +101,7 @@ def perform_update():
         srcdir = os.path.join(variables.tmp_path(), "grapejuice-master")
         if os.path.exists(srcdir):
             os.chdir(srcdir)
-            os.spawnlp(os.P_WAIT, "python3", "python3", "./install.py")
+            os.spawnlp(os.P_WAIT, "python3", "python3", "./deployment.py")
             return True
 
         else:

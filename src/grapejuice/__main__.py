@@ -47,7 +47,7 @@ def main(in_args):
         return None
 
     if args.post_install:
-        from grapejuice.install import post_install as post_install
+        from grapejuice.deployment import post_install as post_install
         post_install()
         return 0
 
