@@ -1,8 +1,13 @@
 import os
 import shutil
+import subprocess
+import sys
 import time
+from subprocess import DEVNULL
 
 import grapejuice_common.variables as variables
+
+processes = []
 
 
 def prepare():
@@ -121,3 +126,40 @@ def run_exe(exe_path, *args):
         os.spawnlp(os.P_NOWAIT, variables.wine_binary(), variables.wine_binary(), exe_path, *args)
     else:
         os.spawnlp(os.P_NOWAIT, variables.wine_binary(), variables.wine_binary(), exe_path)
+
+
+def run_exe_nowait(exe_path, *args):
+    prepare()
+    command = ["wine", exe_path, *args]
+    print("open")
+    p = subprocess.Popen(command, stdin=DEVNULL, stdout=sys.stdout, stderr=sys.stderr, close_fds=True)
+    processes.append(p)
+    poll_processes()
+
+
+def _poll_processes() -> bool:
+    """
+    Makes sure zombie launchers are taken care of
+    :return: Whether or not processes remain
+    """
+    exited = []
+
+    for proc in processes:
+        if proc.returncode is None:
+            proc.poll()
+            if proc.returncode is not None:
+                exited.append(proc)
+
+        else:
+            exited.append(proc)
+
+    for proc in exited:
+        processes.remove(proc)
+        del proc
+
+    return len(processes) > 0
+
+
+def poll_processes():
+    from gi.repository import GObject
+    GObject.timeout_add(100, _poll_processes)

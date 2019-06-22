@@ -82,12 +82,12 @@ def run_studio(uri="", ide=False):
         return False
 
     if ide:
-        winectrl.run_exe(launcher, "-ide", uri)
+        winectrl.run_exe_nowait(launcher, "-ide", uri)
     else:
         if uri:
-            winectrl.run_exe(launcher, uri)
+            winectrl.run_exe_nowait(launcher, uri)
         else:
-            winectrl.run_exe(launcher)
+            winectrl.run_exe_nowait(launcher)
 
     return True
 
@@ -97,5 +97,5 @@ def run_player(uri):
     if player is None:
         return False
 
-    winectrl.run_exe(player, uri)
+    winectrl.run_exe_nowait(player, uri)
     return True

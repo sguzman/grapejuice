@@ -58,6 +58,15 @@ class DBusService(dbus.service.Object):
         in_signature="",
         out_signature=""
     )
+    def Polly(self):
+        from grapejuice_common import winectrl
+        winectrl.poll_processes()
+
+    @dbus.service.method(
+        dbus_interface=bus_name,
+        in_signature="",
+        out_signature=""
+    )
     def Terminate(self):
         import sys
         sys.exit(0)
