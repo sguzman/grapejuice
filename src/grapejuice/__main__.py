@@ -3,7 +3,9 @@ import os
 import shutil
 import sys
 
+import grapejuice_common.util
 import grapejuice_common.variables as variables
+from grapejuice_common.dbus_client import dbus_connection
 
 
 def on_exit():
@@ -25,17 +27,6 @@ def main_gui():
     Gtk.main()
 
 
-def prepare_uri(uri):
-    if uri is None:
-        return None
-
-    prepared_uri = uri.replace("'", "")
-    if prepared_uri:
-        return prepared_uri
-    else:
-        return None
-
-
 def func_gui(args):
     main_gui()
 
@@ -46,28 +37,27 @@ def func_post_install(args):
 
 
 def func_player(args):
-    from grapejuice import robloxctrl
-    uri = prepare_uri(args.token)
-    if uri:
-        robloxctrl.run_player(uri)
+    if dbus_connection.play_game(grapejuice_common.util.prepare_uri(args.uri)):
         return 0
 
     return 1
 
 
 def func_studio(args):
-    from grapejuice import robloxctrl
-    uri = prepare_uri(args.uri)
+    uri = grapejuice_common.util.prepare_uri(args.uri)
     if uri:
-        ide = False
+        is_local = False
         if not uri.startswith("roblox-studio:"):
             uri = "Z:" + uri.replace("/", "\\")
-            ide = True
+            is_local = True
 
-        robloxctrl.run_studio(uri, ide)
+        if is_local:
+            dbus_connection.edit_local_game(uri)
+        else:
+            dbus_connection.edit_cloud_game(uri)
 
     else:
-        robloxctrl.run_studio()
+        dbus_connection.launch_studio()
 
 
 def main(in_args):
@@ -81,7 +71,7 @@ def main(in_args):
     parser_post_install.set_defaults(func=func_post_install)
 
     parser_player = subparsers.add_parser("player")
-    parser_player.add_argument("token", type=str, help="Your Roblox token to join a game")
+    parser_player.add_argument("uri", type=str, help="Your Roblox token to join a game")
     parser_player.set_defaults(func=func_player)
 
     parser_studio = subparsers.add_parser("studio")
