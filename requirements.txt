@@ -8,3 +8,4 @@ certifi
 wheel
 setuptools
 pyinstaller
+dbus-python

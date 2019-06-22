@@ -1,8 +1,8 @@
 import os
 
-from grapejuice_common import WindowBase
+from grapejuice import update, deployment
+from grapejuice_common import WindowBase, robloxctrl, winectrl
 from grapejuice_common import variables
-from grapejuice import winectrl, robloxctrl, update, deployment
 
 
 def dialog(dialog_text):
@@ -38,10 +38,14 @@ class MainWindowHandlers:
         winectrl.sandbox()
 
     def run_roblox_installer(self, *args):
-        robloxctrl.run_installer()
+        from grapejuice_common.dbus_client import dbus_connection
+        dbus_connection.install_roblox()
 
     def run_roblox_studio(self, *args):
-        if not robloxctrl.run_studio():
+        from grapejuice_common.dbus_client import dbus_connection
+        from gi.repository import Gtk
+
+        if not dbus_connection.launch_studio():
             dialog_text = "Roblox Studio could not be launched. You might have to install it first by going to the " \
                           "Maintanance tab. "
 
