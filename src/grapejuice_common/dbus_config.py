@@ -1,2 +1,2 @@
-bus_name = "net.brinkervii.grapejuice"
-bus_path = "/net/brinkervii/grapejuice"
+bus_name = "net.brinkervii.Grapejuice"
+bus_path = "/net/brinkervii/Grapejuice"
