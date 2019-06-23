@@ -8,9 +8,7 @@ Please note that this project is highly experimental, not everything will work p
 ## Installation
 
 Installation differs per distributions, please follow the appropriate installation guide for yours.
-
-- [Ubuntu](docs/install_ubuntu.md)
-- [Arch Linux](docs/install_archlinux.md)
+All the installation guides can be found in the [Grapejuice Wiki](https://gitlab.com/brinkervii/grapejuice/wikis/home)
 
 I recommend that after installing roblox, you change the rendering method to OpenGL instead of the default. You can find
 this setting under Settings -> Rendering in the Roblox Studio menu.
