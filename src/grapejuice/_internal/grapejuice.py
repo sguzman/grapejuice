@@ -3,8 +3,8 @@ import atexit
 import os
 import shutil
 
-import grapejuice._internal.robloxctrl as robloxctrl
 import grape_common.variables as variables
+import grapejuice._internal.robloxctrl as robloxctrl
 
 
 def on_exit():
@@ -53,8 +53,8 @@ def main(in_args):
     if args.studio:
         uri = get_uri()
         if uri is None:
-            print("Please supply a URI")
-            return 1
+            print("No URI provided, launching studio anyways")
+            return 0 if robloxctrl.run_studio() else 1
 
         ide = False
         if not uri.startswith("roblox-studio"):
