@@ -8,6 +8,7 @@ from subprocess import DEVNULL
 import grapejuice_common.variables as variables
 
 processes = []
+is_polling = False
 
 
 def prepare():
@@ -129,9 +130,9 @@ def run_exe(exe_path, *args):
 
 
 def run_exe_nowait(exe_path, *args):
+    global processes
     prepare()
     command = ["wine", exe_path, *args]
-    print("open")
     p = subprocess.Popen(command, stdin=DEVNULL, stdout=sys.stdout, stderr=sys.stderr, close_fds=True)
     processes.append(p)
     poll_processes()
@@ -142,6 +143,7 @@ def _poll_processes() -> bool:
     Makes sure zombie launchers are taken care of
     :return: Whether or not processes remain
     """
+    global is_polling, processes
     exited = []
 
     for proc in processes:
@@ -157,9 +159,17 @@ def _poll_processes() -> bool:
         processes.remove(proc)
         del proc
 
-    return len(processes) > 0
+    processes_left = len(processes) > 0
+    if not processes_left:
+        is_polling = False
+
+    return processes_left
 
 
 def poll_processes():
+    global is_polling
+    if is_polling:
+        return
+
     from gi.repository import GObject
     GObject.timeout_add(100, _poll_processes)
