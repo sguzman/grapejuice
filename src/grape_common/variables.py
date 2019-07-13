@@ -190,13 +190,15 @@ def tmp_zip_path():
 
 
 def wine_binary(arch=""):
-    bin_path = "/usr/bin/wine" + arch
-    if os.path.exists(bin_path):
-        return bin_path
+    search = [
+        "/usr/bin/wine" + arch,
+        "/opt/wine-stable/bin/wine" + arch,
+        "/opt/wine-staging/bin/wine" + arch
+    ]
 
-    bin_path = "/opt/wine-stable/bin/wine" + arch
-    if os.path.exists(bin_path):
-        return bin_path
+    for p in search:
+        if os.path.exists(p):
+            return p
 
     raise RuntimeError("A valid wine binary could not be found")
 
