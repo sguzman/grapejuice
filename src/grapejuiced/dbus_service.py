@@ -61,3 +61,12 @@ class DBusService(dbus.service.Object):
     def Terminate(self):
         import sys
         sys.exit(0)
+
+    @dbus.service.method(
+        dbus_interface=bus_name,
+        in_signature="",
+        out_signature="s"
+    )
+    def Version(self):
+        from grapejuice_common import version
+        return str(version.local_version())
