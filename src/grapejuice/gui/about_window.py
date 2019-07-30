@@ -1,6 +1,5 @@
 import grapejuice_common.variables as variables
-import grapejuice.update as update
-from grapejuice_common import WindowBase
+from grapejuice_common import WindowBase, version
 
 
 class AboutWindow(WindowBase):
@@ -13,7 +12,7 @@ class AboutWindow(WindowBase):
 
     def run(self):
         w = self.window()
-        w.set_version(str(update.local_version()))
+        w.set_version(str(version.local_version()))
 
         w.run()
         w.destroy()

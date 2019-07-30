@@ -1,7 +1,7 @@
 import os
 
 from grapejuice import update, deployment
-from grapejuice_common import WindowBase, robloxctrl, winectrl
+from grapejuice_common import WindowBase, robloxctrl, winectrl, version
 from grapejuice_common import variables
 
 
@@ -103,17 +103,17 @@ class MainWindow(WindowBase):
         return self.builder.get_object('update_button')
 
     def update_update_status(self):
-        if update.update_available():
+        if version.update_available():
             s = "This version of Grapejuice is out of date\n{} -> {}".format(
-                str(update.local_version()),
-                str(update.cached_remote_version)
+                str(version.local_version()),
+                str(version.cached_remote_version)
             )
 
             self.update_status_label().set_text(s)
             self.update_button().show()
         else:
-            local_ver = update.local_version()
-            if local_ver > update.cached_remote_version:
+            local_ver = version.local_version()
+            if local_ver > version.cached_remote_version:
                 s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
             else:
                 s = "Grapejuice is up to date\n{}".format(str(local_ver))
