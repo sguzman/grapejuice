@@ -1,11 +1,13 @@
 import dbus.service
 
 from grapejuice_common.dbus_config import bus_name
+from grapejuiced.__init__ import __version__
 
 
 class DBusService(dbus.service.Object):
     def __init__(self, bus, path):
         super().__init__(bus, path, dbus.service.BusName(bus_name))
+        self.version_string = str(__version__)
 
     @dbus.service.method(
         dbus_interface=bus_name,
@@ -68,5 +70,4 @@ class DBusService(dbus.service.Object):
         out_signature="s"
     )
     def Version(self):
-        from grapejuice_common import version
-        return str(version.local_version())
+        return self.version_string

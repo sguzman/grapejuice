@@ -11,10 +11,14 @@ class DBusConnection:
         import dbus
 
         self.daemon_alive = False
-        self.bus = dbus.SessionBus()
+        if "bus" in kwargs.keys():
+            self.bus = kwargs["bus"]
+        else:
+            self.bus = dbus.SessionBus()
+
         self._try_connect()
 
-        if kwargs["no_spawn"]:
+        if "no_spawn" in kwargs.keys() and kwargs["no_spawn"]:
             pass
 
         else:
@@ -66,6 +70,9 @@ class DBusConnection:
             pass
 
         return False
+
+    def version(self):
+        return self.proxy.Version()
 
 
 connection = None

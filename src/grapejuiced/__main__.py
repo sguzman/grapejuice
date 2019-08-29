@@ -1,10 +1,42 @@
-import sys
 import argparse
+import sys
 
 
 def func_daemon(args):
     from grapejuiced.state import State
-    state = State().start()
+    state = State()
+    do_start = False
+
+    print("> Checking for an existing daemon....")
+    from grapejuice_common.dbus_client import DBusConnection
+    from grapejuiced.__init__ import __version__
+    import packaging.version as version
+    con = DBusConnection(no_spawn=True, bus=state.session_bus)
+
+    if con.daemon_alive:
+        print("> Connected to a daemon")
+
+        con_version = version.parse(con.version())
+        my_version = version.parse(__version__)
+
+        if con_version < my_version:
+            print("> Terminating an older daemon")
+            con.terminate()
+            do_start = True
+
+        else:
+            print("> Starting a new daemon is not required")
+
+    else:
+        do_start = True
+
+    if do_start:
+        print("> Spawning a new daemon")
+        state.start_service()
+        state.start()
+
+    else:
+        print("> A new daemon is not required, quitting...")
 
 
 def func_kill(args):
