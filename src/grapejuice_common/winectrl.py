@@ -132,7 +132,7 @@ def run_exe(exe_path, *args):
 def run_exe_nowait(exe_path, *args):
     global processes
     prepare()
-    command = ["wine", exe_path, *args]
+    command = [variables.wine_binary(), exe_path, *args]
     p = subprocess.Popen(command, stdin=DEVNULL, stdout=sys.stdout, stderr=sys.stderr, close_fds=True)
     processes.append(p)
     poll_processes()
