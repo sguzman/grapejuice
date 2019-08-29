@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+SCRIPT=$(readlink -f "$0")
+SCRIPT_DIR=$(dirname "$SCRIPT")
+PROJECT_DIR=$(dirname "$SCRIPT_DIR")
+SRC_DIR=$PROJECT_DIR/src
+
+export PYTHONPATH=$SRC_DIR:$PYTHONPATH
+
+cd "$PROJECT_DIR" || exit
+source "$PROJECT_DIR"/venv/bin/activate
+exec python -m grapejuiced "$@"

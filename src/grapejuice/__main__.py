@@ -37,7 +37,7 @@ def func_post_install(args):
 
 
 def func_player(args):
-    if dbus_connection.play_game(grapejuice_common.util.prepare_uri(args.uri)):
+    if dbus_connection().play_game(grapejuice_common.util.prepare_uri(args.uri)):
         return 0
 
     return 1
@@ -52,12 +52,12 @@ def func_studio(args):
             is_local = True
 
         if is_local:
-            dbus_connection.edit_local_game(uri)
+            dbus_connection().edit_local_game(uri)
         else:
-            dbus_connection.edit_cloud_game(uri)
+            dbus_connection().edit_cloud_game(uri)
 
     else:
-        dbus_connection.launch_studio()
+        dbus_connection().launch_studio()
 
 
 def main(in_args):

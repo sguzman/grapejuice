@@ -39,13 +39,13 @@ class MainWindowHandlers:
 
     def run_roblox_installer(self, *args):
         from grapejuice_common.dbus_client import dbus_connection
-        dbus_connection.install_roblox()
+        dbus_connection().install_roblox()
 
     def run_roblox_studio(self, *args):
         from grapejuice_common.dbus_client import dbus_connection
         from gi.repository import Gtk
 
-        if not dbus_connection.launch_studio():
+        if not dbus_connection().launch_studio():
             dialog_text = "Roblox Studio could not be launched. You might have to install it first by going to the " \
                           "Maintanance tab. "
 
