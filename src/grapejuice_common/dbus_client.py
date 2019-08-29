@@ -60,7 +60,7 @@ class DBusConnection:
         self.proxy.InstallRoblox()
 
     def _spawn_daemon(self):
-        os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "grapejuiced")
+        os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "grapejuiced", "daemonize")
 
     def terminate(self):
         try:
