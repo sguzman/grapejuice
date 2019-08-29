@@ -8,6 +8,18 @@ import grapejuice._internal.winectrl as winectrl
 from grape_common import WindowBase
 
 
+def dialog(dialog_text):
+    from gi.repository import Gtk
+
+    gtk_dialog = Gtk.MessageDialog(
+        message_type=Gtk.MessageType.INFO,
+        buttons=Gtk.ButtonsType.OK,
+        text=dialog_text
+    )
+    gtk_dialog.run()
+    gtk_dialog.destroy()
+
+
 class MainWindowHandlers:
     def on_destroy(self, *args):
         from gi.repository import Gtk
@@ -32,19 +44,11 @@ class MainWindowHandlers:
         robloxctrl.run_installer()
 
     def run_roblox_studio(self, *args):
-        from gi.repository import Gtk
-
         if not robloxctrl.run_studio():
             dialog_text = "Roblox Studio could not be launched. You might have to install it first by going to the " \
                           "Maintanance tab. "
 
-            dialog = Gtk.MessageDialog(
-                message_type=Gtk.MessageType.INFO,
-                buttons=Gtk.ButtonsType.OK,
-                text=dialog_text
-            )
-            dialog.run()
-            dialog.destroy()
+            dialog(dialog_text)
 
     def wine_explorer(self, *args):
         winectrl.explorer()
@@ -61,6 +65,10 @@ class MainWindowHandlers:
         about.run()
 
     def perform_update(self, *args):
+        dialog("If the Grapejuice upgrade breaks your installation, please redo the Grapejuice installation according "
+               "to the instructions in the Grapejuice git repository. The upgrade will begin after you close this "
+               "dialog.")
+
         update.update_and_reopen()
 
     def reinstall(self, *args):
