@@ -87,7 +87,7 @@ def run_studio(uri="", ide=False):
         if uri:
             winectrl.run_exe_nowait(launcher, uri)
         else:
-            winectrl.run_exe_nowait(launcher)
+            winectrl.run_exe_nowait(launcher, "-ide")
 
     return True
 
