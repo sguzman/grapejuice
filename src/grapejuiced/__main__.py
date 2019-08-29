@@ -44,7 +44,9 @@ def func_kill(args):
     from grapejuice_common.dbus_client import DBusConnection
     con = DBusConnection(no_spawn=True)
     if con.daemon_alive:
+        print("> Terminating the daemon")
         con.terminate()
+        print("> Done")
 
     else:
         print("There is no Grapejuice daemon to kill")
