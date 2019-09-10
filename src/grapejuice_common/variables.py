@@ -202,7 +202,6 @@ def wine_binary(arch=""):
 
     for p in (path_search + static_search):
         if os.path.exists(p):
-            print("Using wine path " + p)
             return p
 
     raise RuntimeError("A valid wine binary could not be found")
