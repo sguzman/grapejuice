@@ -12,6 +12,3 @@ Windows Registry Editor Version 5.00
 "StudioPreviousStartup"="false"
 "StudioStartup"="false"
 
-[HKEY_CURRENT_USER\Software\Roblox\RobloxStudio\Themes]
-"CurrentTheme"="Default"
-
