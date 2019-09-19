@@ -31,3 +31,7 @@ def uninstall_main():
     uninstall_mime_files()
     install.update_mime_database()
     remove_application_dir()
+
+
+if __name__ == '__main__':
+    uninstall_main()

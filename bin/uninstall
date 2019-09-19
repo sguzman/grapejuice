@@ -9,4 +9,4 @@ export PYTHONPATH=$SRC_DIR:$PATH
 
 cd "$PROJECT_DIR" || exit
 source "$PROJECT_DIR/venv/bin/activate"
-exec python -m grapejuice "$@"
+exec python "$SRC_DIR/grapejuice/uninstall.py" "$@"
