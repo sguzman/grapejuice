@@ -20,19 +20,29 @@ def perform_download():
 
 
 def unpack_download(filename):
-    with zipfile.ZipFile(filename, 'r') as zip_ref:
-        zip_ref.extractall(variables.tmp_path())
+    p = variables.tmp_path()
+    try:
+        with zipfile.ZipFile(filename, 'r') as zip_ref:
+            zip_ref.extractall(p)
+
+    except zipfile.BadZipFile as e:
+        print(repr(e))
+        return None
+
+    return p
 
 
 def perform_update():
     filename = perform_download()
     if os.path.exists(filename):
-        unpack_download(filename)
+        download_dir = unpack_download(filename)
+        if download_dir is None:
+            return False
 
-        srcdir = os.path.join(variables.tmp_path(), "grapejuice-master")
-        if os.path.exists(srcdir):
-            os.chdir(srcdir)
-            os.spawnlp(os.P_WAIT, "python3", "python3", "./deployment.py")
+        src_dir = os.path.join(download_dir, "grapejuice-master")
+        if os.path.exists(src_dir):
+            os.chdir(src_dir)
+            os.spawnlp(os.P_WAIT, "python3", "python3", "./install.py")
             return True
 
         else:
@@ -48,10 +58,10 @@ def delete_tmp():
 
 
 def update_and_reopen():
+    src_dir = variables.src_dir()
+
     if perform_update():
-        os.chdir(variables.src_dir())
-        p = variables.run_script_path()
-        if os.path.exists(p):
-            delete_tmp()
-            os.spawnlp(os.P_NOWAIT, p, p, "gui")
-            sys.exit(0)
+        os.chdir(src_dir)
+        delete_tmp()
+        os.spawnlp(os.P_NOWAIT, "python3", "python3", "-m", "grapejuice", "gui")
+        sys.exit(0)
