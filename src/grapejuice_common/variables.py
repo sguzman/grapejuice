@@ -1,6 +1,7 @@
 import os
 import subprocess
-import sys
+
+HERE = os.path.abspath(os.path.dirname(__file__))
 
 
 def ensure_dir(p):
@@ -18,26 +19,21 @@ def application_dir():
     return os.path.join(xdg_data_home(), "grapejuice")
 
 
-def run_script_path():
-    return os.path.join(application_dir(), "bin", "grapejuice")
-
-
 def assets_dir():
-    src_assets = os.path.join(src_dir(), "assets")
-    if os.path.exists(src_assets):
-        return os.path.abspath(src_assets)
+    search_locations = [
+        os.path.join(HERE, "assets"),
+        os.path.join(src_dir(), "assets"),
+        os.path.join(os.getcwd(), "assets"),
+        os.path.join(application_dir(), "assets")
+    ]
 
-    cwd_assets = os.path.join(os.getcwd(), "assets")
-    if os.path.exists(cwd_assets):
-        return os.path.abspath(cwd_assets)
-
-    app_assets = os.path.join(application_dir(), "assets")
-    if os.path.exists(app_assets):
-        return os.path.abspath(app_assets)
+    for p in search_locations:
+        if os.path.exists(p):
+            return p
 
 
 def src_dir():
-    return os.path.dirname(os.path.abspath(sys.argv[0]))
+    return os.path.abspath(os.path.dirname(HERE))
 
 
 def glade_dir():
@@ -69,13 +65,15 @@ def sparklepop_snapshots_dir():
 
 
 def src_init_py():
-    current = os.path.join(src_dir(), "__init__.py")
-    if os.path.exists(current):
-        return current
+    search_locations = [
+        os.path.join(src_dir(), "grapejuice", "__init__.py"),
+        os.path.join(src_dir(), "__init__.py"),
+        os.path.join(src_dir(), "src", "grapejuice", "__init__.py")
+    ]
 
-    current = os.path.join(src_dir(), "src", "grapejuice", "__init__.py")
-    if os.path.exists(current):
-        return current
+    for p in search_locations:
+        if os.path.exists(p):
+            return p
 
 
 def wineprefix_dir():

@@ -60,7 +60,7 @@ def func_studio(args):
         dbus_connection().launch_studio()
 
 
-def main(in_args):
+def main(in_args=sys.argv):
     parser = argparse.ArgumentParser(prog="grapejuice", description="Manage Roblox on Linux")
     subparsers = parser.add_subparsers(title="subcommands", help="sub-command help")
 
@@ -88,4 +88,4 @@ def main(in_args):
 
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main()

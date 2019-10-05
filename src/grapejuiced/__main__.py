@@ -52,7 +52,7 @@ def func_kill(args):
         print("There is no Grapejuice daemon to kill")
 
 
-def main(in_args):
+def main(in_args=sys.argv[1:]):
     parser = argparse.ArgumentParser(prog="grapejuiced", description="The Grapejuice daemon")
     subparsers = parser.add_subparsers(title="subcommands", help="sub-command help")
 
@@ -70,4 +70,4 @@ def main(in_args):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()
