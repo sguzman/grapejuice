@@ -7,5 +7,4 @@ urllib3
 certifi
 wheel
 setuptools
-pyinstaller
 dbus-python
