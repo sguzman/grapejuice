@@ -21,13 +21,10 @@ def main_gui():
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk
     from grapejuice.gui.main_window import MainWindow
-    from grapejuice_common.settings import settings
 
     main_window = MainWindow()
     main_window.show()
     Gtk.main()
-
-    settings.save()
 
 
 def func_gui(args):
@@ -64,6 +61,11 @@ def func_studio(args):
 
 
 def main(in_args=sys.argv):
+    from grapejuice_common.settings import settings
+    if settings:
+        # TODO: Add logging for successful settings loading (Issue #9)
+        pass
+
     parser = argparse.ArgumentParser(prog="grapejuice", description="Manage Roblox on Linux")
     subparsers = parser.add_subparsers(title="subcommands", help="sub-command help")
 

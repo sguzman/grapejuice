@@ -1,3 +1,4 @@
+import atexit
 import json
 import os
 import time
@@ -46,3 +47,11 @@ class UserSettings:
 
 
 settings = UserSettings()
+
+
+def save_settings():
+    print("Saving settings...")
+    settings.save()
+
+
+atexit.register(save_settings)
