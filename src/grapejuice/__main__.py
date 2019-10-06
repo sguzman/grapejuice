@@ -21,10 +21,13 @@ def main_gui():
     gi.require_version("Gtk", "3.0")
     from gi.repository import Gtk
     from grapejuice.gui.main_window import MainWindow
+    from grapejuice_common.settings import settings
 
     main_window = MainWindow()
     main_window.show()
     Gtk.main()
+
+    settings.save()
 
 
 def func_gui(args):

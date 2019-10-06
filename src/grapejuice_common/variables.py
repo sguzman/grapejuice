@@ -60,6 +60,10 @@ def grapejuice_config_dir():
     return ensure_dir(os.path.join(config_base_dir(), "grapejuice"))
 
 
+def grapejuice_user_settings():
+    return os.path.join(grapejuice_config_dir(), "user_settings.json")
+
+
 def sparklepop_snapshots_dir():
     return ensure_dir(os.path.join(sparklepop_config_dir(), "snapshots"))
 
