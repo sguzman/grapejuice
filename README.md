@@ -13,6 +13,10 @@ All the installation guides can be found in the [Grapejuice Wiki](https://gitlab
 I recommend that after installing roblox, you change the rendering method to OpenGL instead of the default. You can find
 this setting under Settings -> Rendering in the Roblox Studio menu.
 
+## Troubleshooting
+
+Are you experiencing some trouble running Roblox Studio with Grapejuce? Please check out the [Troubleshooting Guide](https://gitlab.com/brinkervii/grapejuice/wikis/Troubleshooting)
+
 ## Features
 - Contain and automate a Wine prefix
 - Expose utility functions
