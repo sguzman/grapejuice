@@ -15,7 +15,7 @@ this setting under Settings -> Rendering in the Roblox Studio menu.
 
 ## Troubleshooting
 
-Are you experiencing some trouble running Roblox Studio with Grapejuce? Please check out the [Troubleshooting Guide](https://gitlab.com/brinkervii/grapejuice/wikis/Troubleshooting)
+Are you experiencing some trouble running Roblox Studio with Grapejuice? Please check out the [Troubleshooting Guide](https://gitlab.com/brinkervii/grapejuice/wikis/Troubleshooting)
 
 ## Features
 - Contain and automate a Wine prefix
