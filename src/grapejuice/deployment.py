@@ -1,6 +1,7 @@
 import os
 import shutil
 
+import grapejuice_common.settings as settings
 import grapejuice_common.variables as variables
 
 EXCLUSIONS = ["venv", ".idea", ".git", "__pycache__", "wineprefix", ".gitignore"]
@@ -137,6 +138,8 @@ def post_install(install_target=variables.application_dir()):
     install_desktop_files(install_target)
     update_protocol_handlers()
     update_file_associations()
+
+    settings.settings.performed_post_install = True
 
 
 def install_main(install_target=variables.application_dir()):
