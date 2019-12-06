@@ -1,29 +1,29 @@
 #!/usr/bin/env bash
 
-OLD_CWD=`pwd`
+OLD_CWD=$(pwd)
 
 PYTHON=/usr/bin/python3.7
 if [[ ! -f ${PYTHON} ]]; then
     PYTHON=/usr/bin/python3
 fi
 if [[ ! -f ${PYTHON} ]]; then
-    PYTHON=`which python3`
+    PYTHON=$(command -v python3)
 fi
 
 APPLICATION_DIR=$HOME/.local/share/grapejuice
-mkdir -p ${APPLICATION_DIR}
-cp -frax . ${APPLICATION_DIR}
-export PYTHONPATH=${APPLICATION_DIR}/src
+mkdir -p "$APPLICATION_DIR"
+cp -frax . "$APPLICATION_DIR"
+export PYTHONPATH=$APPLICATION_DIR/src
 
-cd ${APPLICATION_DIR}
+cd "$APPLICATION_DIR" || exit 1
 rm -rf ./venv
 rm -rf ./.git
 rm -rf ./dist
 rm -rf ./build
 
-chmod +x ${APPLICATION_DIR}/bin/grapejuice
+chmod +x "$APPLICATION_DIR/bin/grapejuice"
 
-virtualenv -p ${PYTHON} venv
+virtualenv -p "$PYTHON" venv
 source ./venv/bin/activate
 pip install -r requirements.txt
 
@@ -31,4 +31,4 @@ deactivate
 
 ./bin/grapejuice post_install
 
-cd ${OLD_CWD}
+cd "$OLD_CWD" || exit 1
