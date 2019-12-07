@@ -45,7 +45,7 @@ def get_installer():
 def run_installer():
     winectrl.create_prefix()
     get_installer()
-    winectrl.run_exe(variables.installer_path())
+    winectrl.run_exe_nowait(variables.installer_path())
 
 
 def locate_in_versions(exe_name):
