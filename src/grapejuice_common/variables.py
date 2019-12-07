@@ -1,6 +1,8 @@
 import os
 import subprocess
 
+from grapejuice_common.errors import NoWineError
+
 HERE = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -206,7 +208,7 @@ def wine_binary(arch=""):
         if os.path.exists(p):
             return p
 
-    raise RuntimeError("A valid wine binary could not be found")
+    raise NoWineError()
 
 
 def wine_binary_64():

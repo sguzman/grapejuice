@@ -3,6 +3,7 @@ import os
 from grapejuice import update, deployment
 from grapejuice_common import WindowBase, robloxctrl, winectrl, version
 from grapejuice_common import variables
+from grapejuice_common.errors import NoWineError
 
 
 def dialog(dialog_text):
@@ -17,31 +18,49 @@ def dialog(dialog_text):
     gtk_dialog.destroy()
 
 
+def install_roblox():
+    from grapejuice_common.dbus_client import dbus_connection
+    dbus_connection().install_roblox()
+
+
 class MainWindowHandlers:
-    def on_destroy(self, *args):
+    def on_destroy(self, *_):
         from gi.repository import Gtk
         Gtk.main_quit()
 
-    def run_winecfg(self, *args):
+    def run_winecfg(self, *_):
         winectrl.winecfg()
 
-    def run_regedit(self, *args):
+    def run_regedit(self, *_):
         winectrl.regedit()
 
-    def run_winetricks(self, *args):
+    def run_winetricks(self, *_):
         winectrl.wine_tricks()
 
-    def disable_mime_assoc(self, *args):
+    def disable_mime_assoc(self, *_):
         winectrl.disable_mime_assoc()
 
-    def sandbox(self, *args):
+    def sandbox(self, *_):
         winectrl.sandbox()
 
-    def run_roblox_installer(self, *args):
-        from grapejuice_common.dbus_client import dbus_connection
-        dbus_connection().install_roblox()
+    def run_roblox_installer(self, *_):
+        def no_wine_dialog() -> None:
+            dialog("Grapejuice could not find a working Wine binary, please install Wine using your operating "
+                   "system's package manager in order to install and use Roblox.")
 
-    def run_roblox_studio(self, *args):
+            return None
+
+        try:
+            wine_bin = variables.wine_binary()
+            if not os.path.exists(wine_bin):
+                return no_wine_dialog()
+
+        except NoWineError:
+            return no_wine_dialog()
+
+        install_roblox()
+
+    def run_roblox_studio(self, *_):
         from grapejuice_common.dbus_client import dbus_connection
 
         if not dbus_connection().launch_studio():
@@ -50,37 +69,37 @@ class MainWindowHandlers:
 
             dialog(dialog_text)
 
-    def wine_explorer(self, *args):
+    def wine_explorer(self, *_):
         winectrl.explorer()
 
-    def apply_dll_overrides(self, *args):
+    def apply_dll_overrides(self, *_):
         winectrl.load_dll_overrides()
 
-    def open_drive_c(self, *args):
+    def open_drive_c(self, *_):
         os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", variables.wine_drive_c())
 
-    def show_about(self, *args):
+    def show_about(self, *_):
         import grapejuice.gui as gui
         about = gui.AboutWindow()
         about.run()
 
-    def perform_update(self, *args):
+    def perform_update(self, *_):
         dialog("If the Grapejuice upgrade breaks your installation, please redo the Grapejuice installation according "
                "to the instructions in the Grapejuice git repository. The upgrade will begin after you close this "
                "dialog.")
 
         update.update_and_reopen()
 
-    def reinstall(self, *args):
+    def reinstall(self, *_):
         update.update_and_reopen()
 
-    def deploy_assocs(self, *args):
+    def deploy_assocs(self, *_):
         deployment.post_install()
 
-    def launch_sparklepop(self, *args):
+    def launch_sparklepop(self, *_):
         os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "sparklepop")
 
-    def graphicsmode_opengl(self, *args):
+    def graphicsmode_opengl(self, *_):
         robloxctrl.set_graphics_mode_opengl()
 
 
