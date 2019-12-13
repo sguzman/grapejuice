@@ -52,6 +52,7 @@ rm -rf ./dist
 rm -rf ./build
 
 chmod +x "$APPLICATION_DIR/bin/grapejuice"
+chmod +x "$APPLICATION_DIR/bin/grapejuiced"
 
 virtualenv -p "$PYTHON" venv || virtualenv_failed
 source ./venv/bin/activate
