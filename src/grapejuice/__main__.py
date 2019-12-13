@@ -60,11 +60,14 @@ def func_studio(args):
         dbus_connection().launch_studio()
 
 
-def main(in_args=sys.argv):
+def main(in_args=None):
     from grapejuice_common.settings import settings
     if settings:
         # TODO: Add logging for successful settings loading (Issue #9)
         pass
+
+    if in_args is None:
+        in_args = sys.argv
 
     parser = argparse.ArgumentParser(prog="grapejuice", description="Manage Roblox on Linux")
     subparsers = parser.add_subparsers(title="subcommands", help="sub-command help")
@@ -80,7 +83,14 @@ def main(in_args=sys.argv):
     parser_player.set_defaults(func=func_player)
 
     parser_studio = subparsers.add_parser("studio")
-    parser_studio.add_argument("--uri", type=str, help="The URI or file to open roblox studio with", required=False)
+    parser_studio.add_argument(
+        "uri",
+        nargs="?",
+        type=str,
+        help="The URI or file to open roblox studio with",
+        default=None
+    )
+
     parser_studio.set_defaults(func=func_studio)
 
     args = parser.parse_args(in_args[1:])
