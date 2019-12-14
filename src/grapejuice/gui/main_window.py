@@ -11,6 +11,8 @@ from grapejuice_common.event import Event
 from grapejuice_common.window_base import WindowBase
 
 on_destroy = Event()
+show_about_event = Event()
+close_about_event = Event()
 
 once_task_tracker = dict()
 
@@ -111,9 +113,10 @@ class MainWindowHandlers:
         xdg_open(variables.wine_drive_c())
 
     def show_about(self, *_):
-        from grapejuice.gui.about_window import AboutWindow
-        about = AboutWindow()
-        about.run()
+        show_about_event()
+
+    def close_about(self, *_):
+        close_about_event()
 
     def show_wiki(self, *_):
         xdg_open(variables.git_wiki())
@@ -151,6 +154,8 @@ class MainWindow(WindowBase):
 
         background.tasks.tasks_changed.add_listener(self.on_tasks_changed)
         on_destroy.add_listener(self.before_destroy)
+        show_about_event.add_listener(self.show_about)
+        close_about_event.add_listener(self.close_about)
 
         self.on_tasks_changed()
 
@@ -215,6 +220,16 @@ class MainWindow(WindowBase):
             self.background_task_button.hide()
             self.background_task_menu.hide()
             self.background_task_spinner.stop()
+
+    @property
+    def about_window(self):
+        return self.builder.get_object("grapejuice_about")
+
+    def show_about(self):
+        self.about_window.show()
+
+    def close_about(self):
+        self.about_window.hide()
 
     def show(self):
         self.window.show()
