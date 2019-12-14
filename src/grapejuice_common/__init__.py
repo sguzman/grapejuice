@@ -1,2 +1,0 @@
-import grapejuice_common.variables
-from grapejuice_common.window_base import WindowBase

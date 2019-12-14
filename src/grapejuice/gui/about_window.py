@@ -1,5 +1,6 @@
 import grapejuice_common.variables as variables
-from grapejuice_common import WindowBase, version
+from grapejuice_common import version
+from grapejuice_common.window_base import WindowBase
 
 
 class AboutWindow(WindowBase):
@@ -7,11 +8,12 @@ class AboutWindow(WindowBase):
         super().__init__(variables.grapejuice_main_glade())
         self._build()
 
+    @property
     def window(self):
         return self.builder.get_object("grapejuice_about")
 
     def run(self):
-        w = self.window()
+        w = self.window
         w.set_version(str(version.local_version()))
 
         w.run()

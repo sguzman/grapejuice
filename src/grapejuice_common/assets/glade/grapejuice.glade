@@ -197,15 +197,11 @@
                 <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
-                <property name="popover">background_task_menu</property>
+                <property name="use_popover">False</property>
                 <child>
-                  <object class="GtkImage">
+                  <object class="GtkSpinner" id="background_task_spinner">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_top">3</property>
-                    <property name="margin_bottom">3</property>
-                    <property name="pixel_size">24</property>
-                    <property name="icon_name">configure</property>
                   </object>
                 </child>
               </object>
@@ -307,7 +303,6 @@
                     <child>
                       <object class="GtkButton" id="update_button">
                         <property name="label" translatable="yes">Update now</property>
-                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="halign">center</property>

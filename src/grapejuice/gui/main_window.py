@@ -1,9 +1,37 @@
 import os
 
-from grapejuice import update, deployment
-from grapejuice_common import WindowBase, robloxctrl, winectrl, version
+from grapejuice import update, background
+from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, DeployAssociations, \
+    GraphicsModeOpenGL, SandboxWine
+from grapejuice.update import update_and_reopen
 from grapejuice_common import variables
+from grapejuice_common import winectrl, version
 from grapejuice_common.errors import NoWineError
+from grapejuice_common.event import Event
+from grapejuice_common.window_base import WindowBase
+
+on_destroy = Event()
+
+once_task_tracker = dict()
+
+
+def on_task_removed(task: background.BackgroundTask):
+    if task in once_task_tracker.keys():
+        once_task_tracker[task] = None
+
+
+background.tasks.task_removed.add_listener(on_task_removed)
+
+
+def run_task_once(task_class, on_already_running: callable, *args, **kwargs):
+    if task_class in once_task_tracker.values():
+        on_already_running()
+        return
+
+    task = task_class(*args, **kwargs)
+    once_task_tracker[task] = task_class
+
+    background.tasks.add(task)
 
 
 def dialog(dialog_text):
@@ -18,9 +46,8 @@ def dialog(dialog_text):
     gtk_dialog.destroy()
 
 
-def install_roblox():
-    from grapejuice_common.dbus_client import dbus_connection
-    dbus_connection().install_roblox()
+def generic_already_running():
+    dialog("This task is already being performed!")
 
 
 def xdg_open(*args):
@@ -30,6 +57,7 @@ def xdg_open(*args):
 class MainWindowHandlers:
     def on_destroy(self, *_):
         from gi.repository import Gtk
+        on_destroy()
         Gtk.main_quit()
 
     def run_winecfg(self, *_):
@@ -42,10 +70,10 @@ class MainWindowHandlers:
         winectrl.wine_tricks()
 
     def disable_mime_assoc(self, *_):
-        winectrl.disable_mime_assoc()
+        run_task_once(DisableMimeAssociations, generic_already_running)
 
     def sandbox(self, *_):
-        winectrl.sandbox()
+        run_task_once(SandboxWine, generic_already_running)
 
     def run_roblox_installer(self, *_):
         def no_wine_dialog() -> None:
@@ -62,7 +90,7 @@ class MainWindowHandlers:
         except NoWineError:
             return no_wine_dialog()
 
-        install_roblox()
+        run_task_once(InstallRoblox, generic_already_running)
 
     def run_roblox_studio(self, *_):
         from grapejuice_common.dbus_client import dbus_connection
@@ -77,14 +105,14 @@ class MainWindowHandlers:
         winectrl.explorer()
 
     def apply_dll_overrides(self, *_):
-        winectrl.load_dll_overrides()
+        run_task_once(ApplyDLLOverrides, generic_already_running)
 
     def open_drive_c(self, *_):
         xdg_open(variables.wine_drive_c())
 
     def show_about(self, *_):
-        import grapejuice.gui as gui
-        about = gui.AboutWindow()
+        from grapejuice.gui.about_window import AboutWindow
+        about = AboutWindow()
         about.run()
 
     def show_wiki(self, *_):
@@ -98,16 +126,16 @@ class MainWindowHandlers:
         update.update_and_reopen()
 
     def reinstall(self, *_):
-        update.update_and_reopen()
+        update_and_reopen()
 
     def deploy_assocs(self, *_):
-        deployment.post_install()
+        run_task_once(DeployAssociations, generic_already_running)
 
     def launch_sparklepop(self, *_):
         os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "sparklepop")
 
     def graphicsmode_opengl(self, *_):
-        robloxctrl.set_graphics_mode_opengl()
+        run_task_once(GraphicsModeOpenGL, generic_already_running)
 
 
 class MainWindow(WindowBase):
@@ -121,6 +149,11 @@ class MainWindow(WindowBase):
         self.update_status_label().set_text("Checking for updates...")
         self.update_update_status()
 
+        background.tasks.tasks_changed.add_listener(self.on_tasks_changed)
+        on_destroy.add_listener(self.before_destroy)
+
+        self.on_tasks_changed()
+
     def update_status_label(self):
         return self.builder.get_object("update_status_label")
 
@@ -128,26 +161,63 @@ class MainWindow(WindowBase):
         return self.builder.get_object('update_button')
 
     def update_update_status(self):
-        if version.update_available():
-            s = "This version of Grapejuice is out of date\n{} -> {}".format(
-                str(version.local_version()),
-                str(version.cached_remote_version)
-            )
+        w = self
 
-            self.update_status_label().set_text(s)
-            self.update_button().show()
-        else:
-            local_ver = version.local_version()
-            if local_ver > version.cached_remote_version:
-                s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
-            else:
-                s = "Grapejuice is up to date\n{}".format(str(local_ver))
+        class CheckUpdates(background.BackgroundTask):
+            def __init__(self):
+                super().__init__("Checking for a newer version of Grapejuice")
 
-            self.update_status_label().set_text(s)
-            self.update_button().hide()
+            def run(self) -> None:
+                if version.update_available():
+                    s = "This version of Grapejuice is out of date\n{} -> {}".format(
+                        str(version.local_version()),
+                        str(version.cached_remote_version)
+                    )
 
+                    w.update_status_label().set_text(s)
+                    w.update_button().show()
+                else:
+                    local_ver = version.local_version()
+                    if local_ver > version.cached_remote_version:
+                        s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
+                    else:
+                        s = "Grapejuice is up to date\n{}".format(str(local_ver))
+
+                    w.update_status_label().set_text(s)
+                    w.update_button().hide()
+
+                self.finish()
+
+        background.tasks.add(CheckUpdates())
+
+    @property
     def window(self):
         return self.builder.get_object("main_window")
 
+    @property
+    def background_task_button(self):
+        return self.builder.get_object("background_task_button")
+
+    @property
+    def background_task_spinner(self):
+        return self.builder.get_object("background_task_spinner")
+
+    @property
+    def background_task_menu(self):
+        return self.builder.get_object("background_task_menu")
+
+    def on_tasks_changed(self):
+        if background.tasks.count > 0:
+            self.background_task_button.show()
+            self.background_task_spinner.start()
+
+        else:
+            self.background_task_button.hide()
+            self.background_task_menu.hide()
+            self.background_task_spinner.stop()
+
     def show(self):
-        self.window().show()
+        self.window.show()
+
+    def before_destroy(self):
+        background.tasks.tasks_changed.remove_listener(self.on_tasks_changed)
