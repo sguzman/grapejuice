@@ -226,7 +226,9 @@ class MainWindow(WindowBase):
         return self.builder.get_object("grapejuice_about")
 
     def show_about(self):
-        self.about_window.show()
+        w = self.about_window
+        w.set_version(str(version.local_version()))
+        w.show()
 
     def close_about(self):
         self.about_window.hide()
