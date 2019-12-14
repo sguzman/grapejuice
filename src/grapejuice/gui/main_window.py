@@ -200,25 +200,14 @@ class MainWindow(WindowBase):
         return self.builder.get_object("main_window")
 
     @property
-    def background_task_button(self):
-        return self.builder.get_object("background_task_button")
-
-    @property
     def background_task_spinner(self):
         return self.builder.get_object("background_task_spinner")
 
-    @property
-    def background_task_menu(self):
-        return self.builder.get_object("background_task_menu")
-
     def on_tasks_changed(self):
         if background.tasks.count > 0:
-            self.background_task_button.show()
             self.background_task_spinner.start()
 
         else:
-            self.background_task_button.hide()
-            self.background_task_menu.hide()
             self.background_task_spinner.stop()
 
     @property
