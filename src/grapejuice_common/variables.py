@@ -43,7 +43,7 @@ def glade_dir():
 
 
 def grapejuice_main_glade():
-    return os.path.join(glade_dir(), "grapejuice_main.glade")
+    return os.path.join(glade_dir(), "grapejuice.glade")
 
 
 def sparklepop_glade():
