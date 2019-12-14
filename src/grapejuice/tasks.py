@@ -59,3 +59,13 @@ class SandboxWine(background.BackgroundTask):
     def run(self) -> None:
         winectrl.sandbox()
         self.finish()
+
+
+class RunRobloxStudio(background.BackgroundTask):
+    def __init__(self):
+        super().__init__("Launching Roblox Studio")
+
+    def run(self) -> None:
+        from grapejuice_common.dbus_client import dbus_connection
+        dbus_connection().launch_studio()
+        self.finish()

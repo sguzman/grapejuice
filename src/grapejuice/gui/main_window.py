@@ -2,9 +2,9 @@ import os
 
 from grapejuice import update, background
 from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, DeployAssociations, \
-    GraphicsModeOpenGL, SandboxWine
+    GraphicsModeOpenGL, SandboxWine, RunRobloxStudio
 from grapejuice.update import update_and_reopen
-from grapejuice_common import variables
+from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl, version
 from grapejuice_common.errors import NoWineError
 from grapejuice_common.event import Event
@@ -95,13 +95,13 @@ class MainWindowHandlers:
         run_task_once(InstallRoblox, generic_already_running)
 
     def run_roblox_studio(self, *_):
-        from grapejuice_common.dbus_client import dbus_connection
+        studio_launcher_location = robloxctrl.locate_studio_launcher()
+        if not studio_launcher_location:
+            dialog("Grapejuice could not locate Roblox Studio. You might have to install it first by going to the "
+                   "maintenance tab and clicking 'Install Roblox'")
+            return
 
-        if not dbus_connection().launch_studio():
-            dialog_text = "Roblox Studio could not be launched. You might have to install it first by going to the " \
-                          "Maintanance tab. "
-
-            dialog(dialog_text)
+        run_task_once(RunRobloxStudio, generic_already_running)
 
     def wine_explorer(self, *_):
         winectrl.explorer()
