@@ -167,6 +167,10 @@ def git_repository():
     return "https://gitlab.com/brinkervii/grapejuice"
 
 
+def git_wiki():
+    return git_repository() + "/-/wikis/home"
+
+
 def git_init_py_url():
     return git_repository() + "/raw/master/__init__.py"
 

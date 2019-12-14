@@ -23,6 +23,10 @@ def install_roblox():
     dbus_connection().install_roblox()
 
 
+def xdg_open(*args):
+    os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", *args)
+
+
 class MainWindowHandlers:
     def on_destroy(self, *_):
         from gi.repository import Gtk
@@ -76,12 +80,15 @@ class MainWindowHandlers:
         winectrl.load_dll_overrides()
 
     def open_drive_c(self, *_):
-        os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", variables.wine_drive_c())
+        xdg_open(variables.wine_drive_c())
 
     def show_about(self, *_):
         import grapejuice.gui as gui
         about = gui.AboutWindow()
         about.run()
+
+    def show_wiki(self, *_):
+        xdg_open(variables.git_wiki())
 
     def perform_update(self, *_):
         dialog("If the Grapejuice upgrade breaks your installation, please redo the Grapejuice installation according "
