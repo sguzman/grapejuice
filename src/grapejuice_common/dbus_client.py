@@ -11,34 +11,45 @@ class DBusConnection:
     def __init__(self, connection_attempts=5, **kwargs):
         import dbus
 
-        pid_file = daemon_pid_file()
-        self.daemon_alive = pid_file.is_running()
-
         if "bus" in kwargs.keys():
             self.bus = kwargs["bus"]
+
         else:
             self.bus = dbus.SessionBus()
 
-        self._try_connect()
+        self.pid_file = daemon_pid_file()
+        self.daemon_alive = self.pid_file.is_running()
+        self.proxy = None
 
-        if "no_spawn" in kwargs.keys() and kwargs["no_spawn"]:
-            pass
+        if not self.daemon_alive:
+            self._spawn_daemon()
+            self._wait_for_daemon(5)
 
-        else:
-            if not self.daemon_alive:
-                self._spawn_daemon()
-                self._try_connect(connection_attempts)
+        self._try_connect(attempts=connection_attempts)
 
-    def _try_connect(self, attempts=1):
+    @property
+    def connected(self):
+        return self.proxy is not None
+
+    def _wait_for_daemon(self, attempts: int):
         attempts_remaining = attempts
-        while attempts_remaining > 0 and not self.daemon_alive:
+
+        while not self.daemon_alive and attempts_remaining > 0:
+            attempts_remaining -= 1
+            self.daemon_alive = self.pid_file.is_running(remove_junk=False)
+            time.sleep(.5)
+
+    def _try_connect(self, attempts: int):
+        attempts_remaining = attempts
+        while attempts_remaining > 0 and not self.connected:
             attempts_remaining -= 1
             try:
                 self.proxy = self.bus.get_object(dbus_config.bus_name, dbus_config.bus_path)
-                self.daemon_alive = True
 
             except DBusException:
                 self.daemon_alive = False
+
+            if not self.connected:
                 time.sleep(.5)
 
     def launch_studio(self):
@@ -64,15 +75,6 @@ class DBusConnection:
 
     def _spawn_daemon(self):
         os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "grapejuiced", "daemonize")
-
-    def terminate(self):
-        try:
-            self.proxy.Terminate()
-            return True
-        except DBusException:
-            pass
-
-        return False
 
     def version(self):
         return self.proxy.Version()
