@@ -2,6 +2,7 @@ import os
 import shutil
 
 from grapejuice_common import variables
+from grapejuice_common.pid_file import daemon_pid_file
 from grapejuice_common.settings import settings
 
 EXCLUSIONS = ["venv", ".idea", ".git", "__pycache__", "wineprefix", ".gitignore"]
@@ -134,6 +135,9 @@ def update_file_associations():
 
 
 def post_install(install_target=variables.application_dir()):
+    pid_file = daemon_pid_file()
+    pid_file.kill()
+
     install_mime_files()
     install_desktop_files(install_target)
     update_protocol_handlers()
