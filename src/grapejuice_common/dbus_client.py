@@ -4,13 +4,16 @@ import time
 from dbus import DBusException
 
 import grapejuice_common.dbus_config as dbus_config
+from grapejuice_common.pid_file import daemon_pid_file
 
 
 class DBusConnection:
     def __init__(self, connection_attempts=5, **kwargs):
         import dbus
 
-        self.daemon_alive = False
+        pid_file = daemon_pid_file()
+        self.daemon_alive = pid_file.is_running()
+
         if "bus" in kwargs.keys():
             self.bus = kwargs["bus"]
         else:

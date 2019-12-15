@@ -45,6 +45,10 @@ class PIDFile:
 
             return int(s)
 
+    def _remove_file(self):
+        if os.path.exists(self._path):
+            os.remove(self._path)
+
     def is_running(self):
         if not self.exists():
             return False
@@ -54,6 +58,7 @@ class PIDFile:
             return process.is_running()
 
         except psutil.NoSuchProcess:
+            self._remove_file()
             return False
 
     def write_pid(self):
