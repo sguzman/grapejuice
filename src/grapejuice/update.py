@@ -6,6 +6,7 @@ import zipfile
 import wget
 
 import grapejuice_common.variables as variables
+from grapejuice_common.pid_file import daemon_pid_file
 
 
 def perform_download():
@@ -33,6 +34,10 @@ def unpack_download(filename):
 
 
 def perform_update():
+    daemon_pid = daemon_pid_file()
+    if daemon_pid.is_running():
+        daemon_pid.kill()
+
     filename = perform_download()
     if os.path.exists(filename):
         download_dir = unpack_download(filename)

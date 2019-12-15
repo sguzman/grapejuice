@@ -1,58 +1,52 @@
 import argparse
+import signal
 import sys
 
+from grapejuice_common.pid_file import PIDFile, daemon_pid_file
 
-def func_daemon(args):
+
+def spawn(pid_file: PIDFile):
     from grapejuiced.state import State
     state = State()
-    do_start = False
 
-    print("> Checking for an existing daemon....")
-    from grapejuice_common.dbus_client import DBusConnection
-    from grapejuiced.__init__ import __version__
-    import packaging.version as version
-    con = DBusConnection(no_spawn=True, bus=state.session_bus)
+    def on_sigint(signum, frame) -> None:
+        print("> Responding to SIGINT, stopping...")
+        state.stop()
 
-    if con.daemon_alive:
-        print("> Connected to a daemon")
+    signal.signal(signal.SIGINT, on_sigint)
 
-        con_version = version.parse(con.version())
-        my_version = version.parse(__version__)
-
-        if con_version < my_version:
-            print("> Terminating an older daemon")
-            con.terminate()
-            do_start = True
-
-        else:
-            print("> Starting a new daemon is not required")
-
-    else:
-        do_start = True
-
-    if do_start:
-        print("> Spawning a new daemon")
-        state.start_service()
-        state.start()
-
-    else:
-        print("> A new daemon is not required, quitting...")
+    print("> Spawning a new daemon")
+    pid_file.write_pid()
+    state.start_service()
+    state.start()
 
 
-def func_kill(args):
-    print("> Connecting to the Grapejuice daemon")
-    from grapejuice_common.dbus_client import DBusConnection
-    con = DBusConnection(no_spawn=True)
-    if con.daemon_alive:
-        print("> Terminating the daemon")
-        con.terminate()
-        print("> Done")
+def func_daemon(*_):
+    pid_file = daemon_pid_file()
+
+    if pid_file.is_running():
+        print("> Another daemon is already running, quitting...")
+        return
+
+    spawn(pid_file)
+
+
+def func_kill(*_):
+    print("> You swing your sword...")
+
+    pid_file = daemon_pid_file()
+    if pid_file.is_running():
+        print("> Killed daemon with pid {} in one sweeping blow.".format(pid_file.pid))
+        pid_file.kill()
 
     else:
-        print("There is no Grapejuice daemon to kill")
+        print("> You swing at the air, because there is no daemon. You take 20 damage as you hit your leg.")
 
 
-def main(in_args=sys.argv[1:]):
+def main(in_args=None):
+    if in_args is None:
+        in_args = sys.argv[1:]
+
     parser = argparse.ArgumentParser(prog="grapejuiced", description="The Grapejuice daemon")
     subparsers = parser.add_subparsers(title="subcommands", help="sub-command help")
 
