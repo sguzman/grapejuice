@@ -1,3 +1,5 @@
+from dbus import DBusException
+
 from grapejuice import background, deployment
 from grapejuice_common import winectrl, robloxctrl
 
@@ -30,7 +32,11 @@ class InstallRoblox(background.BackgroundTask):
         super().__init__("Installing Roblox")
 
     def run(self) -> None:
-        install_roblox()
+        try:
+            install_roblox()
+        except DBusException:
+            pass  # TODO: find a proper fix
+
         self.finish()
 
 
