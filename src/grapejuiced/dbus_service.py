@@ -60,9 +60,9 @@ class DBusService(dbus.service.Object):
         in_signature="",
         out_signature=""
     )
-    def Terminate(self):
-        import sys
-        sys.exit(0)
+    def ExtractFastFlags(self):
+        from grapejuice_common import robloxctrl
+        robloxctrl.fast_flag_extract()
 
     @dbus.service.method(
         dbus_interface=bus_name,

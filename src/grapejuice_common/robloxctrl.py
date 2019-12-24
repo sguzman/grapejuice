@@ -1,5 +1,6 @@
 import os
 import re
+import time
 
 import wget
 
@@ -111,13 +112,25 @@ def studio_with_events(**events):
         args.append("-" + k)
         args.append(v)
 
-    winectrl.run_exe_nowait(*args)
-
-    return True
+    return winectrl.run_exe_nowait(*args)
 
 
 def fast_flag_extract():
-    studio_with_events(startEvent="FFlagExtract", showEvent="NoSplashScreen")
+    fast_flag_path = variables.wine_roblox_studio_app_settings()
+    if os.path.exists(fast_flag_path):
+        os.remove(fast_flag_path)
+
+    process = studio_with_events(startEvent="FFlagExtract", showEvent="NoSplashScreen")
+
+    while True:
+        if os.path.exists(fast_flag_path):
+            stat = os.stat(fast_flag_path)
+            if stat.st_size > 0:
+                break
+
+        time.sleep(0.5)
+
+    process.kill()
 
 
 def run_player(uri):

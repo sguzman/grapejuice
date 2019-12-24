@@ -1,13 +1,37 @@
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import time
 from subprocess import DEVNULL
+from typing import List
 
 import grapejuice_common.variables as variables
 
-processes = []
+
+class ProcessWrapper:
+    def __init__(self, proc: subprocess.Popen):
+        self.proc = proc
+
+    @property
+    def exited(self):
+        proc = self.proc
+
+        if proc.returncode is None:
+            proc.poll()
+
+        return proc.returncode is not None
+
+    def kill(self):
+        if not self.exited:
+            os.kill(self.proc.pid, signal.SIGINT)
+
+    def __del__(self):
+        del self.proc
+
+
+processes: List[ProcessWrapper] = []
 is_polling = False
 
 
@@ -129,13 +153,18 @@ def run_exe(exe_path, *args):
         os.spawnlp(os.P_NOWAIT, variables.wine_binary(), variables.wine_binary(), exe_path)
 
 
-def run_exe_nowait(exe_path, *args):
-    global processes
+def run_exe_nowait(exe_path, *args) -> ProcessWrapper:
     prepare()
+
     command = [variables.wine_binary(), exe_path, *args]
     p = subprocess.Popen(command, stdin=DEVNULL, stdout=sys.stdout, stderr=sys.stderr, close_fds=True)
-    processes.append(p)
+
+    wrapper = ProcessWrapper(p)
+    processes.append(wrapper)
+
     poll_processes()
+
+    return wrapper
 
 
 def _poll_processes() -> bool:
@@ -143,16 +172,11 @@ def _poll_processes() -> bool:
     Makes sure zombie launchers are taken care of
     :return: Whether or not processes remain
     """
-    global is_polling, processes
+    global is_polling
     exited = []
 
     for proc in processes:
-        if proc.returncode is None:
-            proc.poll()
-            if proc.returncode is not None:
-                exited.append(proc)
-
-        else:
+        if proc.exited:
             exited.append(proc)
 
     for proc in exited:

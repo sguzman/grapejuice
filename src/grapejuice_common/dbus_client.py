@@ -79,6 +79,9 @@ class DBusConnection:
     def version(self):
         return self.proxy.Version()
 
+    def extract_fast_flags(self):
+        self.proxy.ExtractFastFlags()
+
 
 connection = None
 
