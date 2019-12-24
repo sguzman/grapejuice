@@ -61,15 +61,23 @@ def locate_in_versions(exe_name):
                 return lp
 
 
-def locate_studio_launcher():
-    exe_name = "RobloxStudioLauncherBeta.exe"
-    versioned_launcher = locate_in_versions(exe_name)
-    if not versioned_launcher:
-        launcher = os.path.join(variables.wine_roblox_prog(), "Versions", exe_name)
-        if os.path.exists(launcher):
-            return launcher
+def locate_roblox_exe(exe_name):
+    versioned = locate_in_versions(exe_name)
 
-    return versioned_launcher
+    if not versioned:
+        location = os.path.join(variables.wine_roblox_prog(), "Versions", exe_name)
+        if os.path.exists(location):
+            return location
+
+    return versioned
+
+
+def locate_studio_launcher():
+    return locate_roblox_exe("RobloxStudioLauncherBeta.exe")
+
+
+def locate_studio_exe():
+    return locate_in_versions("RobloxStudioBeta.exe")
 
 
 def locate_player_launcher():
@@ -90,6 +98,26 @@ def run_studio(uri="", ide=False):
             winectrl.run_exe_nowait(launcher, "-ide")
 
     return True
+
+
+def studio_with_events(**events):
+    studio_exe = locate_studio_exe()
+    if studio_exe is None:
+        return False
+
+    args = [studio_exe]
+
+    for k, v in events.items():
+        args.append("-" + k)
+        args.append(v)
+
+    winectrl.run_exe_nowait(*args)
+
+    return True
+
+
+def fast_flag_extract():
+    studio_with_events(startEvent="FFlagExtract", showEvent="NoSplashScreen")
 
 
 def run_player(uri):

@@ -5,9 +5,25 @@ Python*
 **/build/
 **/dist/
 **/*.egg-info
+experiments
+**/.ipynb_checkpoints
 
 # Created by https://www.gitignore.io/api/python,virtualenv,pycharm+all
-# Edit at https://www.gitignore.io/?templates=python,virtualenv,pycharm+all
+# Edit at https://www.gitignore.io/?templates=python,virtualenv,pycharm+all,jupyternotebooks
+
+### JupyterNotebooks ###
+# gitignore template for Jupyter Notebooks
+# website: http://jupyter.org/
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Remove previous ipynb_checkpoints
+#   git rm -r .ipynb_checkpoints/
 
 ### PyCharm+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm

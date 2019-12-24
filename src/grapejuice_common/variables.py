@@ -110,6 +110,10 @@ def wine_roblox_global_settings_13():
     return os.path.join(wine_roblox_appdata(), "GlobalSettings_13.xml")
 
 
+def wine_roblox_studio_app_settings():
+    return os.path.join(wine_roblox_appdata(), "ClientSettings", "StudioAppSettings.json")
+
+
 def installer_path():
     return os.path.join(wine_temp(), "Roblox_Installer.exe")
 
