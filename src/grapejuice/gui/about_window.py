@@ -1,6 +1,6 @@
 from grapejuice import __version__ as grapejuice_version
 from grapejuice_common import variables
-from grapejuice_common.window_base import WindowBase
+from grapejuice_common.gtk_stuff import WindowBase
 
 
 class AboutWindow(WindowBase):
