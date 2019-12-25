@@ -6,6 +6,7 @@ import sys
 import grapejuice_common.util
 import grapejuice_common.variables as variables
 from grapejuice_common.dbus_client import dbus_connection
+from grapejuice_common.gtk_stuff import gtk_boot
 
 
 def on_exit():
@@ -15,16 +16,12 @@ def on_exit():
 
 
 def main_gui():
-    sys.argv[0] = "Grapejuice"
+    def make_main_window():
+        from grapejuice.gui.main_window import MainWindow
+        main_window = MainWindow()
+        main_window.show()
 
-    import gi
-    gi.require_version("Gtk", "3.0")
-    from gi.repository import Gtk
-    from grapejuice.gui.main_window import MainWindow
-
-    main_window = MainWindow()
-    main_window.show()
-    Gtk.main()
+    gtk_boot(make_main_window)
 
 
 def func_gui(args):
