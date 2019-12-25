@@ -8,7 +8,7 @@ from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl, version
 from grapejuice_common.errors import NoWineError
 from grapejuice_common.event import Event
-from grapejuice_common.gtk_stuff import WindowBase
+from grapejuice_common.gtk_stuff import WindowBase, dialog
 
 on_destroy = Event()
 
@@ -32,18 +32,6 @@ def run_task_once(task_class, on_already_running: callable, *args, **kwargs):
     once_task_tracker[task] = task_class
 
     background.tasks.add(task)
-
-
-def dialog(dialog_text):
-    from gi.repository import Gtk
-
-    gtk_dialog = Gtk.MessageDialog(
-        message_type=Gtk.MessageType.INFO,
-        buttons=Gtk.ButtonsType.OK,
-        text=dialog_text
-    )
-    gtk_dialog.run()
-    gtk_dialog.destroy()
 
 
 def generic_already_running():
