@@ -180,7 +180,7 @@ def git_wiki():
 
 
 def git_init_py_url():
-    return git_repository() + "/raw/master/__init__.py"
+    return git_repository() + "/raw/master/src/grapejuice/__init__.py"
 
 
 def git_zip_download():
