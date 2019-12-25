@@ -1,7 +1,7 @@
 import sys
 
 
-def gtk_boot(main_function, *args, **kwargs):
+def gtk_boot(main_function, gtk_main=True, *args, **kwargs):
     assert callable(main_function)
     sys.argv[0] = "Grapejuice"
 
@@ -11,7 +11,8 @@ def gtk_boot(main_function, *args, **kwargs):
 
     main_function(*args, **kwargs)
 
-    Gtk.main()
+    if gtk_main:
+        Gtk.main()
 
 
 def dialog(dialog_text):
@@ -22,6 +23,7 @@ def dialog(dialog_text):
         buttons=Gtk.ButtonsType.OK,
         text=dialog_text
     )
+
     gtk_dialog.run()
     gtk_dialog.destroy()
 

@@ -11,12 +11,15 @@ class UserSettings:
         self._location = file_location
 
         self.performed_post_install = False
+        self.n_player_dialogs_remain = 3
+
         self._update_last_run()
 
         self.load()
 
     def _filtered_dict(self):
         d = dict()
+
         for k, v in self.__dict__.items():
             if not k.startswith("_"):
                 d[k] = v
@@ -27,7 +30,8 @@ class UserSettings:
         self.last_run = int(time.time() // 1)
 
     def _accept_json(self, o):
-        self_dict = self._filtered_dict()
+        self_dict = self.__dict__
+
         for k, v in o.items():
             self_dict[k] = v
 
