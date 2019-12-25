@@ -11,8 +11,6 @@ from grapejuice_common.event import Event
 from grapejuice_common.window_base import WindowBase
 
 on_destroy = Event()
-show_about_event = Event()
-close_about_event = Event()
 
 once_task_tracker = dict()
 
@@ -113,10 +111,11 @@ class MainWindowHandlers:
         xdg_open(variables.wine_drive_c())
 
     def show_about(self, *_):
-        show_about_event()
+        from grapejuice.gui.about_window import AboutWindow
+        wnd = AboutWindow()
+        wnd.window.run()
 
-    def close_about(self, *_):
-        close_about_event()
+        del wnd
 
     def show_wiki(self, *_):
         xdg_open(variables.git_wiki())
@@ -144,7 +143,7 @@ class MainWindowHandlers:
 class MainWindow(WindowBase):
     def __init__(self):
         super().__init__(
-            variables.grapejuice_main_glade(),
+            variables.grapejuice_glade(),
             MainWindowHandlers()
         )
 
@@ -153,8 +152,6 @@ class MainWindow(WindowBase):
 
         background.tasks.tasks_changed.add_listener(self.on_tasks_changed)
         on_destroy.add_listener(self.before_destroy)
-        show_about_event.add_listener(self.show_about)
-        close_about_event.add_listener(self.close_about)
 
         self.on_tasks_changed()
 
@@ -208,18 +205,6 @@ class MainWindow(WindowBase):
 
         else:
             self.background_task_spinner.stop()
-
-    @property
-    def about_window(self):
-        return self.builder.get_object("grapejuice_about")
-
-    def show_about(self):
-        w = self.about_window
-        w.set_version(str(version.local_version()))
-        w.show()
-
-    def close_about(self):
-        self.about_window.hide()
 
     def show(self):
         self.window.show()

@@ -42,8 +42,12 @@ def glade_dir():
     return os.path.join(assets_dir(), "glade")
 
 
-def grapejuice_main_glade():
+def grapejuice_glade():
     return os.path.join(glade_dir(), "grapejuice.glade")
+
+
+def about_glade():
+    return os.path.join(glade_dir(), "about.glade")
 
 
 def sparklepop_glade():
