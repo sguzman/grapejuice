@@ -145,9 +145,8 @@ class MainWindow(WindowBase):
     def __init__(self):
         super().__init__(
             variables.grapejuice_main_glade(),
-            MainWindowHandlers
+            MainWindowHandlers()
         )
-        self._build()
 
         self.update_status_label().set_text("Checking for updates...")
         self.update_update_status()
