@@ -138,6 +138,10 @@ class MainWindowHandlers:
         del wnd
 
     def open_fast_flag_editor(self, *_):
+        if not os.path.exists(variables.wine_roblox_studio_app_settings()):
+            from grapejuice_common.dbus_client import dbus_connection
+            dbus_connection().extract_fast_flags()
+
         from grapejuice.gui.fast_flag_editor import FastFlagEditor
         wnd = FastFlagEditor()
         wnd.window.show()
