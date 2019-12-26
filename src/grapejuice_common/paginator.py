@@ -8,15 +8,25 @@ class Paginator:
         self._collection = collection
         self._page_size = page_size
         self._current_page = 0
+        self._filter_function = None
 
         self.paged = Event()
 
     @property
-    def page(self):
-        lower_limit = self._current_page * self._page_size
-        upper_limit = min(len(self._collection), lower_limit + self._page_size)
+    def _filtered_collection(self):
+        if callable(self._filter_function):
+            return list(self._filter_function(self._collection))
 
-        return self._collection[lower_limit:upper_limit]
+        return self._collection
+
+    @property
+    def page(self):
+        coll = self._filtered_collection
+
+        lower_limit = self._current_page * self._page_size
+        upper_limit = min(len(coll), lower_limit + self._page_size)
+
+        return coll[lower_limit:upper_limit]
 
     @property
     def current_page_index(self):
@@ -24,7 +34,19 @@ class Paginator:
 
     @property
     def n_pages(self):
-        return math.ceil(len(self._collection) / self._page_size)
+        return math.ceil(len(self._filtered_collection) / self._page_size)
+
+    @property
+    def filter_function(self):
+        return self._filter_function
+
+    @filter_function.setter
+    def filter_function(self, v):
+        assert v is None or callable(v)
+
+        self._filter_function = v
+        self._current_page = max(0, min(self.n_pages, self._current_page))
+        self.paged()
 
     @property
     def at_last_page(self):

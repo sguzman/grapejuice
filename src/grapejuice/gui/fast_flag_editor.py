@@ -148,3 +148,15 @@ class FastFlagEditor(WindowBase):
         save_path = robloxctrl.locate_client_app_settings()
 
         changed_flags.export_to_file(save_path)
+
+    def on_search_changed(self, search_entry):
+        query = search_entry.get_text().lower()
+
+        if query:
+            def filter_function(flags_list):
+                return filter(lambda flag: query in flag.name.lower(), flags_list)
+
+            self._paginator.filter_function = filter_function
+
+        else:
+            self._paginator.filter_function = None
