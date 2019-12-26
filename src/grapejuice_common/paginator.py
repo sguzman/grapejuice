@@ -49,13 +49,19 @@ class Paginator:
         self.paged()
 
     @property
+    def at_first_page(self):
+        return self._current_page == 0
+
+    @property
     def at_last_page(self):
         return self._current_page >= self.n_pages - 1
 
     def next(self):
-        self._current_page = min(self.n_pages - 1, self._current_page + 1)
-        self.paged()
+        if not self.at_last_page:
+            self._current_page = min(self.n_pages - 1, self._current_page + 1)
+            self.paged()
 
     def previous(self):
-        self._current_page = max(0, self._current_page - 1)
-        self.paged()
+        if not self.at_first_page:
+            self._current_page = max(0, self._current_page - 1)
+            self.paged()
