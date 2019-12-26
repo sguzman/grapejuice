@@ -90,7 +90,7 @@ class FastFlagEditor(WindowBase):
 
         self._paginator = Paginator(self._fast_flags, 50)
         self._gtk_paginator = GtkPaginator(self._paginator)
-        self.gtk_pager_box().add(self._gtk_paginator.get_root_widget())
+        self.gtk_pager_box.add(self._gtk_paginator.get_root_widget())
 
         self._flag_refs = dict()
         self._rows = dict()
@@ -98,6 +98,8 @@ class FastFlagEditor(WindowBase):
 
         self._populate()
         self._paginator.paged.add_listener(self._populate)
+
+        self.__unsaved_changes = False
 
     def _populate(self):
         gtk_list = self.gtk_fast_flag_list
@@ -124,6 +126,20 @@ class FastFlagEditor(WindowBase):
         self._update_change_icons()
 
     @property
+    def _unsaved_changes(self):
+        return self.__unsaved_changes
+
+    @_unsaved_changes.setter
+    def _unsaved_changes(self, v):
+        self.__unsaved_changes = v
+
+        if self.__unsaved_changes:
+            self.gtk_header.set_subtitle("Unsaved changes!")
+
+        else:
+            self.gtk_header.set_subtitle("")
+
+    @property
     def window(self):
         return self.builder.get_object("fast_flag_editor")
 
@@ -131,8 +147,13 @@ class FastFlagEditor(WindowBase):
     def gtk_fast_flag_list(self):
         return self.builder.get_object("fast_flag_list")
 
+    @property
     def gtk_pager_box(self):
         return self.builder.get_object("paginator_box")
+
+    @property
+    def gtk_header(self):
+        return self.builder.get_object("fast_flag_editor_header")
 
     @property
     def fast_flag_scroll(self):
@@ -168,6 +189,8 @@ class FastFlagEditor(WindowBase):
 
             else:
                 reset_button.hide()
+
+            self._unsaved_changes = True
 
         stuff = flag_to_widget(flag, on_widget_changed)
         stuff.icon_changes = icon_changes
@@ -212,6 +235,8 @@ class FastFlagEditor(WindowBase):
 
         changed_flags.export_to_file(save_path)
 
+        self._unsaved_changes = False
+
     def on_search_changed(self, search_entry):
         query = search_entry.get_text().lower()
 
@@ -227,6 +252,7 @@ class FastFlagEditor(WindowBase):
     def reset_all_flags(self, *_):
         self._fast_flags.reset_all_flags()
         self._flags_to_inputs()
+        self._unsaved_changes = False
 
     def delete_user_flags(self, *_):
         self.reset_all_flags()
