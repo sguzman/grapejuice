@@ -50,11 +50,19 @@ class FastFlagList:
             self._list = list(map(lambda t: FastFlag(*t), json_object.items()))
             self._list.sort()
 
+        return self
+
     def export_to_file(self, fast_flags_path):
         os.makedirs(os.path.dirname(fast_flags_path), exist_ok=True)
 
         with open(fast_flags_path, "w+") as fp:
             json.dump(self.to_dict(), fp)
+
+    def overlay_flags(self, other_flags):
+        d = dict(zip(map(lambda f: f.name, self), self._list))
+
+        for flag in filter(lambda f: f.name in d, other_flags):
+            d[flag.name].value = flag.value
 
     def get_changed_flags(self):
         return FastFlagList(initial_values=filter(lambda flag: flag.has_changed, self._list))

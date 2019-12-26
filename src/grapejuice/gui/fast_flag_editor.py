@@ -1,3 +1,4 @@
+import os
 from typing import Union, Tuple
 
 from gi.repository import Gtk
@@ -47,8 +48,12 @@ class FastFlagEditor(WindowBase):
     def __init__(self):
         super().__init__(variables.fast_flag_editor_glade(), self)
 
-        self._fast_flags = FastFlagList()
-        self._fast_flags.import_file(variables.wine_roblox_studio_app_settings())
+        self._fast_flags = FastFlagList().import_file(variables.wine_roblox_studio_app_settings())
+
+        client_settings_path = robloxctrl.locate_client_settings()
+        if client_settings_path is not None and os.path.exists(client_settings_path):
+            self._fast_flags.overlay_flags(FastFlagList().import_file(client_settings_path))
+
         self._flag_refs = dict()
 
         self._populate()
