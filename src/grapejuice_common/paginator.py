@@ -45,7 +45,7 @@ class Paginator:
         assert v is None or callable(v)
 
         self._filter_function = v
-        self._current_page = max(0, min(self.n_pages, self._current_page))
+        self._current_page = max(0, min(self.n_pages - 1, self._current_page))
         self.paged()
 
     @property
