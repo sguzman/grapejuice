@@ -6,7 +6,9 @@ from gi.repository import Gtk
 from grapejuice_common import robloxctrl
 from grapejuice_common import variables
 from grapejuice_common.fast_flags import FastFlagList, FastFlag
-from grapejuice_common.gtk_stuff import WindowBase
+from grapejuice_common.gtk.GtkPaginator import GtkPaginator
+from grapejuice_common.gtk.gtk_stuff import WindowBase
+from grapejuice_common.paginator import Paginator
 
 
 def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
@@ -66,16 +68,37 @@ class FastFlagEditor(WindowBase):
         if client_settings_path is not None and os.path.exists(client_settings_path):
             self._fast_flags.overlay_flags(FastFlagList().import_file(client_settings_path))
 
+        self._paginator = Paginator(self._fast_flags, 50)
+        self._gtk_paginator = GtkPaginator(self._paginator)
+        self.gtk_pager_box().add(self._gtk_paginator.get_root_widget())
+
         self._flag_refs = dict()
+        self._rows = dict()
+        self._displayed_rows = list()
 
         self._populate()
+        self._paginator.paged.add_listener(self._populate)
 
     def _populate(self):
         gtk_list = self.gtk_fast_flag_list
 
-        for flag in self._fast_flags:
-            row = self.new_row(flag)
+        for row in self._displayed_rows:
+            gtk_list.remove(row)
+
+        self._displayed_rows = list()
+
+        for flag in self._paginator.page:
+            if flag in self._rows:
+                row = self._rows[flag]
+
+            else:
+                row = self.new_row(flag)
+                self._rows[flag] = row
+
             gtk_list.add(row)
+            self._displayed_rows.append(row)
+
+        gtk_list.show_all()
 
     @property
     def window(self):
@@ -85,16 +108,13 @@ class FastFlagEditor(WindowBase):
     def gtk_fast_flag_list(self):
         return self.builder.get_object("fast_flag_list")
 
-    def new_row(self, flag: FastFlag):
-        def on_change(v):
-            print("Change", flag.name, flag.value)
-            flag.value = v
+    def gtk_pager_box(self):
+        return self.builder.get_object("paginator_box")
 
+    def new_row(self, flag: FastFlag):
         builder = self._create_builder()
 
-        wnd = builder.get_object("_row_template_container")
         row = builder.get_object("fast_flag_row")
-        wnd.remove(row)
 
         name_label = builder.get_object("fflag_name_label")
         name_label.set_text(flag.name)
@@ -107,9 +127,11 @@ class FastFlagEditor(WindowBase):
         if widget is not None:
             self._flag_refs[flag] = tuple(t[1:])
             widgets.add(widget)
-            widget.show()
 
-        return row
+        wrapper = Gtk.ListBoxRow()
+        wrapper.add(row)
+
+        return wrapper
 
     def _input_values_to_flags(self):
         for flag, v in self._flag_refs.items():

@@ -73,3 +73,9 @@ class FastFlagList:
     def __iter__(self):
         for flag in self._list:
             yield flag
+
+    def __len__(self):
+        return len(self._list)
+
+    def __getitem__(self, *args):
+        return self._list.__getitem__(*args)

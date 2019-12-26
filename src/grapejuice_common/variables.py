@@ -56,6 +56,10 @@ def fast_flag_editor_glade():
     return os.path.join(glade_dir(), "fast_flag_editor.glade")
 
 
+def grapejuice_components_glade():
+    return os.path.join(glade_dir(), "grapejuice_components.glade")
+
+
 def sparklepop_glade():
     return os.path.join(glade_dir(), "sparklepop.glade")
 

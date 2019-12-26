@@ -8,7 +8,7 @@ from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl, version
 from grapejuice_common.errors import NoWineError
 from grapejuice_common.event import Event
-from grapejuice_common.gtk_stuff import WindowBase, dialog
+from grapejuice_common.gtk.gtk_stuff import WindowBase, dialog
 
 on_destroy = Event()
 
