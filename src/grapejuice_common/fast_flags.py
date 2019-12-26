@@ -51,7 +51,8 @@ class FastFlagList:
         with open(fast_flags_path, "r") as fp:
             json_object = json.load(fp)
             self._list = list(map(lambda t: FastFlag(*t), json_object.items()))
-            self._list.sort()
+
+        self.sort()
 
         return self
 
@@ -67,6 +68,8 @@ class FastFlagList:
         for flag in filter(lambda f: f.name in d, other_flags):
             d[flag.name].value = flag.value
 
+        self.sort()
+
     def get_changed_flags(self):
         return FastFlagList(initial_values=filter(lambda flag: flag.has_changed, self._list))
 
@@ -76,6 +79,15 @@ class FastFlagList:
     def reset_all_flags(self):
         for flag in self:
             flag.reset()
+
+    def sort(self):
+        changed_flags = list(filter(lambda f: f.has_changed, self._list))
+        unchanged_flags = list(filter(lambda f: not f.has_changed, self._list))
+
+        changed_flags.sort()
+        unchanged_flags.sort()
+
+        self._list = changed_flags + unchanged_flags
 
     def __iter__(self):
         for flag in self._list:

@@ -11,7 +11,7 @@ from grapejuice_common.gtk.gtk_stuff import WindowBase
 from grapejuice_common.paginator import Paginator
 
 
-def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
+def flag_to_widget(flag: FastFlag, on_changed: callable = None) -> Union[None, Tuple]:
     widget = None
 
     if flag.is_a(bool):
@@ -24,6 +24,9 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
         def set_value(v):
             widget.set_active(v)
 
+        if on_changed is not None:
+            widget.connect("state-set", on_changed)
+
     elif flag.is_a(str):
         widget = Gtk.Entry()
         widget.set_text(flag.value)
@@ -35,6 +38,9 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
 
         def set_value(v):
             widget.set_text(str(v))
+
+        if on_changed is not None:
+            widget.connect("changed", on_changed)
 
     elif flag.is_a(int):
         adjustment = Gtk.Adjustment()
@@ -51,6 +57,9 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
 
         def set_value(v):
             adjustment.set_value(int(v))
+
+        if on_changed is not None:
+            adjustment.connect("value-changed", on_changed)
 
     else:
         return None
@@ -101,6 +110,8 @@ class FastFlagEditor(WindowBase):
         self.fast_flag_scroll.get_vadjustment().set_value(0)
         gtk_list.show_all()
 
+        self._update_change_icons()
+
     @property
     def window(self):
         return self.builder.get_object("fast_flag_editor")
@@ -125,12 +136,20 @@ class FastFlagEditor(WindowBase):
         name_label.set_text(flag.name)
 
         widgets = builder.get_object("fast_flag_widgets")
+        icon_changes = builder.get_object("icon_flag_changes")
 
-        t = [*flag_to_widget(flag)]
+        widget, get_value = None, None
+
+        def on_widget_changed(*_):
+            flag.value = get_value()
+            self._update_change_icons()
+
+        t = [*flag_to_widget(flag, on_widget_changed)]
         widget = t[0]
+        get_value = t[1]
 
         if widget is not None:
-            self._flag_refs[flag] = tuple(t[1:])
+            self._flag_refs[flag] = tuple(t[1:] + [icon_changes])
             widgets.add(widget)
 
         wrapper = Gtk.ListBoxRow()
@@ -143,9 +162,21 @@ class FastFlagEditor(WindowBase):
             flag.value = ref[0]()
 
     def _flags_to_inputs(self):
+        self._fast_flags.sort()
+
         for flag in filter(lambda f: f in self._flag_refs, self._fast_flags):
             ref = self._flag_refs[flag]
             ref[1](flag.value)
+
+        self._paginator.paged()
+
+    def _update_change_icons(self):
+        for flag, ref in self._flag_refs.items():
+            if flag.has_changed:
+                ref[2].show()
+
+            else:
+                ref[2].hide()
 
     def save_flags_to_studio(self, *_):
         self._input_values_to_flags()

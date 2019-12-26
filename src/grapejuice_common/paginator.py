@@ -14,10 +14,15 @@ class Paginator:
 
     @property
     def _filtered_collection(self):
-        if callable(self._filter_function):
-            return list(self._filter_function(self._collection))
+        collection = self._collection
 
-        return self._collection
+        if callable(self._filter_function):
+            collection = list(self._filter_function(self._collection))
+
+        if hasattr(collection, "sort"):
+            collection.sort()
+
+        return collection
 
     @property
     def page(self):
