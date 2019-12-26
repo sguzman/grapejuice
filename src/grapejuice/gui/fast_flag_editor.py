@@ -1,24 +1,29 @@
-from typing import Union
+from typing import Union, Tuple
 
 from gi.repository import Gtk
 
+from grapejuice_common import robloxctrl
 from grapejuice_common import variables
 from grapejuice_common.fast_flags import FastFlagList, FastFlag
 from grapejuice_common.gtk_stuff import WindowBase
 
 
-def flag_to_widget(flag: FastFlag) -> Union[None, Gtk.Widget]:
+def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
     widget = None
 
     if flag.is_a(bool):
         widget = Gtk.Switch()
         widget.set_active(flag.value)
 
+        get_value = lambda: widget.get_active()
+
     elif flag.is_a(str):
         widget = Gtk.Entry()
         widget.set_text(flag.value)
         widget.set_hexpand(True)
         widget.set_hexpand_set(True)
+
+        get_value = lambda: widget.get_text()
 
     elif flag.is_a(int):
         adjustment = Gtk.Adjustment()
@@ -30,15 +35,21 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Gtk.Widget]:
         widget.set_adjustment(adjustment)
         widget.set_value(flag.value)
 
-    return widget
+        get_value = lambda: int(adjustment.get_value())
+
+    else:
+        return None
+
+    return widget, get_value
 
 
 class FastFlagEditor(WindowBase):
     def __init__(self):
-        super().__init__(variables.fast_flag_editor_glade())
+        super().__init__(variables.fast_flag_editor_glade(), self)
 
         self._fast_flags = FastFlagList()
         self._fast_flags.import_file(variables.wine_roblox_studio_app_settings())
+        self._flag_refs = dict()
 
         self._populate()
 
@@ -58,6 +69,10 @@ class FastFlagEditor(WindowBase):
         return self.builder.get_object("fast_flag_list")
 
     def new_row(self, flag: FastFlag):
+        def on_change(v):
+            print("Change", flag.name, flag.value)
+            flag.value = v
+
         builder = self._create_builder()
 
         wnd = builder.get_object("_row_template_container")
@@ -69,9 +84,22 @@ class FastFlagEditor(WindowBase):
 
         widgets = builder.get_object("fast_flag_widgets")
 
-        widget = flag_to_widget(flag)
+        widget, get_value = flag_to_widget(flag)
+        self._flag_refs[flag] = get_value
+
         if widget is not None:
             widgets.add(widget)
             widget.show()
 
         return row
+
+    def _input_values_to_flags(self):
+        for flag, v in self._flag_refs.items():
+            flag.value = v()
+
+    def save_flags_to_studio(self, *_):
+        self._input_values_to_flags()
+        changed_flags = self._fast_flags.get_changed_flags()
+        save_path = robloxctrl.locate_client_settings()
+
+        changed_flags.export_to_file(save_path)

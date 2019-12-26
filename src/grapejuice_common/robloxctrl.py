@@ -85,6 +85,14 @@ def locate_player_launcher():
     return locate_in_versions("RobloxPlayerLauncher.exe")
 
 
+def locate_client_settings():
+    studio_exe = locate_studio_exe()
+    if studio_exe is None:
+        return None
+
+    return os.path.join(os.path.dirname(studio_exe), "ClientSettings", "ClientSettings.json")
+
+
 def run_studio(uri="", ide=False):
     launcher = locate_studio_launcher()
     if launcher is None:
