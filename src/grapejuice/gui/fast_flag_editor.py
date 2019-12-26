@@ -16,8 +16,11 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
         widget = Gtk.Switch()
         widget.set_active(flag.value)
 
-        get_value = lambda: widget.get_active()
-        set_value = lambda v: widget.set_active(v)
+        def get_value():
+            return widget.get_active()
+
+        def set_value(v):
+            widget.set_active(v)
 
     elif flag.is_a(str):
         widget = Gtk.Entry()
@@ -25,8 +28,11 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
         widget.set_hexpand(True)
         widget.set_hexpand_set(True)
 
-        get_value = lambda: widget.get_text()
-        set_value = lambda v: widget.set_text(str(v))
+        def get_value():
+            return widget.get_text()
+
+        def set_value(v):
+            widget.set_text(str(v))
 
     elif flag.is_a(int):
         adjustment = Gtk.Adjustment()
@@ -38,8 +44,11 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
         widget.set_adjustment(adjustment)
         widget.set_value(flag.value)
 
-        get_value = lambda: int(adjustment.get_value())
-        set_value = lambda v: adjustment.set_value(int(v))
+        def get_value():
+            return int(adjustment.get_value())
+
+        def set_value(v):
+            adjustment.set_value(int(v))
 
     else:
         return None
