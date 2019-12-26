@@ -98,6 +98,7 @@ class FastFlagEditor(WindowBase):
             gtk_list.add(row)
             self._displayed_rows.append(row)
 
+        self.fast_flag_scroll.get_vadjustment().set_value(0)
         gtk_list.show_all()
 
     @property
@@ -110,6 +111,10 @@ class FastFlagEditor(WindowBase):
 
     def gtk_pager_box(self):
         return self.builder.get_object("paginator_box")
+
+    @property
+    def fast_flag_scroll(self):
+        return self.builder.get_object("fast_flag_scroll")
 
     def new_row(self, flag: FastFlag):
         builder = self._create_builder()
