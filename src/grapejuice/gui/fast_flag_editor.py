@@ -1,5 +1,5 @@
 import os
-from typing import Union, Tuple
+from typing import Union
 
 from gi.repository import Gtk
 
@@ -11,7 +11,15 @@ from grapejuice_common.gtk.gtk_stuff import WindowBase
 from grapejuice_common.paginator import Paginator
 
 
-def flag_to_widget(flag: FastFlag, on_changed: callable = None) -> Union[None, Tuple]:
+class WidgetStuff:
+    def __init__(self, widget, get_value, set_value):
+        self.widget = widget
+        self.get_value = get_value
+        self.set_value = set_value
+        self.icon_changes: Union[None, Gtk.Image] = None
+
+
+def flag_to_widget(flag: FastFlag, on_changed: callable = None) -> Union[None, WidgetStuff]:
     widget = None
 
     if flag.is_a(bool):
@@ -64,7 +72,7 @@ def flag_to_widget(flag: FastFlag, on_changed: callable = None) -> Union[None, T
     else:
         return None
 
-    return widget, get_value, set_value
+    return WidgetStuff(widget, get_value, set_value)
 
 
 class FastFlagEditor(WindowBase):
@@ -138,19 +146,18 @@ class FastFlagEditor(WindowBase):
         widgets = builder.get_object("fast_flag_widgets")
         icon_changes = builder.get_object("icon_flag_changes")
 
-        widget, get_value = None, None
+        stuff = None
 
         def on_widget_changed(*_):
-            flag.value = get_value()
+            flag.value = stuff.get_value()
             self._update_change_icons()
 
-        t = [*flag_to_widget(flag, on_widget_changed)]
-        widget = t[0]
-        get_value = t[1]
+        stuff = flag_to_widget(flag, on_widget_changed)
+        stuff.icon_changes = icon_changes
 
-        if widget is not None:
-            self._flag_refs[flag] = tuple(t[1:] + [icon_changes])
-            widgets.add(widget)
+        if stuff and stuff.widget is not None:
+            self._flag_refs[flag] = stuff
+            widgets.add(stuff.widget)
 
         wrapper = Gtk.ListBoxRow()
         wrapper.add(row)
@@ -159,24 +166,24 @@ class FastFlagEditor(WindowBase):
 
     def _input_values_to_flags(self):
         for flag, ref in self._flag_refs.items():
-            flag.value = ref[0]()
+            flag.value = ref.get_value()
 
     def _flags_to_inputs(self):
         self._fast_flags.sort()
 
         for flag in filter(lambda f: f in self._flag_refs, self._fast_flags):
             ref = self._flag_refs[flag]
-            ref[1](flag.value)
+            ref.set_value(flag.value)
 
         self._paginator.paged()
 
     def _update_change_icons(self):
         for flag, ref in self._flag_refs.items():
             if flag.has_changed:
-                ref[2].show()
+                ref.icon_changes.show()
 
             else:
-                ref[2].hide()
+                ref.icon_changes.hide()
 
     def save_flags_to_studio(self, *_):
         self._input_values_to_flags()
