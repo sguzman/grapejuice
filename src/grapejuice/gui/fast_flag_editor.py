@@ -101,10 +101,11 @@ class FastFlagEditor(WindowBase):
 
         widgets = builder.get_object("fast_flag_widgets")
 
-        widget, get_value, set_value = flag_to_widget(flag)
-        self._flag_refs[flag] = (get_value, set_value)
+        t = [*flag_to_widget(flag)]
+        widget = t[0]
 
         if widget is not None:
+            self._flag_refs[flag] = tuple(t[1:])
             widgets.add(widget)
             widget.show()
 
