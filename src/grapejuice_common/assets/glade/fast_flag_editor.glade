@@ -36,7 +36,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="margin_left">10</property>
+            <property name="margin_left">5</property>
             <signal name="clicked" handler="reset_all_flags" swapped="no"/>
           </object>
           <packing>
@@ -49,7 +49,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="margin_left">10</property>
+            <property name="margin_left">5</property>
             <signal name="clicked" handler="delete_user_flags" swapped="no"/>
           </object>
           <packing>
