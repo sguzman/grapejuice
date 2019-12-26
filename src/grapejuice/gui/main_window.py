@@ -42,6 +42,32 @@ def xdg_open(*args):
     os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", *args)
 
 
+def wine_ok():
+    from grapejuice_common.dbus_client import dbus_connection
+
+    system_wine = dbus_connection().wine_version()
+    required_wine = variables.required_wine_version()
+
+    def version_to_string(v):
+        if v.public:
+            return v.public
+
+        if v.base_version:
+            return v.base_version
+
+        return repr(v)
+
+    if system_wine < required_wine:
+        msg = "Your system has Wine version {} installed, you meed at least Wine version {} in order to run Roblox." \
+            .format(version_to_string(system_wine), version_to_string(required_wine))
+
+        dialog(msg)
+
+        return False
+
+    return True
+
+
 class MainWindowHandlers:
     def on_destroy(self, *_):
         from gi.repository import Gtk
@@ -78,6 +104,9 @@ class MainWindowHandlers:
         except NoWineError:
             return no_wine_dialog()
 
+        if not wine_ok():
+            return
+
         run_task_once(InstallRoblox, generic_already_running)
 
     def run_roblox_studio(self, *_):
@@ -85,6 +114,9 @@ class MainWindowHandlers:
         if not studio_launcher_location:
             dialog("Grapejuice could not locate Roblox Studio. You might have to install it first by going to the "
                    "maintenance tab and clicking 'Install Roblox'")
+            return
+
+        if not wine_ok():
             return
 
         run_task_once(RunRobloxStudio, generic_already_running)

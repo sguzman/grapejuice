@@ -2,6 +2,7 @@ import os
 import time
 
 from dbus import DBusException
+from packaging import version
 
 import grapejuice_common.dbus_config as dbus_config
 from grapejuice_common.pid_file import daemon_pid_file
@@ -81,6 +82,9 @@ class DBusConnection:
 
     def extract_fast_flags(self):
         self.proxy.ExtractFastFlags()
+
+    def wine_version(self):
+        return version.parse(self.proxy.WineVersion())
 
 
 connection = None
