@@ -17,6 +17,7 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
         widget.set_active(flag.value)
 
         get_value = lambda: widget.get_active()
+        set_value = lambda v: widget.set_active(v)
 
     elif flag.is_a(str):
         widget = Gtk.Entry()
@@ -25,6 +26,7 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
         widget.set_hexpand_set(True)
 
         get_value = lambda: widget.get_text()
+        set_value = lambda v: widget.set_text(str(v))
 
     elif flag.is_a(int):
         adjustment = Gtk.Adjustment()
@@ -37,11 +39,12 @@ def flag_to_widget(flag: FastFlag) -> Union[None, Tuple]:
         widget.set_value(flag.value)
 
         get_value = lambda: int(adjustment.get_value())
+        set_value = lambda v: adjustment.set_value(int(v))
 
     else:
         return None
 
-    return widget, get_value
+    return widget, get_value, set_value
 
 
 class FastFlagEditor(WindowBase):
@@ -89,8 +92,8 @@ class FastFlagEditor(WindowBase):
 
         widgets = builder.get_object("fast_flag_widgets")
 
-        widget, get_value = flag_to_widget(flag)
-        self._flag_refs[flag] = get_value
+        widget, get_value, set_value = flag_to_widget(flag)
+        self._flag_refs[flag] = (get_value, set_value)
 
         if widget is not None:
             widgets.add(widget)
@@ -100,7 +103,7 @@ class FastFlagEditor(WindowBase):
 
     def _input_values_to_flags(self):
         for flag, v in self._flag_refs.items():
-            flag.value = v()
+            flag.value = v[0]()
 
     def save_flags_to_studio(self, *_):
         self._input_values_to_flags()
