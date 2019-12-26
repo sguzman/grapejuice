@@ -58,7 +58,7 @@ def wine_ok():
         return repr(v)
 
     if system_wine < required_wine:
-        msg = "Your system has Wine version {} installed, you meed at least Wine version {} in order to run Roblox." \
+        msg = "Your system has Wine version {} installed, you need at least Wine version {} in order to run Roblox." \
             .format(version_to_string(system_wine), version_to_string(required_wine))
 
         dialog(msg)
