@@ -35,11 +35,16 @@ class WindowBase:
 
         self._build()
 
-    def _build(self):
+    def _create_builder(self):
         from gi.repository import Gtk
 
-        self.builder = Gtk.Builder()
-        self.builder.add_from_file(self._glade_path)
+        builder = Gtk.Builder()
+        builder.add_from_file(self._glade_path)
+
+        return builder
+
+    def _build(self):
+        self.builder = self._create_builder()
 
         if self._handlers:
             self.builder.connect_signals(self._handlers)

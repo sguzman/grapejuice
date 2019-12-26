@@ -52,6 +52,10 @@ def about_glade():
     return os.path.join(glade_dir(), "about.glade")
 
 
+def fast_flag_editor_glade():
+    return os.path.join(glade_dir(), "fast_flag_editor.glade")
+
+
 def sparklepop_glade():
     return os.path.join(glade_dir(), "sparklepop.glade")
 

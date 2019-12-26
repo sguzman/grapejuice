@@ -137,6 +137,13 @@ class MainWindowHandlers:
 
         del wnd
 
+    def open_fast_flag_editor(self, *_):
+        from grapejuice.gui.fast_flag_editor import FastFlagEditor
+        wnd = FastFlagEditor()
+        wnd.window.show()
+
+        del wnd
+
     def show_wiki(self, *_):
         xdg_open(variables.git_wiki())
 
