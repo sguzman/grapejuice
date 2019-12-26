@@ -23,6 +23,9 @@ class FastFlag:
     def to_tuple(self):
         return self.name, self.value
 
+    def reset(self):
+        self.value = self._original_value
+
     def __lt__(self, other):
         if isinstance(other, FastFlag):
             return self._name < other.name
@@ -69,6 +72,10 @@ class FastFlagList:
 
     def to_dict(self):
         return dict(map(lambda flag: flag.to_tuple(), self))
+
+    def reset_all_flags(self):
+        for flag in self:
+            flag.reset()
 
     def __iter__(self):
         for flag in self._list:

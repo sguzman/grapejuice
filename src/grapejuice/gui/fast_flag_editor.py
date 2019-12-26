@@ -139,8 +139,13 @@ class FastFlagEditor(WindowBase):
         return wrapper
 
     def _input_values_to_flags(self):
-        for flag, v in self._flag_refs.items():
-            flag.value = v[0]()
+        for flag, ref in self._flag_refs.items():
+            flag.value = ref[0]()
+
+    def _flags_to_inputs(self):
+        for flag in filter(lambda f: f in self._flag_refs, self._fast_flags):
+            ref = self._flag_refs[flag]
+            ref[1](flag.value)
 
     def save_flags_to_studio(self, *_):
         self._input_values_to_flags()
@@ -160,3 +165,11 @@ class FastFlagEditor(WindowBase):
 
         else:
             self._paginator.filter_function = None
+
+    def reset_all_flags(self, *_):
+        self._fast_flags.reset_all_flags()
+        self._flags_to_inputs()
+
+        path = robloxctrl.locate_client_app_settings()
+        if os.path.exists(path):
+            os.remove(path)
