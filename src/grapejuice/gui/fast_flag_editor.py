@@ -64,7 +64,7 @@ class FastFlagEditor(WindowBase):
 
         self._fast_flags = FastFlagList().import_file(variables.wine_roblox_studio_app_settings())
 
-        client_settings_path = robloxctrl.locate_client_settings()
+        client_settings_path = robloxctrl.locate_client_app_settings()
         if client_settings_path is not None and os.path.exists(client_settings_path):
             self._fast_flags.overlay_flags(FastFlagList().import_file(client_settings_path))
 
@@ -145,6 +145,6 @@ class FastFlagEditor(WindowBase):
     def save_flags_to_studio(self, *_):
         self._input_values_to_flags()
         changed_flags = self._fast_flags.get_changed_flags()
-        save_path = robloxctrl.locate_client_settings()
+        save_path = robloxctrl.locate_client_app_settings()
 
         changed_flags.export_to_file(save_path)
