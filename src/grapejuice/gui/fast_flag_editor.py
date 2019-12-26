@@ -17,6 +17,7 @@ class WidgetStuff:
         self.get_value = get_value
         self.set_value = set_value
         self.icon_changes: Union[None, Gtk.Image] = None
+        self.reset_button: Union[None, Gtk.Button] = None
 
 
 def flag_to_widget(flag: FastFlag, on_changed: callable = None) -> Union[None, WidgetStuff]:
@@ -25,6 +26,8 @@ def flag_to_widget(flag: FastFlag, on_changed: callable = None) -> Union[None, W
     if flag.is_a(bool):
         widget = Gtk.Switch()
         widget.set_active(flag.value)
+        widget.set_vexpand(False)
+        widget.set_vexpand_set(True)
 
         def get_value():
             return widget.get_active()
@@ -145,15 +148,30 @@ class FastFlagEditor(WindowBase):
 
         widgets = builder.get_object("fast_flag_widgets")
         icon_changes = builder.get_object("icon_flag_changes")
+        reset_button = builder.get_object("fflag_reset_button")
 
         stuff = None
+
+        def reset_flag(*_):
+            flag.reset()
+            stuff.set_value(flag.value)
+            reset_button.hide()
+
+        reset_button.connect("clicked", reset_flag)
 
         def on_widget_changed(*_):
             flag.value = stuff.get_value()
             self._update_change_icons()
 
+            if flag.has_changed:
+                reset_button.show()
+
+            else:
+                reset_button.hide()
+
         stuff = flag_to_widget(flag, on_widget_changed)
         stuff.icon_changes = icon_changes
+        stuff.reset_button = reset_button
 
         if stuff and stuff.widget is not None:
             self._flag_refs[flag] = stuff
@@ -181,9 +199,11 @@ class FastFlagEditor(WindowBase):
         for flag, ref in self._flag_refs.items():
             if flag.has_changed:
                 ref.icon_changes.show()
+                ref.reset_button.show()
 
             else:
                 ref.icon_changes.hide()
+                ref.reset_button.hide()
 
     def save_flags_to_studio(self, *_):
         self._input_values_to_flags()
