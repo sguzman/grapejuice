@@ -2,7 +2,7 @@ import os
 
 from grapejuice import update, background
 from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, DeployAssociations, \
-    GraphicsModeOpenGL, SandboxWine, RunRobloxStudio
+    GraphicsModeOpenGL, SandboxWine, RunRobloxStudio, ExtractFastFlags
 from grapejuice.update import update_and_reopen
 from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl, version
@@ -143,13 +143,20 @@ class MainWindowHandlers:
             if not b:
                 return
 
-            if not os.path.exists(variables.wine_roblox_studio_app_settings()):
-                from grapejuice_common.dbus_client import dbus_connection
-                dbus_connection().extract_fast_flags()
+            task = ExtractFastFlags()
 
-            from grapejuice.gui.fast_flag_editor import FastFlagEditor
-            wnd = FastFlagEditor()
-            wnd.window.show()
+            def poll():
+                if task.finished:
+                    from grapejuice.gui.fast_flag_editor import FastFlagEditor
+                    wnd = FastFlagEditor()
+                    wnd.window.show()
+
+                return not task.finished
+
+            from gi.repository import GObject
+            GObject.timeout_add(100, poll)
+
+            background.tasks.add(task)
 
         if settings.show_fast_flag_warning:
             from grapejuice.gui.fast_flag_warning import FastFlagWarning

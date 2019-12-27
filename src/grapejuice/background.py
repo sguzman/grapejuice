@@ -4,22 +4,11 @@ from typing import Union
 from grapejuice_common.event import Event
 
 
-class BackgroundTask(threading.Thread):
-    def __init__(self, name="Untitled task"):
-        super().__init__()
+class Task:
+    def __init__(self, name):
         self._name = name
         self._finished = False
         self._collection: Union[None, TaskCollection] = None
-
-    def on_finished(self):
-        pass
-
-    def finish(self):
-        self.on_finished()
-        self._finished = True
-
-        if self.collection is not None:
-            self.collection.remove(self)
 
     @property
     def finished(self):
@@ -34,15 +23,39 @@ class BackgroundTask(threading.Thread):
         assert self._collection is None, "Can only set collection once"
         self._collection = value
 
+    def on_finished(self):
+        pass
+
+    def finish(self):
+        self.on_finished()
+        self._finished = True
+
+        if self.collection is not None:
+            self.collection.remove(self)
+
     @property
     def name(self):
         return self._name
+
+
+class BackgroundTask(threading.Thread, Task):
+    def __init__(self, name="Untitled task"):
+        threading.Thread.__init__(self)
+        Task.__init__(self, name)
 
     def run(self) -> None:
         raise NotImplementedError()
 
     def __repr__(self):
         return "BackgroundTask: {}".format(self._name)
+
+
+class MockBackgroundTask(Task):
+    def __init__(self, name):
+        super().__init__(name)
+
+    def start(self):
+        pass
 
 
 class TaskCollection:

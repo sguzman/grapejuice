@@ -75,3 +75,18 @@ class RunRobloxStudio(background.BackgroundTask):
         from grapejuice_common.dbus_client import dbus_connection
         dbus_connection().launch_studio()
         self.finish()
+
+
+class ExtractFastFlags(background.BackgroundTask):
+    def __init__(self):
+        super().__init__("Extracting Fast Flags")
+
+    def run(self) -> None:
+        try:
+            from grapejuice_common.dbus_client import dbus_connection
+            dbus_connection().extract_fast_flags()
+
+        except DBusException:
+            pass
+
+        self.finish()
