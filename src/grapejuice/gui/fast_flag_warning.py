@@ -1,12 +1,6 @@
-import os
-
 from grapejuice_common import variables
 from grapejuice_common.gtk.gtk_stuff import WindowBase
 from grapejuice_common.settings import settings
-
-
-def xdg_open(*args):
-    os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", *args)
 
 
 class FastFlagWarning(WindowBase):
@@ -50,8 +44,6 @@ class FastFlagWarning(WindowBase):
         self.destroy()
 
     def show_forum_post(self, link_button):
-        # uri = link_button.get_uri()
-        # xdg_open(uri)
         pass
 
     def show(self):

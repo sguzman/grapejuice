@@ -133,7 +133,6 @@ Changing any fast flags, may lead to data corruption and unstable behaviour of R
                 <property name="margin_bottom">25</property>
                 <property name="relief">none</property>
                 <property name="uri">https://devforum.roblox.com/t/warning-about-developers-using-fast-flags/51003</property>
-                <signal name="activate-link" handler="show_forum_post" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
