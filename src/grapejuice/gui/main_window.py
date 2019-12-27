@@ -9,6 +9,7 @@ from grapejuice_common import winectrl, version
 from grapejuice_common.errors import NoWineError
 from grapejuice_common.event import Event
 from grapejuice_common.gtk.gtk_stuff import WindowBase, dialog
+from grapejuice_common.settings import settings
 
 on_destroy = Event()
 
@@ -138,15 +139,25 @@ class MainWindowHandlers:
         del wnd
 
     def open_fast_flag_editor(self, *_):
-        if not os.path.exists(variables.wine_roblox_studio_app_settings()):
-            from grapejuice_common.dbus_client import dbus_connection
-            dbus_connection().extract_fast_flags()
+        def open_editor(b):
+            if not b:
+                return
 
-        from grapejuice.gui.fast_flag_editor import FastFlagEditor
-        wnd = FastFlagEditor()
-        wnd.window.show()
+            if not os.path.exists(variables.wine_roblox_studio_app_settings()):
+                from grapejuice_common.dbus_client import dbus_connection
+                dbus_connection().extract_fast_flags()
 
-        del wnd
+            from grapejuice.gui.fast_flag_editor import FastFlagEditor
+            wnd = FastFlagEditor()
+            wnd.window.show()
+
+        if settings.show_fast_flag_warning:
+            from grapejuice.gui.fast_flag_warning import FastFlagWarning
+            wnd = FastFlagWarning(open_editor)
+            wnd.show()
+
+        else:
+            open_editor(True)
 
     def show_wiki(self, *_):
         xdg_open(variables.git_wiki())

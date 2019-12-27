@@ -12,6 +12,7 @@ class UserSettings:
 
         self.performed_post_install = False
         self.n_player_dialogs_remain = 3
+        self.show_fast_flag_warning = True
 
         self._update_last_run()
 

@@ -60,6 +60,10 @@ def grapejuice_components_glade():
     return os.path.join(glade_dir(), "grapejuice_components.glade")
 
 
+def fast_flag_warning_glade():
+    return os.path.join(glade_dir(), "fast_flag_warning.glade")
+
+
 def sparklepop_glade():
     return os.path.join(glade_dir(), "sparklepop.glade")
 
