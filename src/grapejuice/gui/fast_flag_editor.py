@@ -184,7 +184,7 @@ class FastFlagEditor(WindowBase):
             flag.value = stuff.get_value()
             self._update_change_icons()
 
-            if flag.has_changed:
+            if flag.has_changed and not flag.is_a(bool):
                 reset_button.show()
 
             else:
@@ -222,10 +222,14 @@ class FastFlagEditor(WindowBase):
         for flag, ref in self._flag_refs.items():
             if flag.has_changed:
                 ref.icon_changes.show()
-                ref.reset_button.show()
+                if not flag.is_a(bool):
+                    ref.reset_button.show()
 
             else:
                 ref.icon_changes.hide()
+                ref.reset_button.hide()
+
+            if flag.is_a(bool):
                 ref.reset_button.hide()
 
     def save_flags_to_studio(self, *_):
