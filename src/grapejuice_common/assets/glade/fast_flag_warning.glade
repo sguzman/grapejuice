@@ -116,7 +116,9 @@
                 <property name="can_focus">False</property>
                 <property name="margin_bottom">25</property>
                 <property name="label" translatable="yes">Fast flags are a way of toggling and changing the behaviour of unreleased Roblox features.
-Changing any fast flags, may lead to data corruption and unstable behaviour of Roblox.</property>
+Changing any fast flags, may lead to data corruption and unstable behaviour of Roblox.
+&lt;b&gt;You should only use this tool if you know what you are doing!&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
                 <property name="justify">center</property>
               </object>
               <packing>
