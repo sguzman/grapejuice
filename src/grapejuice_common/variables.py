@@ -242,4 +242,4 @@ def wine_binary_64():
 
 
 def required_wine_version():
-    return version.parse("wine-4.0.0")
+    return version.parse("wine-4.0")
