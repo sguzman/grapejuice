@@ -1,6 +1,6 @@
 psutil
-pip>=19.3.1
-PyGObject>=3.32.0
+pip
+PyGObject
 PyGObject-stubs
 wget
 packaging
