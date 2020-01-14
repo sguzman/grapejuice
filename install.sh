@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-try_deactivate () {
+try_deactivate() {
     if command -v deactivate; then
         deactivate
     fi
@@ -28,17 +28,20 @@ pip_failed() {
     exit 1
 }
 
+python_failed() {
+    echo "Failed to call the python interpreter"
+    exit 1
+}
+
 is_command_present virtualenv
 
 OLD_CWD=$(pwd)
 
-PYTHON=/usr/bin/python3.7
-if [[ ! -f ${PYTHON} ]]; then
-    PYTHON=/usr/bin/python3
+PYTHON=$1
+if [[ ! -f "$PYTHON" ]]; then
+    python_failed
 fi
-if [[ ! -f ${PYTHON} ]]; then
-    PYTHON=$(command -v python3)
-fi
+"$PYTHON" --version || python_failed
 
 APPLICATION_DIR=$HOME/.local/share/grapejuice
 mkdir -p "$APPLICATION_DIR"

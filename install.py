@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 def perform_install():
-    import os
-    os.execlp("bash", "bash", "./install.sh")
+    import sys
+    import subprocess
+
+    subprocess.check_call(["bash", "install.sh", sys.executable])
 
 
 def have_tkinter():
@@ -58,9 +60,12 @@ def err_py37():
 
 def have_py37():
     import sys
-    satisfied = sys.version_info >= (3, 7)
+
+    satisfied = sys.version_info.major >= 3 and sys.version_info.minor >= 7
+
     if not satisfied:
         err_py37()
+        sys.exit(-1)
 
     return satisfied
 
