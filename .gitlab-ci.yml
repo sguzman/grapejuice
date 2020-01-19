@@ -1,5 +1,0 @@
-include:
-  template: Dependency-Scanning.gitlab-ci.yml
-
-variables:
-  PIP_REQUIREMENTS_FILE: requirements.txt
