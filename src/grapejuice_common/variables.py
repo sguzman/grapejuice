@@ -1,8 +1,6 @@
 import os
 import subprocess
 
-from packaging import version
-
 from grapejuice_common.errors import NoWineError
 
 HERE = os.path.abspath(os.path.dirname(__file__))
@@ -242,4 +240,4 @@ def wine_binary_64():
 
 
 def required_wine_version():
-    return version.parse("wine-4.0")
+    return "wine-4.0"

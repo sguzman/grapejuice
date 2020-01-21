@@ -84,7 +84,7 @@ class DBusConnection:
         self.proxy.ExtractFastFlags()
 
     def wine_version(self):
-        return version.parse(self.proxy.WineVersion())
+        return self.proxy.WineVersion()
 
 
 connection = None

@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 import signal
 import subprocess
@@ -197,3 +198,46 @@ def poll_processes():
 
     from gi.repository import GObject
     GObject.timeout_add(100, _poll_processes)
+
+
+def wine_ok(system_wine: str = None, show_dialog=True):
+    from grapejuice_common.dbus_client import dbus_connection
+    from grapejuice_common.gtk.gtk_stuff import dialog
+
+    version_ptn = re.compile(r".*?\W(.*)")
+
+    def prepare_version(s):
+        from packaging import version
+
+        match = version_ptn.match(s)
+        assert match is not None
+
+        return version.parse(match.group(1))
+
+    if system_wine is None:
+        system_wine = prepare_version(dbus_connection().wine_version())
+
+    else:
+        system_wine = prepare_version(system_wine)
+
+    required_wine = prepare_version(variables.required_wine_version())
+
+    def version_to_string(v):
+        if v.public:
+            return v.public
+
+        if v.base_version:
+            return v.base_version
+
+        return repr(v)
+
+    if system_wine < required_wine:
+        if show_dialog:
+            msg = "Your system has Wine version {} installed, you need at least Wine version {} in order to run Roblox." \
+                .format(version_to_string(system_wine), version_to_string(required_wine))
+
+            dialog(msg)
+
+        return False
+
+    return True

@@ -10,6 +10,7 @@ from grapejuice_common.errors import NoWineError
 from grapejuice_common.event import Event
 from grapejuice_common.gtk.gtk_stuff import WindowBase, dialog
 from grapejuice_common.settings import settings
+from grapejuice_common.winectrl import wine_ok
 
 on_destroy = Event()
 
@@ -41,32 +42,6 @@ def generic_already_running():
 
 def xdg_open(*args):
     os.spawnlp(os.P_NOWAIT, "xdg-open", "xdg-open", *args)
-
-
-def wine_ok():
-    from grapejuice_common.dbus_client import dbus_connection
-
-    system_wine = dbus_connection().wine_version()
-    required_wine = variables.required_wine_version()
-
-    def version_to_string(v):
-        if v.public:
-            return v.public
-
-        if v.base_version:
-            return v.base_version
-
-        return repr(v)
-
-    if system_wine < required_wine:
-        msg = "Your system has Wine version {} installed, you need at least Wine version {} in order to run Roblox." \
-            .format(version_to_string(system_wine), version_to_string(required_wine))
-
-        dialog(msg)
-
-        return False
-
-    return True
 
 
 class MainWindowHandlers:
