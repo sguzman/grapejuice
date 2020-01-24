@@ -10,6 +10,10 @@ from typing import List
 
 import grapejuice_common.variables as variables
 
+space_version_ptn = re.compile(r"wine-(.+?)\s+")
+non_space_version_ptn = re.compile(r"wine-(.+)")
+space = " "
+
 
 class ProcessWrapper:
     def __init__(self, proc: subprocess.Popen):
@@ -204,12 +208,15 @@ def wine_ok(system_wine: str = None, show_dialog=True):
     from grapejuice_common.dbus_client import dbus_connection
     from grapejuice_common.gtk.gtk_stuff import dialog
 
-    version_ptn = re.compile(r".*?\W(.*)")
-
     def prepare_version(s):
         from packaging import version
 
-        match = version_ptn.match(s)
+        if space in s:
+            match = space_version_ptn.match(s)
+
+        else:
+            match = non_space_version_ptn.match(s)
+
         assert match is not None
 
         return version.parse(match.group(1))
