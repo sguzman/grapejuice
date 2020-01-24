@@ -6,6 +6,7 @@ def test_wine_ok():
     assert winectrl.wine_ok(system_wine="wine-5.0-rc5", show_dialog=False)
     assert winectrl.wine_ok(system_wine="Ubuntu-4.0", show_dialog=False)
     assert winectrl.wine_ok(system_wine="Ubuntu-4.0-2", show_dialog=False)
+    assert winectrl.wine_ok(system_wine="Ubuntu 4.0.2-1", show_dialog=False)
     assert winectrl.wine_ok(system_wine="Debian-4.0", show_dialog=False)
     assert winectrl.wine_ok(system_wine="Debian-4.0-2", show_dialog=False)
 
