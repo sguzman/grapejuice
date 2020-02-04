@@ -52,6 +52,7 @@ class UserSettings:
         self.show_fast_flag_warning = True
 
         self.wine_binary = Setting("wine_binary", "Wine binary", "")
+        self.ignore_wine_version = Setting("ignore_wine_version", "Ignore Wine version", False)
 
         self._update_last_run()
 
@@ -103,7 +104,6 @@ class UserSettings:
 
 
 settings = UserSettings()
-print(settings.ui_facing_settings())
 
 
 def save_settings():

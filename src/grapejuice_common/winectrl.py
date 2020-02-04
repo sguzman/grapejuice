@@ -205,6 +205,10 @@ def poll_processes():
 
 
 def wine_ok(system_wine: str = None, show_dialog=True):
+    from grapejuice_common.settings import settings
+    if settings.ignore_wine_version.value:
+        return True
+
     from grapejuice_common.dbus_client import dbus_connection
     from grapejuice_common.gtk.gtk_stuff import dialog
 
