@@ -78,10 +78,11 @@ class UserSettings:
 
         for k, v in o.items():
             if k in self_dict:
-                existing_value = self_dict[k]
-                if isinstance(existing_value, Setting):
-                    existing_value.value = v
-                    continue
+                if k in self_dict:
+                    existing_value = self_dict[k]
+                    if isinstance(existing_value, Setting):
+                        existing_value.value = v
+                        continue
 
             self_dict[k] = v
 
