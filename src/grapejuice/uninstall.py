@@ -8,14 +8,14 @@ import grapejuice_common.variables as variables
 
 
 def uninstall_desktop_files():
-    for entry in install.desktop_entries():
+    for entry in os.listdir(variables.desktop_assets_dir()):
         file = os.path.join(variables.xdg_applications_dir(), entry)
         if os.path.exists(file) and os.path.isfile(file):
             os.remove(file)
 
 
 def uninstall_mime_files():
-    for mime in install.mime_files():
+    for mime in os.listdir(variables.mime_xml_assets_dir()):
         file = os.path.join(variables.xdg_mime_packages(), mime)
 
         if os.path.exists(file) and os.path.isfile(file):
