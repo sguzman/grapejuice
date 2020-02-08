@@ -64,9 +64,6 @@ def mime_xml_assets_dir():
 
 
 def installation_prefix():
-    if is_packaging():
-        return packaging_prefix()
-
     if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
         return os.environ[K_GRAPEJUICE_INSTALL_PREFIX]
 
