@@ -11,7 +11,7 @@ sys.path.insert(0, src_path)
 
 from setuptools import setup, find_packages
 
-from grapejuice.__init__ import __version__ as grapejuice_version
+import grapejuice_packaging.metadata as metadata
 
 with open(readme_path, "r") as fp:
     long_description = fp.read()
@@ -21,17 +21,21 @@ with open(requirements_path, "r") as fp:
 
 setup(
     name="grapejuice",
-    version=grapejuice_version,
-    description="A simple wine+roblox management application",
+    author=metadata.author_name,
+    author_email=metadata.author_email,
+    version=metadata.package_version,
+    description=metadata.package_description,
+    license=metadata.package_license,
+    platform=metadata.package_platform,
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://gitlab.com/brinkervii/grapejuice",
+    url=metadata.package_repository,
     classifiers=[
         "Development Status :: 4 - Beta",
         'Programming Language :: Python :: 3.7'
     ],
     keywords=["grapejuice wine roblox studio"],
-    packages=find_packages("src"),
+    packages=find_packages("src", exclude=("grapejuice_packaging",)),
     package_dir={"": "src"},
     include_package_data=True,
     python_requires=">=3.7",
