@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+if [ -z ${GRAPEJUICE_INSTALL_PREFIX+x} ]; then
+    echo "GRAPEJUICE_INSTALL_PREFIX is not set, quitting..."
+    exit 1
+fi
+
+if [ ! -d "$GRAPEJUICE_INSTALL_PREFIX" ]; then
+    echo "GRAPEJUICE_INSTALL_PREFIX ($GRAPEJUICE_INSTALL_PREFIX) is not a directory, quitting..."
+    exit 1
+fi
+
 try_deactivate() {
     if command -v deactivate; then
         deactivate
@@ -43,7 +53,7 @@ if [[ ! -f "$PYTHON" ]]; then
 fi
 "$PYTHON" --version || python_failed
 
-APPLICATION_DIR=$HOME/.local/share/grapejuice
+APPLICATION_DIR=$GRAPEJUICE_INSTALL_PREFIX/grapejuice
 mkdir -p "$APPLICATION_DIR"
 cp -frax . "$APPLICATION_DIR"
 export PYTHONPATH=$APPLICATION_DIR/src

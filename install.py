@@ -1,13 +1,36 @@
 #!/usr/bin/env python3
+import os
+import site
+import subprocess
+import sys
 
 REQUIRED_MAJOR = 3
 REQUIRED_MINOR = 7
 
+K_GRAPEJUICE_INSTALL_PREFIX = "GRAPEJUICE_INSTALL_PREFIX"
+
+
+def get_install_prefix():
+    if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
+        return os.getenv(K_GRAPEJUICE_INSTALL_PREFIX)
+
+    here = os.path.dirname(__file__)
+    site.addsitedir(os.path.join(here, "src"))
+
+    try:
+        from grapejuice_common.variables import xdg_data_home
+        return xdg_data_home()
+    except ImportError as e:
+        raise e
+
 
 def perform_install():
-    import sys
-    import subprocess
-    import os
+    install_prefix = get_install_prefix()
+    assert os.path.exists(install_prefix), f"The install prefix directory '{install_prefix}' does not exist! Please " \
+                                           f"create it if you are absolutely sure this is the right path "
+
+    os.putenv(K_GRAPEJUICE_INSTALL_PREFIX, install_prefix)
+    print("! Using the install prefix at ", install_prefix)
 
     if "VIRTUAL_ENV" in os.environ:
         print("! Detected VIRTUAL_ENV, finding system Python interpreter...")
