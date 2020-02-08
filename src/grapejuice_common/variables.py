@@ -200,7 +200,7 @@ def xdg_config_home():
 
 def xdg_data_home():
     if is_packaging():
-        return packaging_prefix()
+        return installation_prefix()
 
     if "XDG_DATA_HOME" in os.environ:
         data_home = os.environ["XDG_DATA_HOME"]
