@@ -10,7 +10,7 @@ from grapejuice_packaging.packaging_platform import Platform
 ARCHITECTURE = "amd64"
 STANDARDS_VERSION = "3.9.6"
 DEBHELPER_COMPAT = 10
-VERSION = f"{metadata.package_version}~grapejuice-packaging"
+VERSION = f"{metadata.package_version}"
 PACKAGE_VERSION = f"{VERSION}_{ARCHITECTURE}"
 PREFIX = "/usr/lib"
 PYTHON_DIST_PACKAGES_DIR = f"{PREFIX}/python3/dist-packages"
