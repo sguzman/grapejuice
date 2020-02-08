@@ -1,4 +1,3 @@
-import email.utils
 import os
 import shutil
 import subprocess
@@ -171,7 +170,9 @@ class DebianPlatform(Platform):
             lines.append(changelog_line + "\n")
 
         lines.append("\n")
-        lines.append(f" -- {MAINTAINER} {str(email.utils.localtime(dt=datetime.now()))}\n")
+
+        date_str = datetime.now().strftime("%a, %d %b %Y %H:%M:%S %z")
+        lines.append(f" -- {MAINTAINER} {date_str}\n")
 
         with open(os.path.join(self._debian_directory, "changelog"), "w+") as fp:
             fp.writelines(lines)
