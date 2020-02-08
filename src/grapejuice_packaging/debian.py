@@ -158,8 +158,6 @@ class DebianPlatform(Platform):
         with open(path, "w+") as fp:
             fp.write(RULES)
 
-        os.chmod(path, 755)
-
     def _write_changelog(self):
         lines = [f"{metadata.package_name} ({VERSION}) {DEBIAN_DISTRIBUTION}; urgency={DEBIAN_URGENCY}\n", "\n"]
 
