@@ -67,12 +67,22 @@ rm -rf ./build
 chmod +x "$APPLICATION_DIR/bin/grapejuice"
 chmod +x "$APPLICATION_DIR/bin/grapejuiced"
 
-virtualenv -p "$PYTHON" venv || virtualenv_failed
-source ./venv/bin/activate
-is_command_present pip
-pip install -r requirements.txt || pip_failed
+case $GRAPEJUICE_IS_PACKAGING in
 
-deactivate
+"yes")
+    echo "Grapejuice is packaging, no virtualenv will be configured"
+    ;;
+
+*)
+    virtualenv -p "$PYTHON" venv || virtualenv_failed
+    source ./venv/bin/activate
+    is_command_present pip
+    pip install -r requirements.txt || pip_failed
+
+    deactivate
+    ;;
+
+esac
 
 ./bin/grapejuice post_install
 
