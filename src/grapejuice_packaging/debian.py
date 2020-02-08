@@ -171,7 +171,7 @@ class DebianPlatform(Platform):
 
         lines.append("\n")
 
-        date_str = datetime.now().strftime("%a, %d %b %Y %H:%M:%S %z")
+        date_str = datetime.now().strftime("%a, %d %b %Y %H:%M:%S") + " +0000"
         lines.append(f" -- {MAINTAINER} {date_str}\n")
 
         with open(os.path.join(self._debian_directory, "changelog"), "w+") as fp:
