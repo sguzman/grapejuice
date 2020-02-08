@@ -18,17 +18,21 @@ def home():
     return os.environ["HOME"]
 
 
-def application_dir():
+def system_application_dir():
     p = os.path.dirname(src_dir())
     assert os.path.exists(p)
     return p
+
+
+def user_application_dir():
+    return os.path.join(xdg_data_home(), "grapejuice")
 
 
 def assets_dir():
     search_locations = [
         os.path.join(HERE, "assets"),
         os.path.join(os.getcwd(), "assets"),
-        os.path.join(application_dir(), "assets")
+        os.path.join(system_application_dir(), "assets")
     ]
 
     for p in search_locations:
@@ -50,7 +54,7 @@ def installation_prefix():
     if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
         return os.environ[K_GRAPEJUICE_INSTALL_PREFIX]
 
-    return os.path.dirname(application_dir())
+    return os.path.dirname(system_application_dir())
 
 
 def src_dir():
@@ -118,7 +122,7 @@ def src_init_py():
 
 
 def wineprefix_dir():
-    return os.path.join(application_dir(), "wineprefix")
+    return os.path.join(user_application_dir(), "wineprefix")
 
 
 def wine_drive_c():

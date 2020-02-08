@@ -135,7 +135,7 @@ def post_install():
 
     environ = {
         variables.K_GRAPEJUICE_INSTALL_PREFIX: variables.installation_prefix(),
-        "APPLICATION_DIR": variables.application_dir()
+        "APPLICATION_DIR": variables.system_application_dir()
     }
 
     pid_file = daemon_pid_file()

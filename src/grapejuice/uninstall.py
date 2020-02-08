@@ -23,7 +23,7 @@ def uninstall_mime_files():
 
 
 def remove_application_dir():
-    shutil.rmtree(variables.application_dir(), ignore_errors=True)
+    shutil.rmtree(variables.system_application_dir(), ignore_errors=True)
 
 
 def uninstall_main():
