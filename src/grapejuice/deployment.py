@@ -127,9 +127,15 @@ def update_file_associations():
 def post_install():
     assert variables.K_GRAPEJUICE_INSTALL_PREFIX in os.environ
 
+    def application_dir():
+        if variables.is_packaging():
+            return os.path.join(variables.installation_prefix(), "grapejuice")
+
+        return variables.system_application_dir()
+
     environ = {
         variables.K_GRAPEJUICE_INSTALL_PREFIX: variables.installation_prefix(),
-        "APPLICATION_DIR": variables.system_application_dir()
+        "APPLICATION_DIR": application_dir()
     }
 
     pid_file = daemon_pid_file()

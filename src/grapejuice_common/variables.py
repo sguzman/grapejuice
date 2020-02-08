@@ -25,9 +25,6 @@ def home():
 
 
 def system_application_dir():
-    if is_packaging():
-        return os.path.join(packaging_prefix(), "grapejuice")
-
     p = os.path.dirname(src_dir())
     assert os.path.exists(p)
     return p
