@@ -19,7 +19,7 @@ PACKAGE_FILENAME = f"{metadata.package_name}_{PACKAGE_VERSION}.deb"
 DEBIAN_SECTION = "python"
 DEBIAN_PRIORITY = "optional"
 
-FIELD_SOURCE = ("Source", metadata.package_repository)
+FIELD_SOURCE = ("Source", metadata.package_name)
 FIELD_MAINTAINER = ("Maintainer", MAINTAINER)
 FIELD_BUILD_DEPENDS = ("Build-Depends", ["debhelper", "python3", "python3-pip", "python3-virtualenv"])
 FIELD_STANDARDS_VERSION = ("Standards-Version", STANDARDS_VERSION)
@@ -80,10 +80,10 @@ COPYRIGHT_FIELDS = [
 RULES = """#!/usr/bin/make -f
 
 %:
-	dh $@
+\tdh $@
 
 override_dh_shlibdeps:
-	true
+\ttrue
 """
 
 
