@@ -1,3 +1,4 @@
+import email.utils
 import os
 import shutil
 import subprocess
@@ -18,6 +19,8 @@ MAINTAINER = f"{metadata.author_name} <{metadata.author_email}>"
 PACKAGE_FILENAME = f"{metadata.package_name}_{PACKAGE_VERSION}.deb"
 DEBIAN_SECTION = "python"
 DEBIAN_PRIORITY = "optional"
+DEBIAN_DISTRIBUTION = "unstable"
+DEBIAN_URGENCY = "medium"
 
 FIELD_SOURCE = ("Source", metadata.package_name)
 FIELD_MAINTAINER = ("Maintainer", MAINTAINER)
@@ -30,7 +33,7 @@ DSC_FIELDS = [
     FIELD_SOURCE,
     ("Binary", metadata.package_name),
     FIELD_ARCHITECTURE,
-    ("Version", f"0:{PACKAGE_VERSION}"),
+    ("Version", f"{PACKAGE_VERSION}"),
     FIELD_MAINTAINER,
     FIELD_STANDARDS_VERSION,
     FIELD_BUILD_DEPENDS,
@@ -155,12 +158,27 @@ class DebianPlatform(Platform):
             fp.write(RULES)
 
     def _write_changelog(self):
-        with open(os.path.join(self._debian_directory, "changelog"), "w+") as fp:
-            current_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]) \
-                .decode("UTF-8").strip()
+        lines = [f"{metadata.package_name} ({PACKAGE_VERSION}) {DEBIAN_DISTRIBUTION}; urgency={DEBIAN_URGENCY}\n", "\n"]
 
-            fp.write(
-                subprocess.check_output(["git", "shortlog", "master..." + current_branch]).decode("UTF - 8").strip())
+        current_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]) \
+            .decode("UTF-8").strip()
+
+        changelog = subprocess.check_output(["git", "shortlog", "master..." + current_branch]) \
+            .decode("UTF - 8").strip().split("\n")
+
+        for changelog_line in list(map(lambda s: "  * " + s, changelog)):
+            lines.append(changelog_line + "\n")
+
+        lines.append("\n")
+        lines.append(f" -- {MAINTAINER} {str(email.utils.localtime(dt=datetime.now()))}\n")
+
+        with open(os.path.join(self._debian_directory, "changelog"), "w+") as fp:
+            fp.writelines(lines)
+
+    def _build_unsigned_package(self):
+        self._directory_stack.pushd(self._package_root)
+        subprocess.check_call(["debuild", "-uc", "-us"])
+        self._directory_stack.popd()
 
     def before_package(self):
         super().before_package()
@@ -187,3 +205,5 @@ class DebianPlatform(Platform):
         self._write_files_file()
         self._write_rules()
         self._write_changelog()
+
+        self._build_unsigned_package()
