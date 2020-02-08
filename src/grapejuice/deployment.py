@@ -129,7 +129,7 @@ def post_install():
 
     def application_dir():
         if variables.is_packaging():
-            return os.path.join(variables.installation_prefix(), "grapejuice")
+            return os.path.join(variables.packaging_prefix(), "grapejuice")
 
         return variables.system_application_dir()
 
