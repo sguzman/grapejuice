@@ -7,6 +7,8 @@ SRC_DIR=$PROJECT_DIR/src
 
 export PYTHONPATH=$SRC_DIR:$PYTHONPATH
 
-cd "$PROJECT_DIR" || exit
-source "$PROJECT_DIR"/venv/bin/activate
-exec python -m grapejuiced "$@"
+if [ -d "$PROJECT_DIR"/venv ]; then
+    source "$PROJECT_DIR"/venv/bin/activate
+fi
+
+exec python3 -m grapejuiced "$@"
