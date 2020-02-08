@@ -153,8 +153,12 @@ class DebianPlatform(Platform):
             fp.write(" ".join([PACKAGE_FILENAME, DEBIAN_SECTION, DEBIAN_PRIORITY]))
 
     def _write_rules(self):
-        with open(os.path.join(self._debian_directory, "rules"), "w+") as fp:
+        path = os.path.join(self._debian_directory, "rules")
+
+        with open(path, "w+") as fp:
             fp.write(RULES)
+
+        os.chmod(path, 755)
 
     def _write_changelog(self):
         lines = [f"{metadata.package_name} ({VERSION}) {DEBIAN_DISTRIBUTION}; urgency={DEBIAN_URGENCY}\n", "\n"]
