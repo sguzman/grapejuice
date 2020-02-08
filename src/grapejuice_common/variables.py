@@ -5,6 +5,12 @@ from grapejuice_common.errors import NoWineError
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 K_GRAPEJUICE_INSTALL_PREFIX = "GRAPEJUICE_INSTALL_PREFIX"
+K_GRAPEJUICE_IS_PACKAGING = "GRAPEJUICE_IS_PACKAGING"
+K_GRAPEJUICE_PACKAGE_PREFIX = "GRAPEJUICE_PACKAGE_PREFIX"
+
+
+def is_packaging() -> bool:
+    return K_GRAPEJUICE_IS_PACKAGING in os.environ and os.environ[K_GRAPEJUICE_IS_PACKAGING].lower() == "yes"
 
 
 def ensure_dir(p):
@@ -26,6 +32,13 @@ def system_application_dir():
 
 def user_application_dir():
     return os.path.join(xdg_data_home(), "grapejuice")
+
+
+def packaging_prefix():
+    if is_packaging():
+        return os.environ[K_GRAPEJUICE_PACKAGE_PREFIX]
+
+    return installation_prefix()
 
 
 def assets_dir():
@@ -51,6 +64,9 @@ def mime_xml_assets_dir():
 
 
 def installation_prefix():
+    if is_packaging():
+        return packaging_prefix()
+
     if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
         return os.environ[K_GRAPEJUICE_INSTALL_PREFIX]
 
@@ -183,8 +199,8 @@ def xdg_config_home():
 
 
 def xdg_data_home():
-    if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
-        return os.environ[K_GRAPEJUICE_INSTALL_PREFIX]
+    if is_packaging():
+        return packaging_prefix()
 
     if "XDG_DATA_HOME" in os.environ:
         data_home = os.environ["XDG_DATA_HOME"]

@@ -9,11 +9,16 @@ REQUIRED_MINOR = 7
 
 K_GRAPEJUICE_INSTALL_PREFIX = "GRAPEJUICE_INSTALL_PREFIX"
 K_GRAPEJUICE_IS_PACKAGING = "GRAPEJUICE_IS_PACKAGING"
+K_GRAPEJUICE_PACKAGE_PREFIX = "GRAPEJUICE_PACKAGE_PREFIX"
 
 
 def get_install_prefix():
     if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
+        assert K_GRAPEJUICE_PACKAGE_PREFIX in os.environ, f"{K_GRAPEJUICE_PACKAGE_PREFIX} must be present in the " \
+                                                          f"environment for a packaging job to work "
+
         os.environ[K_GRAPEJUICE_IS_PACKAGING] = "yes"  # Assume we are packaging
+
         print("! The installation script is assuming that grapejuice is being packaged, file assocations will NOT be "
               "made !")
 
