@@ -8,10 +8,9 @@ from grapejuice_packaging.directory_stack import DirectoryStack
 from grapejuice_packaging.packaging_platform import Platform
 
 ARCHITECTURE = "amd64"
-DEBIAN_REVISION = 1
 STANDARDS_VERSION = "3.9.6"
 DEBHELPER_COMPAT = 10
-VERSION = f"{metadata.package_version}-{DEBIAN_REVISION}~grapejuice-packaging"
+VERSION = f"{metadata.package_version}~grapejuice-packaging"
 PACKAGE_VERSION = f"{VERSION}_{ARCHITECTURE}"
 PREFIX = "/usr/lib"
 PYTHON_DIST_PACKAGES_DIR = f"{PREFIX}/python3/dist-packages"
