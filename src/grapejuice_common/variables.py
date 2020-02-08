@@ -4,6 +4,7 @@ import subprocess
 from grapejuice_common.errors import NoWineError
 
 HERE = os.path.abspath(os.path.dirname(__file__))
+K_GRAPEJUICE_INSTALL_PREFIX = "GRAPEJUICE_INSTALL_PREFIX"
 
 
 def ensure_dir(p):
@@ -18,13 +19,14 @@ def home():
 
 
 def application_dir():
-    return os.path.join(xdg_data_home(), "grapejuice")
+    p = os.path.dirname(src_dir())
+    assert os.path.exists(p)
+    return p
 
 
 def assets_dir():
     search_locations = [
         os.path.join(HERE, "assets"),
-        os.path.join(src_dir(), "assets"),
         os.path.join(os.getcwd(), "assets"),
         os.path.join(application_dir(), "assets")
     ]
@@ -32,6 +34,23 @@ def assets_dir():
     for p in search_locations:
         if os.path.exists(p):
             return p
+
+    raise RuntimeError("Could not find assets directory")
+
+
+def desktop_assets_dir():
+    return os.path.join(assets_dir(), "desktop")
+
+
+def mime_xml_assets_dir():
+    return os.path.join(assets_dir(), "mime_xml")
+
+
+def installation_prefix():
+    if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
+        return os.environ[K_GRAPEJUICE_INSTALL_PREFIX]
+
+    return os.path.dirname(application_dir())
 
 
 def src_dir():
@@ -160,6 +179,9 @@ def xdg_config_home():
 
 
 def xdg_data_home():
+    if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
+        return os.environ[K_GRAPEJUICE_INSTALL_PREFIX]
+
     if "XDG_DATA_HOME" in os.environ:
         data_home = os.environ["XDG_DATA_HOME"]
         if data_home and os.path.exists(data_home) and os.path.isdir(data_home):
