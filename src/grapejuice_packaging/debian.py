@@ -98,7 +98,7 @@ def fields_to_string(fields):
         key, value = field
 
         if isinstance(value, list):
-            value = " ".join(value)
+            value = ", ".join(value)
 
         return f"{key}: {str(value)}"
 
