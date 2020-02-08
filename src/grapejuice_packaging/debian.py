@@ -12,7 +12,8 @@ ARCHITECTURE = "amd64"
 DEBIAN_REVISION = 1
 STANDARDS_VERSION = "3.9.6"
 DEBHELPER_COMPAT = 10
-PACKAGE_VERSION = f"{metadata.package_version}-{DEBIAN_REVISION}~grapejuice-packaging_{ARCHITECTURE}"
+VERSION = f"{metadata.package_version}-{DEBIAN_REVISION}~grapejuice-packaging"
+PACKAGE_VERSION = f"{VERSION}_{ARCHITECTURE}"
 PREFIX = "/usr/lib"
 PYTHON_DIST_PACKAGES_DIR = f"{PREFIX}/python3/dist-packages"
 MAINTAINER = f"{metadata.author_name} <{metadata.author_email}>"
@@ -158,7 +159,7 @@ class DebianPlatform(Platform):
             fp.write(RULES)
 
     def _write_changelog(self):
-        lines = [f"{metadata.package_name} ({PACKAGE_VERSION}) {DEBIAN_DISTRIBUTION}; urgency={DEBIAN_URGENCY}\n", "\n"]
+        lines = [f"{metadata.package_name} ({VERSION}) {DEBIAN_DISTRIBUTION}; urgency={DEBIAN_URGENCY}\n", "\n"]
 
         current_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]) \
             .decode("UTF-8").strip()
