@@ -2,7 +2,6 @@ import os
 import time
 
 from dbus import DBusException
-from packaging import version
 
 import grapejuice_common.dbus_config as dbus_config
 from grapejuice_common.pid_file import daemon_pid_file
@@ -75,7 +74,7 @@ class DBusConnection:
         self.proxy.InstallRoblox()
 
     def _spawn_daemon(self):
-        os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "grapejuiced", "daemonize")
+        os.spawnlp(os.P_NOWAIT, "python3", "python3", "-m", "grapejuiced", "daemonize")
 
     def version(self):
         return self.proxy.Version()
