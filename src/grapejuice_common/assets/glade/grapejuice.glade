@@ -74,7 +74,7 @@
     <property name="height_request">16</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">../roblox-studio-24.png</property>
+    <property name="pixbuf">../icons/hicolor/24x24/apps/grapejuice-roblox-studio.png</property>
   </object>
   <object class="GtkImage" id="icon_sandbox">
     <property name="visible">True</property>
@@ -176,7 +176,7 @@
     <property name="resizable">False</property>
     <property name="default_width">550</property>
     <property name="default_height">300</property>
-    <property name="icon">../grapejuice.svg</property>
+    <property name="icon">../icons/hicolor/scalable/apps/grapejuice.svg</property>
     <property name="startup_id">Grapejuice</property>
     <signal name="destroy" handler="on_destroy" swapped="no"/>
     <child type="titlebar">
@@ -204,7 +204,7 @@
                     <property name="can_focus">False</property>
                     <property name="margin_top">3</property>
                     <property name="margin_bottom">3</property>
-                    <property name="pixbuf">../grapejuice-24.png</property>
+                    <property name="pixbuf">../icons/hicolor/24x24/apps/grapejuice.png</property>
                   </object>
                 </child>
               </object>
@@ -599,9 +599,6 @@
                 <property name="title" translatable="yes">Wine</property>
                 <property name="position">2</property>
               </packing>
-            </child>
-            <child>
-              <placeholder/>
             </child>
           </object>
           <packing>
