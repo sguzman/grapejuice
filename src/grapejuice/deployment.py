@@ -8,6 +8,8 @@ from grapejuice_common import variables
 from grapejuice_common.pid_file import daemon_pid_file
 from grapejuice_common.settings import settings
 
+K_GRAPEJUICE_IS_PACKAGING = "GRAPEJUICE_IS_PACKAGING"
+
 DESKTOP_STUDIO = "roblox-studio.desktop"
 DESKTOP_PLAYER = "roblox-player.desktop"
 
@@ -27,8 +29,12 @@ def log(*args):
     print("!!", *args)
 
 
+def is_packaging() -> bool:
+    return K_GRAPEJUICE_IS_PACKAGING in os.environ and os.environ[K_GRAPEJUICE_IS_PACKAGING].lower() == "yes"
+
+
 def invoke_xdg_mime() -> bool:
-    return variables.home() in variables.xdg_data_home()
+    return not is_packaging()
 
 
 def get_desktop_install_path(desktop_name):
