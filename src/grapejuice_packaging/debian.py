@@ -156,8 +156,8 @@ class DebianPlatform(Platform):
 
     def _write_changelog(self):
         with open(os.path.join(self._debian_directory, "changelog"), "w+") as fp:
-            current_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"])
-            fp.write(subprocess.check_output(["git shortlog master..." + current_branch]))
+            current_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("UTF-8")
+            fp.write(subprocess.check_output(["git shortlog master..." + current_branch]).decode("UTF-8"))
 
     def before_package(self):
         super().before_package()
