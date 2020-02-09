@@ -1,3 +1,4 @@
+import glob
 import os
 import shutil
 import subprocess
@@ -129,6 +130,12 @@ class DebianPlatform(Platform):
         os.makedirs(path, exist_ok=True)
         return path
 
+    @property
+    def _dist_directory(self):
+        path = os.path.join(Platform.path_dist(), "debian")
+        os.makedirs(path, exist_ok=True)
+        return path
+
     def _write_compat(self):
         with open(os.path.join(self._debian_directory, "compat"), "w+") as fp:
             fp.write(str(int(DEBHELPER_COMPAT)))
@@ -198,9 +205,16 @@ class DebianPlatform(Platform):
 
         self._directory_stack.popd()
 
-    def before_package(self):
+    def _copy_out(self):
+        for file in filter(os.path.isfile, glob.glob(os.path.join(self._containment_dish, "**"))):
+            shutil.copy(file, self._dist_directory)
+
+    def _clean(self):
         if os.path.exists(self._containment_dish):
             shutil.rmtree(self._containment_dish)
+
+    def before_package(self):
+        self._clean()
 
         self.install_prefix = self._post_install_directory
         self.package_prefix = "/usr/share"
@@ -222,6 +236,9 @@ class DebianPlatform(Platform):
 
         if distribution_detect.is_debian():
             self._build_unsigned_package()
+            self._copy_out()
 
         else:
             print("Skipping .deb creation, we're not on Debian!")
+
+        self._clean()
