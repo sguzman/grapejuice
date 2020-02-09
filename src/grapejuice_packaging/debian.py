@@ -114,7 +114,7 @@ class DebianPlatform(Platform):
 
     @property
     def _package_root(self):
-        return os.path.join(self._containment_dish, f"{metadata.package_name}_{PACKAGE_VERSION}")
+        return os.path.join(self._containment_dish, f"{metadata.package_name}-{PACKAGE_VERSION}")
 
     @property
     def _debian_directory(self):
