@@ -241,4 +241,6 @@ class DebianPlatform(Platform):
         else:
             print("Skipping .deb creation, we're not on Debian!")
 
+    def after_package(self):
         self._clean()
+        super().after_package()
