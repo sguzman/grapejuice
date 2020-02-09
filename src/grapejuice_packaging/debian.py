@@ -136,7 +136,7 @@ class DebianPlatform(Platform):
         for package_name in os.listdir(self._packages_directory):
             lines.append(f"packages/{package_name} {PYTHON_DIST_PACKAGES_DIR}\n")
 
-        lines.append("icons /usr/share/icons\n")
+        lines.append("icons /usr/share\n")
 
         with open(os.path.join(self._debian_directory, "install"), "w+") as fp:
             fp.writelines(lines)
