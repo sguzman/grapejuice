@@ -1,13 +1,12 @@
 [Desktop Entry]
-Version=1.1
+Version=1.0
 Type=Application
 Name=Roblox Player
 NoDisplay=true
 OnlyShowIn=X-None;
 Comment=Play roblox games!
-Icon=$APPLICATION_DIR/src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice-roblox-player.svg
-Exec=$APPLICATION_DIR/bin/grapejuice player "%u"
-Actions=
+Icon=$PLAYER_ICON
+Exec=$GRAPEJUICE_EXECUTABLE player "%u"
 MimeType=x-scheme-handler/roblox-player;
 Categories=Game;
 StartupWMClass=RobloxPlayer.exe

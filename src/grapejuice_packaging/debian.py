@@ -4,7 +4,7 @@ import subprocess
 from datetime import datetime
 
 import grapejuice_packaging.metadata as metadata
-from grapejuice_common import variables
+from grapejuice_packaging import distribution_detect
 from grapejuice_packaging.directory_stack import DirectoryStack
 from grapejuice_packaging.packaging_platform import Platform
 
@@ -124,8 +124,10 @@ class DebianPlatform(Platform):
         return p
 
     @property
-    def _icons_directory(self):
-        return os.path.join(self._package_root, "icons")
+    def _post_install_directory(self):
+        path = os.path.join(self._package_root, "post-install")
+        os.makedirs(path, exist_ok=True)
+        return path
 
     def _write_compat(self):
         with open(os.path.join(self._debian_directory, "compat"), "w+") as fp:
@@ -136,7 +138,7 @@ class DebianPlatform(Platform):
         for package_name in os.listdir(self._packages_directory):
             lines.append(f"packages/{package_name} {PYTHON_DIST_PACKAGES_DIR}\n")
 
-        lines.append("icons /usr/share\n")
+        lines.append(f"post-install/* {self.package_prefix}\n")
 
         with open(os.path.join(self._debian_directory, "install"), "w+") as fp:
             fp.writelines(lines)
@@ -196,18 +198,19 @@ class DebianPlatform(Platform):
 
         self._directory_stack.popd()
 
-    def _copy_icons(self):
-        shutil.copytree(variables.icons_assets_dir(), self._icons_directory)
-
     def before_package(self):
         if os.path.exists(self._containment_dish):
             shutil.rmtree(self._containment_dish)
+
+        self.install_prefix = self._post_install_directory
+        self.package_prefix = "/usr/share"
+        self.grapejuice_executable = "/usr/bin/env python3 -m grapejuice"
 
         super().before_package()
 
     def package(self):
         self._unwheel_packages()
-        self._copy_icons()
+        Platform.run_grapejuice_post_install()
 
         self._write_compat()
         self._write_install()
@@ -217,4 +220,8 @@ class DebianPlatform(Platform):
         self._write_rules()
         self._write_changelog()
 
-        self._build_unsigned_package()
+        if distribution_detect.is_debian():
+            self._build_unsigned_package()
+
+        else:
+            print("Skipping .deb creation, we're not on Debian!")

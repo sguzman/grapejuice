@@ -186,6 +186,10 @@ def xdg_mime_packages():
     return os.path.join(xdg_mime_dir(), "packages")
 
 
+def xdg_icons():
+    return os.path.join(xdg_data_home(), "icons")
+
+
 def xdg_config_home():
     if "XDG_CONFIG_HOME" in os.environ:
         config_home = os.environ["XDG_CONFIG_HOME"]

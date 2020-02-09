@@ -8,6 +8,8 @@ from grapejuice_common import variables
 from grapejuice_common.pid_file import daemon_pid_file
 from grapejuice_common.settings import settings
 
+K_GRAPEJUICE_EXECUTABLE = "GRAPEJUICE_EXECUTABLE"
+
 DESKTOP_STUDIO = "roblox-studio.desktop"
 DESKTOP_PLAYER = "roblox-player.desktop"
 
@@ -124,6 +126,25 @@ def update_file_associations():
         mime_assoc(desktop, scheme)
 
 
+def install_icons():
+    icons = glob.glob(os.path.join(variables.icons_assets_dir(), "**"), recursive=True)
+    icons = list(filter(os.path.isfile, icons))
+
+    common_prefix = variables.icons_assets_dir()
+
+    rel_icons = list(map(lambda path: os.path.relpath(path, common_prefix), icons))
+
+    for icon in rel_icons:
+        src = os.path.join(common_prefix, icon)
+        dst = os.path.join(variables.xdg_icons(), icon)
+        log("Installing icon", src, dst)
+
+        dst_parent = os.path.dirname(dst)
+        os.makedirs(dst_parent, exist_ok=True)
+
+        shutil.copy(src, dst)
+
+
 def post_install():
     assert variables.K_GRAPEJUICE_INSTALL_PREFIX in os.environ
 
@@ -133,15 +154,26 @@ def post_install():
 
         return variables.system_application_dir()
 
+    def grapejuice_executable():
+        if K_GRAPEJUICE_EXECUTABLE in os.environ:
+            return os.environ[K_GRAPEJUICE_EXECUTABLE]
+
+        return os.path.join(application_dir(), "bin", "grapejuice")
+
     environ = {
         variables.K_GRAPEJUICE_INSTALL_PREFIX: variables.installation_prefix(),
-        "APPLICATION_DIR": application_dir()
+        "APPLICATION_DIR": application_dir(),
+        K_GRAPEJUICE_EXECUTABLE: grapejuice_executable(),
+        "GRAPEJUICE_ICON": "grapejuice",
+        "STUDIO_ICON": "grapejuice-roblox-studio",
+        "PLAYER_ICON": "grapejuice-roblox-player"
     }
 
     pid_file = daemon_pid_file()
     pid_file.kill()
 
     install_mime_files()
+    install_icons()
     install_desktop_files(environ)
     update_protocol_handlers()
     update_file_associations()

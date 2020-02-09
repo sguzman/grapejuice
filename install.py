@@ -39,7 +39,7 @@ def perform_install():
     assert os.path.exists(install_prefix), f"The install prefix directory '{install_prefix}' does not exist! Please " \
                                            f"create it if you are absolutely sure this is the right path "
 
-    os.putenv(K_GRAPEJUICE_INSTALL_PREFIX, install_prefix)
+    os.environ[K_GRAPEJUICE_INSTALL_PREFIX] = install_prefix
     print("! Using the install prefix at ", install_prefix)
 
     if "VIRTUAL_ENV" in os.environ:

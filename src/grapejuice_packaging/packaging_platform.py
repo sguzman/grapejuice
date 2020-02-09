@@ -4,6 +4,9 @@ import shutil
 import subprocess
 from abc import ABC
 
+from grapejuice import deployment
+from grapejuice_common import variables
+
 
 def setup_py_is_here():
     assert os.path.exists("setup.py"), "Could not find setup.py"
@@ -35,6 +38,35 @@ class Platform(ABC):
     @staticmethod
     def list_wheels():
         return glob.glob(os.path.join(Platform.path_dist(), "*.whl"))
+
+    @property
+    def install_prefix(self):
+        return os.environ[variables.K_GRAPEJUICE_INSTALL_PREFIX]
+
+    @install_prefix.setter
+    def install_prefix(self, v):
+        os.environ[variables.K_GRAPEJUICE_INSTALL_PREFIX] = str(v)
+
+    @property
+    def package_prefix(self):
+        return os.environ[variables.K_GRAPEJUICE_PACKAGE_PREFIX]
+
+    @package_prefix.setter
+    def package_prefix(self, v):
+        os.environ[variables.K_GRAPEJUICE_PACKAGE_PREFIX] = str(v)
+
+    @property
+    def grapejuice_executable(self):
+        return os.environ[deployment.K_GRAPEJUICE_EXECUTABLE]
+
+    @grapejuice_executable.setter
+    def grapejuice_executable(self, v):
+        os.environ[deployment.K_GRAPEJUICE_EXECUTABLE] = str(v)
+
+    @staticmethod
+    def run_grapejuice_post_install():
+        from grapejuice.__main__ import func_post_install
+        func_post_install([])
 
     def before_package(self):
         self.build_wheel()

@@ -11,6 +11,7 @@ SRC_DIRECTORY = os.path.dirname(HERE)
 PROJECT_DIRECTORY = os.path.dirname(SRC_DIRECTORY)
 
 os.chdir(PROJECT_DIRECTORY)
+os.environ["GRAPEJUICE_IS_PACKAGING"] = "yes"
 
 
 def main(in_args=None):
