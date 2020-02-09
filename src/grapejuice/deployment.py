@@ -21,7 +21,6 @@ PROTOCOL_ASSOC = {
 FILE_ASSOC = {
     "application/x-roblox-rbxl": DESKTOP_STUDIO,
     "application/x-roblox-rbxlx": DESKTOP_STUDIO
-
 }
 
 

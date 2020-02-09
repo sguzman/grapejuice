@@ -4,4 +4,9 @@
         <comment>Roblox Place</comment>
         <glob pattern="*.rbxl"/>
     </mime-type>
+
+    <mime-type type="application/x-roblox-rbxlx">
+        <comment>Roblox XML Place</comment>
+        <glob pattern="*.rbxlx"/>
+    </mime-type>
 </mime-info>
