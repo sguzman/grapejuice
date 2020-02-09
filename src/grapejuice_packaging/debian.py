@@ -205,9 +205,9 @@ class DebianPlatform(Platform):
 
         self._directory_stack.popd()
 
-    def _copy_out(self):
+    def _move_out(self):
         for file in filter(os.path.isfile, glob.glob(os.path.join(self._containment_dish, "**"))):
-            shutil.copy(file, self._dist_directory)
+            shutil.move(file, self._dist_directory)
 
     def _clean(self):
         if os.path.exists(self._containment_dish):
@@ -236,7 +236,7 @@ class DebianPlatform(Platform):
 
         if distribution_detect.is_debian():
             self._build_unsigned_package()
-            self._copy_out()
+            self._move_out()
 
         else:
             print("Skipping .deb creation, we're not on Debian!")
