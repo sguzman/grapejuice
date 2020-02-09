@@ -4,6 +4,7 @@ import subprocess
 from datetime import datetime
 
 import grapejuice_packaging.metadata as metadata
+from grapejuice_common import variables
 from grapejuice_packaging.directory_stack import DirectoryStack
 from grapejuice_packaging.packaging_platform import Platform
 
@@ -23,21 +24,15 @@ DEBIAN_URGENCY = "medium"
 
 FIELD_SOURCE = ("Source", metadata.package_name)
 FIELD_MAINTAINER = ("Maintainer", MAINTAINER)
-FIELD_BUILD_DEPENDS = ("Build-Depends", ["debhelper", "python3", "python3-pip", "python3-virtualenv"])
 FIELD_STANDARDS_VERSION = ("Standards-Version", STANDARDS_VERSION)
 FIELD_ARCHITECTURE = ("Architecture", ARCHITECTURE)
-
-DSC_FIELDS = [
-    ("Format", "1.0"),
-    FIELD_SOURCE,
-    ("Binary", metadata.package_name),
-    FIELD_ARCHITECTURE,
-    ("Version", f"{PACKAGE_VERSION}"),
-    FIELD_MAINTAINER,
-    FIELD_STANDARDS_VERSION,
-    FIELD_BUILD_DEPENDS,
-    ("Package-List", [metadata.package_name, "deb", "python", "optional", f"arch={ARCHITECTURE}"])
-]
+FIELD_BUILD_DEPENDS = ("Build-Depends", [
+    "debhelper",
+    "python3",
+    "python3-pip",
+    "python3-virtualenv",
+    "git", "unzip"
+])
 
 CONTROL_FIELDS = [
     FIELD_SOURCE,
@@ -128,6 +123,10 @@ class DebianPlatform(Platform):
         os.makedirs(p, exist_ok=True)
         return p
 
+    @property
+    def _icons_directory(self):
+        return os.path.join(self._package_root, "icons")
+
     def _write_compat(self):
         with open(os.path.join(self._debian_directory, "compat"), "w+") as fp:
             fp.write(str(int(DEBHELPER_COMPAT)))
@@ -136,6 +135,8 @@ class DebianPlatform(Platform):
         lines = []
         for package_name in os.listdir(self._packages_directory):
             lines.append(f"packages/{package_name} {PYTHON_DIST_PACKAGES_DIR}\n")
+
+        lines.append("icons /usr/share/icons\n")
 
         with open(os.path.join(self._debian_directory, "install"), "w+") as fp:
             fp.writelines(lines)
@@ -183,12 +184,7 @@ class DebianPlatform(Platform):
         subprocess.check_call(["debuild", "-uc", "-us"])
         self._directory_stack.popd()
 
-    def before_package(self):
-        super().before_package()
-
-        if os.path.exists(self._containment_dish):
-            shutil.rmtree(self._containment_dish)
-
+    def _unwheel_packages(self):
         for wheel in Platform.list_wheels():
             shutil.copy(wheel, self._packages_directory)
 
@@ -200,7 +196,19 @@ class DebianPlatform(Platform):
 
         self._directory_stack.popd()
 
+    def _copy_icons(self):
+        shutil.copytree(variables.icons_assets_dir(), self._icons_directory)
+
+    def before_package(self):
+        if os.path.exists(self._containment_dish):
+            shutil.rmtree(self._containment_dish)
+
+        super().before_package()
+
     def package(self):
+        self._unwheel_packages()
+        self._copy_icons()
+
         self._write_compat()
         self._write_install()
         self._write_control()

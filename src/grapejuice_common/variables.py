@@ -63,6 +63,10 @@ def mime_xml_assets_dir():
     return os.path.join(assets_dir(), "mime_xml")
 
 
+def icons_assets_dir():
+    return os.path.join(assets_dir(), "icons")
+
+
 def installation_prefix():
     if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
         return os.environ[K_GRAPEJUICE_INSTALL_PREFIX]
