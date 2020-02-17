@@ -11,4 +11,5 @@ grapejuice:debian:
         - source ./venv/bin/activate
         - pip install -r requirements.txt
         - python3 setup.py package_debian
+        - mkdir artifacts
         - cp dist/debian/* artifacts
