@@ -1,0 +1,14 @@
+image: registry.gitlab.com/brinkervii/grapejuice-ci-image/master
+
+grapejuice:debian:
+    stage: build
+    artifacts:
+        expire_in: 1 year
+        paths:
+            - artifacts/
+    script:
+        - virtualenv -p $(which python3) ./venv
+        - source ./venv/bin/activate
+        - pip install -r requirements.txt
+        - python3 setup.py package_debian
+        - cp dist/debian/* artifacts
