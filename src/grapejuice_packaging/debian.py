@@ -171,10 +171,7 @@ class DebianPlatform(Platform):
     def _write_changelog(self):
         lines = [f"{metadata.package_name} ({VERSION}) {DEBIAN_DISTRIBUTION}; urgency={DEBIAN_URGENCY}\n", "\n"]
 
-        current_branch = subprocess.check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]) \
-            .decode("UTF-8").strip()
-
-        changelog = subprocess.check_output(["git", "shortlog", "master..." + current_branch]) \
+        changelog = subprocess.check_output(["git", "shortlog"]) \
             .decode("UTF - 8").strip().split("\n")
 
         for changelog_line in list(map(lambda s: "  * " + s, changelog)):
