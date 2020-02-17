@@ -13,7 +13,7 @@ grapejuice:test:
 grapejuice:install_debian:
     stage: test
     script:
-        - apt install -y artifacts/*.deb
+        - find artifacts -iname \*.dev -exec sudo apt install ./{} \;
 
 grapejuice:debian:
     stage: build
