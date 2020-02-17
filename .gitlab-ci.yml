@@ -14,6 +14,8 @@ grapejuice:debian_install:
     stage: test
     image: debian:buster
     script:
+        - apt update
+        - apt upgrade -y
         - find artifacts -iname \*.deb -exec apt install -y ./{} \;
 
 grapejuice:debian:
