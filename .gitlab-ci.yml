@@ -10,8 +10,9 @@ grapejuice:test:
         - pip install -r dev_requirements.txt
         - pytest tests
 
-grapejuice:install_debian:
+grapejuice:debian_install:
     stage: test
+    image: debian:buster
     script:
         - find artifacts -iname \*.deb -exec apt install -y ./{} \;
 
