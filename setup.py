@@ -9,7 +9,7 @@ requirements_path = os.path.join(project_path, "requirements.txt")
 
 sys.path.insert(0, src_path)
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Command
 
 import grapejuice_packaging.metadata as metadata
 
@@ -19,6 +19,22 @@ with open(readme_path, "r") as fp:
 with open(requirements_path, "r") as fp:
     requirements = [r.lstrip().rstrip() for r in fp.readlines()]
 
+
+class PackageDebian(Command):
+    description = "Package Grapejuice for debian"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        from grapejuice_packaging.__main__ import main as packaging_main
+        packaging_main([sys.argv[0], "debian"])
+
+
 setup(
     name="grapejuice",
     author=metadata.author_name,
@@ -26,7 +42,6 @@ setup(
     version=metadata.package_version,
     description=metadata.package_description,
     license=metadata.package_license,
-    platform=metadata.package_platform,
     long_description=long_description,
     long_description_content_type="text/markdown",
     url=metadata.package_repository,
@@ -45,5 +60,8 @@ setup(
             "grapejuice=grapejuice.__main__:main",
             "grapejuiced=grapejuiced.__main__:main"
         ]
+    },
+    cmdclass={
+        "package_debian": PackageDebian
     }
 )
