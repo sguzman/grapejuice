@@ -3,11 +3,17 @@ image: registry.gitlab.com/brinkervii/grapejuice-ci-image/master
 grapejuice:test:
     stage: test
     script:
+        - export PYTHONPATH=$(pwd)/src
         - virtualenv -p $(which python3) ./venv
         - source ./venv/bin/activate
         - pip install -r requirements.txt
         - pip install -r dev_requirements.txt
         - pytest tests
+
+grapejuice:install_debian:
+    stage: test
+    script:
+        - apt install -y artifacts/*.deb
 
 grapejuice:debian:
     stage: build
