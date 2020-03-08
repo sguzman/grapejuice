@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkImage" id="icon_deploy_assocs">
@@ -312,7 +312,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox">
+                  <object class="GtkBox" id="update_area">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
@@ -389,7 +389,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="reinstall_button">
                     <property name="label" translatable="yes">Reinstall Grapejuice</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -405,7 +405,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="deploy_associations_button">
                     <property name="label" translatable="yes">Deploy Associations</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>

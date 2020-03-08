@@ -5,6 +5,7 @@ import subprocess
 from datetime import datetime
 
 import grapejuice_packaging.metadata as metadata
+from grapejuice_common.dist_info import DistributionInfo, DistributionType
 from grapejuice_packaging import distribution_detect
 from grapejuice_packaging.directory_stack import DirectoryStack
 from grapejuice_packaging.packaging_platform import Platform
@@ -171,8 +172,13 @@ class DebianPlatform(Platform):
     def _write_changelog(self):
         lines = [f"{metadata.package_name} ({VERSION}) {DEBIAN_DISTRIBUTION}; urgency={DEBIAN_URGENCY}\n", "\n"]
 
-        changelog = subprocess.check_output(["git", "shortlog"]) \
-            .decode("UTF - 8").strip().split("\n")
+        try:
+            changelog = subprocess.check_output(["git", "shortlog"], timeout=1) \
+                .decode("UTF - 8").strip().split("\n")
+
+        except subprocess.TimeoutExpired as e:
+            changelog = ["Automatically generated package"]
+            print(str(e))
 
         for changelog_line in list(map(lambda s: "  * " + s, changelog)):
             lines.append(changelog_line + "\n")
@@ -202,6 +208,12 @@ class DebianPlatform(Platform):
 
         self._directory_stack.popd()
 
+    def _update_dist_info(self):
+        path = os.path.join(self._packages_directory, "grapejuice_common", "assets", "dist_info.json")
+        dist_info = DistributionInfo(path)
+        dist_info.distribution_type = DistributionType.system_package
+        dist_info.write()
+
     def _move_out(self):
         for file in filter(os.path.isfile, glob.glob(os.path.join(self._containment_dish, "**"))):
             shutil.move(file, self._dist_directory)
@@ -221,6 +233,7 @@ class DebianPlatform(Platform):
 
     def package(self):
         self._unwheel_packages()
+        self._update_dist_info()
         Platform.run_grapejuice_post_install()
 
         self._write_compat()

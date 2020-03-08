@@ -1,9 +1,9 @@
 import os
 
-from grapejuice import update, background
+from grapejuice import background
 from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, DeployAssociations, \
     GraphicsModeOpenGL, SandboxWine, RunRobloxStudio, ExtractFastFlags
-from grapejuice.update import update_and_reopen
+from grapejuice.update.update_provider import provider as update_provider
 from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl, version
 from grapejuice_common.errors import NoWineError
@@ -149,10 +149,10 @@ class MainWindowHandlers:
                "to the instructions in the Grapejuice git repository. The upgrade will begin after you close this "
                "dialog.")
 
-        update.update_and_reopen()
+        update_provider.do_update()
 
     def reinstall(self, *_):
-        update_and_reopen()
+        update_provider.reinstall()
 
     def deploy_assocs(self, *_):
         run_task_once(DeployAssociations, generic_already_running)
@@ -171,7 +171,8 @@ class MainWindow(WindowBase):
             MainWindowHandlers()
         )
 
-        self.update_status_label().set_text("Checking for updates...")
+        self.update_status_label.set_text("Checking for updates...")
+        self.update_update_related_buttons()
         self.update_update_status()
 
         background.tasks.tasks_changed.add_listener(self.on_tasks_changed)
@@ -179,11 +180,26 @@ class MainWindow(WindowBase):
 
         self.on_tasks_changed()
 
+    @property
+    def deploy_associations_button(self):
+        return self.builder.get_object("deploy_associations_button")
+
+    @property
+    def reinstall_button(self):
+        return self.builder.get_object("reinstall_button")
+
+    @property
     def update_status_label(self):
         return self.builder.get_object("update_status_label")
 
+    @property
     def update_button(self):
-        return self.builder.get_object('update_button')
+        return self.builder.get_object("update_button")
+
+    def update_update_related_buttons(self):
+        if not update_provider.can_update():
+            self.deploy_associations_button.hide()
+            self.reinstall_button.hide()
 
     def update_update_status(self):
         w = self
@@ -193,23 +209,29 @@ class MainWindow(WindowBase):
                 super().__init__("Checking for a newer version of Grapejuice")
 
             def run(self) -> None:
-                if version.update_available():
-                    s = "This version of Grapejuice is out of date\n{} -> {}".format(
-                        str(version.local_version()),
-                        str(version.cached_remote_version)
-                    )
+                if update_provider.can_update():
+                    if version.update_available():
+                        s = "This version of Grapejuice is out of date\n{} -> {}".format(
+                            str(version.local_version()),
+                            str(version.cached_remote_version)
+                        )
 
-                    w.update_status_label().set_text(s)
-                    w.update_button().show()
-                else:
-                    local_ver = version.local_version()
-                    if local_ver > version.cached_remote_version:
-                        s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
+                        w.update_status_label.set_text(s)
+                        w.update_button.show()
                     else:
-                        s = "Grapejuice is up to date\n{}".format(str(local_ver))
+                        local_ver = version.local_version()
+                        if local_ver > version.cached_remote_version:
+                            s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
+                        else:
+                            s = "Grapejuice is up to date\n{}".format(str(local_ver))
 
-                    w.update_status_label().set_text(s)
-                    w.update_button().hide()
+                        w.update_status_label.set_text(s)
+                        w.update_button.hide()
+
+                else:
+                    s = f"Running Grapejuice {version.local_version()}"
+                    w.update_status_label.set_text(s)
+                    w.update_button.hide()
 
                 self.finish()
 
