@@ -28,8 +28,8 @@ def get_install_prefix():
     site.addsitedir(os.path.join(here, "src"))
 
     try:
-        from grapejuice_common.variables import xdg_data_home
-        return xdg_data_home()
+        from grapejuice_common.variables import dot_local
+        return dot_local()
     except ImportError as e:
         raise e
 

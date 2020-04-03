@@ -56,6 +56,10 @@ class Platform(ABC):
         os.environ[variables.K_GRAPEJUICE_PACKAGE_PREFIX] = str(v)
 
     @property
+    def usr_share(self):
+        return os.path.join(self.package_prefix, "share")
+
+    @property
     def grapejuice_executable(self):
         return os.environ[deployment.K_GRAPEJUICE_EXECUTABLE]
 

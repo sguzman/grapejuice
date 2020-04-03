@@ -53,7 +53,7 @@ if [[ ! -f "$PYTHON" ]]; then
 fi
 "$PYTHON" --version || python_failed
 
-APPLICATION_DIR=$GRAPEJUICE_INSTALL_PREFIX/grapejuice
+APPLICATION_DIR=$GRAPEJUICE_INSTALL_PREFIX/share//grapejuice
 mkdir -p "$APPLICATION_DIR"
 cp -frax . "$APPLICATION_DIR"
 export PYTHONPATH=$APPLICATION_DIR/src

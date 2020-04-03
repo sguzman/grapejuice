@@ -31,7 +31,7 @@ def system_application_dir():
 
 
 def user_application_dir():
-    return os.path.join(xdg_data_home(), "grapejuice")
+    return os.path.join(local_share(), "grapejuice")
 
 
 def packaging_prefix():
@@ -175,11 +175,11 @@ def installer_path():
 
 
 def xdg_applications_dir():
-    return os.path.join(xdg_data_home(), "applications")
+    return os.path.join(local_share(), "applications")
 
 
 def xdg_mime_dir():
-    return os.path.join(xdg_data_home(), "mime")
+    return os.path.join(local_share(), "mime")
 
 
 def xdg_mime_packages():
@@ -187,7 +187,7 @@ def xdg_mime_packages():
 
 
 def xdg_icons():
-    return os.path.join(xdg_data_home(), "icons")
+    return os.path.join(local_share(), "icons")
 
 
 def xdg_config_home():
@@ -203,20 +203,19 @@ def xdg_config_home():
     return config_home
 
 
-def xdg_data_home():
+def local_share():
+    return os.path.join(dot_local(), "share")
+
+
+def dot_local():
     if is_packaging():
         return installation_prefix()
 
-    if "XDG_DATA_HOME" in os.environ:
-        data_home = os.environ["XDG_DATA_HOME"]
-        if data_home and os.path.exists(data_home) and os.path.isdir(data_home):
-            return data_home
+    path = os.path.join(home(), ".local")
+    if not os.path.exists(path):
+        os.makedirs(path)
 
-    data_home = os.path.join(home(), ".local", "share")
-    if not os.path.exists(data_home):
-        os.makedirs(data_home)
-
-    return data_home
+    return path
 
 
 def xdg_documents():

@@ -15,8 +15,9 @@ STANDARDS_VERSION = "3.9.6"
 DEBHELPER_COMPAT = 10
 VERSION = f"{metadata.package_version}"
 PACKAGE_VERSION = f"{VERSION}_{ARCHITECTURE}"
-PREFIX = "/usr/lib"
-PYTHON_DIST_PACKAGES_DIR = f"{PREFIX}/python3/dist-packages"
+PREFIX = "/usr"
+USR_LIB = os.path.join(PREFIX, "lib")
+PYTHON_DIST_PACKAGES_DIR = f"{USR_LIB}/python3/dist-packages"
 MAINTAINER = f"{metadata.author_name} <{metadata.author_email}>"
 PACKAGE_FILENAME = f"{metadata.package_name}i{PACKAGE_VERSION}.deb"
 DEBIAN_SECTION = "python"
@@ -226,7 +227,7 @@ class DebianPlatform(Platform):
         self._clean()
 
         self.install_prefix = self._post_install_directory
-        self.package_prefix = "/usr/share"
+        self.package_prefix = PREFIX
         self.grapejuice_executable = "/usr/bin/env python3 -m grapejuice"
 
         super().before_package()
@@ -252,5 +253,5 @@ class DebianPlatform(Platform):
             print("Skipping .deb creation, we're not on Debian!")
 
     def after_package(self):
-        self._clean()
+        # self._clean()
         super().after_package()
