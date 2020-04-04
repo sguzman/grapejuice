@@ -2,7 +2,7 @@ import argparse
 import signal
 import sys
 
-from grapejuice_common import log_config
+from grapejuice_common import log_config, self_test
 from grapejuice_common.pid_file import PIDFile, daemon_pid_file
 
 
@@ -46,6 +46,7 @@ def func_kill(*_):
 
 def main(in_args=None):
     log_config.configure_logging()
+    self_test.post.run()
 
     if in_args is None:
         in_args = sys.argv[1:]

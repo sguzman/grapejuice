@@ -89,3 +89,5 @@ def configure_logging(configuration: LoggerConfiguration = None):
     root_logger.setLevel(getattr(logging, log_level))
 
     root_logger.info(f"Log level was set to '{log_level}'")
+    if configuration.use_output_file:
+        root_logger.info(f"The log file is stored at '{configuration.output_file}")

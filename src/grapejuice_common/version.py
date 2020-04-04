@@ -3,7 +3,7 @@ import re
 from packaging import version
 
 from grapejuice_common import variables
-from grapejuice_common.http import http
+from grapejuice_common.http_config import http
 
 VERSION_PATTERN = re.compile(r'__version__\s*=\s*"(.+)?".*')
 cached_remote_version = None
