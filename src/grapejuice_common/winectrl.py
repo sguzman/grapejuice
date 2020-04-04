@@ -128,11 +128,14 @@ def load_dll_overrides():
 
 def sandbox():
     user_dir = variables.wine_user()
+
     if os.path.exists(user_dir) and os.path.isdir(user_dir):
-        for dir in os.listdir(user_dir):
-            p = os.path.join(user_dir, dir)
+        for file in os.listdir(user_dir):
+            p = os.path.join(user_dir, file)
+
             if os.path.islink(p):
                 os.remove(p)
+                os.makedirs(p, exist_ok=True)
 
 
 def configure_prefix():
