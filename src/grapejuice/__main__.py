@@ -74,7 +74,7 @@ def func_studio(args):
 def main(in_args=None):
     from grapejuice_common.settings import settings
 
-    log_config.configure_logging()
+    log_config.configure_logging("grapejuice")
     self_test.post.run()
 
     if settings:

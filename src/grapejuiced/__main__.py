@@ -45,7 +45,7 @@ def func_kill(*_):
 
 
 def main(in_args=None):
-    log_config.configure_logging()
+    log_config.configure_logging("grapejuice-daemon")
     self_test.post.run()
 
     if in_args is None:

@@ -14,10 +14,10 @@ class LoggerConfiguration:
     _formatter: logging.Formatter = None
     _environment_key: Union[str, None] = "LOG_LEVEL"
     _log_level_override: Union[str, None] = None
-    _default_format_string = "[%(levelname)s] %(name)s:- %(message)s"
 
-    def __init__(self):
-        self._formatter = logging.Formatter(self._default_format_string)
+    def __init__(self, app_name: str):
+        self._app_name = app_name
+        self._formatter = logging.Formatter(f"[%(levelname)s] {app_name}/%(name)s:- %(message)s")
 
     @property
     def use_output_stream(self):
@@ -62,13 +62,18 @@ class LoggerConfiguration:
 
         return "INFO"
 
+    @property
+    def app_name(self):
+        return self._app_name
 
-def configure_logging(configuration: LoggerConfiguration = None):
+
+def configure_logging(app_name: str = None, configuration: LoggerConfiguration = None):
     if configuration is None:
-        configuration = LoggerConfiguration()
+        assert isinstance(app_name, str)
+        configuration = LoggerConfiguration(app_name)
 
         datetime_now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        configuration.output_file = os.path.join(logging_directory(), f"{datetime_now}.log")
+        configuration.output_file = os.path.join(logging_directory(), f"{datetime_now}_{configuration.app_name}.log")
 
     root_logger = logging.getLogger()
 
