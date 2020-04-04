@@ -1,10 +1,13 @@
 import atexit
 import json
+import logging
 import os
 import time
 from typing import Union
 
 from grapejuice_common import variables
+
+LOG = logging.getLogger(__name__)
 
 
 class Setting:
@@ -108,7 +111,7 @@ settings = UserSettings()
 
 
 def save_settings():
-    print("Saving settings...")
+    LOG.info("Saving settings...")
     settings.save()
 
 
