@@ -1,3 +1,4 @@
+import logging
 import threading
 from typing import Union
 
@@ -5,7 +6,11 @@ from grapejuice_common.event import Event
 
 
 class Task:
+    _log: logging.Logger
+
     def __init__(self, name):
+        self._log = logging.getLogger(f"{Task.__name__}/{name}")
+
         self._name = name
         self._finished = False
         self._collection: Union[None, TaskCollection] = None
