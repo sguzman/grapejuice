@@ -2,7 +2,7 @@ import os
 
 from grapejuice import background
 from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, DeployAssociations, \
-    GraphicsModeOpenGL, SandboxWine, RunRobloxStudio, ExtractFastFlags
+    GraphicsModeOpenGL, SandboxWine, RunRobloxStudio, ExtractFastFlags, OpenLogsDirectory
 from grapejuice.update.update_provider import provider as update_provider
 from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl, version
@@ -162,6 +162,9 @@ class MainWindowHandlers:
 
     def graphicsmode_opengl(self, *_):
         run_task_once(GraphicsModeOpenGL, generic_already_running)
+
+    def open_logs_directory(self, *_):
+        run_task_once(OpenLogsDirectory, generic_already_running)
 
 
 class MainWindow(WindowBase):

@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from dbus import DBusException
 
@@ -98,4 +99,16 @@ class ExtractFastFlags(background.BackgroundTask):
         except DBusException:
             pass
 
+        self.finish()
+
+
+class OpenLogsDirectory(background.BackgroundTask):
+    def __init__(self):
+        super().__init__("Opening logs directory")
+
+    def run(self) -> None:
+        path = variables.logging_directory()
+        os.makedirs(path, exist_ok=True)
+
+        subprocess.check_call(["xdg-open", path])
         self.finish()

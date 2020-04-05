@@ -48,6 +48,12 @@
     <property name="pixel_size">48</property>
     <property name="icon_name">text</property>
   </object>
+  <object class="GtkImage" id="icon_logs">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">folder</property>
+  </object>
   <object class="GtkImage" id="icon_mime2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -436,7 +442,20 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Open logs directory</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_logs</property>
+                    <property name="image_position">top</property>
+                    <property name="always_show_image">True</property>
+                    <signal name="clicked" handler="open_logs_directory" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                  </packing>
                 </child>
                 <child>
                   <placeholder/>
