@@ -147,10 +147,10 @@ def sandbox():
 
     if os.path.exists(user_dir) and os.path.isdir(user_dir):
         for file in os.listdir(user_dir):
-            LOG.info(f"Sandboxing {file}")
             p = os.path.join(user_dir, file)
 
             if os.path.islink(p):
+                LOG.info(f"Sandboxing {file}")
                 os.remove(p)
                 os.makedirs(p, exist_ok=True)
 
