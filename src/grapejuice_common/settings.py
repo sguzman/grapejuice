@@ -1,10 +1,13 @@
 import atexit
 import json
+import logging
 import os
 import time
 from typing import Union
 
 from grapejuice_common import variables
+
+LOG = logging.getLogger(__name__)
 
 
 class Setting:
@@ -72,31 +75,48 @@ class UserSettings:
 
     def _update_last_run(self):
         self.last_run = int(time.time() // 1)
+        LOG.debug(f"Set last run time to {self.last_run}")
 
     def _accept_json(self, o):
         self_dict = self.__dict__
 
-        for k, v in o.items():
-            if k in self_dict:
-                if k in self_dict:
-                    existing_value = self_dict[k]
-                    if isinstance(existing_value, Setting):
-                        existing_value.value = v
-                        continue
+        LOG.debug("Loading JSON object into the settings file")
 
-            self_dict[k] = v
+        for k, v in o.items():
+            LOG.debug(f"Read '{k}' with value '{v}'")
+
+            if k in self_dict:
+                LOG.debug(f"Going to apply the value with key {k}")
+                existing_value = self_dict[k]
+
+                if isinstance(existing_value, Setting):
+                    LOG.debug(f"Doing a special setting thing with {k}")
+                    existing_value.value = v
+                    continue
+
+                else:
+                    LOG.debug(f"Applying {k}")
+                    self_dict[k] = v
+
+            else:
+                LOG.debug(f"Not going to apply a value with key {k}, because it is not on the settings object")
 
     def load(self):
         if os.path.exists(self._location):
+            LOG.debug(f"Loading settings from '{self._location}'")
+
             with open(self._location, "r") as fp:
                 json_object = json.load(fp)
                 self._accept_json(json_object)
 
         else:
+            LOG.debug("There is no settings file present, going to save one")
             self.save()
 
     def save(self):
         self._update_last_run()
+
+        LOG.debug(f"Saving settings file to '{self._location}'")
         with open(self._location, "w+") as fp:
             json.dump(self._filtered_dict(), fp)
 
@@ -108,7 +128,7 @@ settings = UserSettings()
 
 
 def save_settings():
-    print("Saving settings...")
+    LOG.info("Saving settings...")
     settings.save()
 
 

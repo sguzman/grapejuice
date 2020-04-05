@@ -6,6 +6,7 @@ import wget
 
 import grapejuice_common.variables as variables
 import grapejuice_common.winectrl as winectrl
+from grapejuice_common.log_util import log_function
 
 DOWNLOAD_URL = "https://www.roblox.com/install/setup.ashx"
 
@@ -49,6 +50,7 @@ def run_installer():
     winectrl.run_exe_nowait(variables.installer_path())
 
 
+@log_function
 def locate_in_versions(exe_name):
     versions = os.path.join(variables.wine_roblox_prog(), "Versions")
     if not os.path.exists(versions):
@@ -62,6 +64,7 @@ def locate_in_versions(exe_name):
                 return lp
 
 
+@log_function
 def locate_roblox_exe(exe_name):
     versioned = locate_in_versions(exe_name)
 
@@ -73,18 +76,22 @@ def locate_roblox_exe(exe_name):
     return versioned
 
 
+@log_function
 def locate_studio_launcher():
     return locate_roblox_exe("RobloxStudioLauncherBeta.exe")
 
 
+@log_function
 def locate_studio_exe():
     return locate_in_versions("RobloxStudioBeta.exe")
 
 
+@log_function
 def locate_player_launcher():
     return locate_in_versions("RobloxPlayerLauncher.exe")
 
 
+@log_function
 def locate_client_app_settings():
     studio_exe = locate_studio_exe()
     if studio_exe is None:

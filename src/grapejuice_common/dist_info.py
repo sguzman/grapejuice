@@ -1,7 +1,10 @@
 import json
+import logging
 import os
 
 from grapejuice_common import variables
+
+LOG = logging.getLogger(__name__)
 
 
 class DistributionType:
@@ -18,6 +21,9 @@ class DistributionInfo:
 
         with open(self._path, "r") as fp:
             self._info = json.load(fp)
+
+        LOG.debug(f"Loaded distribution info from {self._path}")
+        LOG.info(f"Distribution type: {self.distribution_type}")
 
     def __getattr__(self, item):
         if item in self._info:

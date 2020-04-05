@@ -207,6 +207,18 @@ def local_share():
     return os.path.join(dot_local(), "share")
 
 
+def local_var():
+    return os.path.join(dot_local(), "var")
+
+
+def local_log():
+    return os.path.join(local_var(), "log")
+
+
+def logging_directory():
+    return os.path.join(local_log(), "grapejuice")
+
+
 def dot_local():
     if is_packaging():
         return installation_prefix()

@@ -5,8 +5,9 @@ import sys
 
 import grapejuice_common.util
 import grapejuice_common.variables as variables
-from grapejuice_common.gtk import gtk_stuff
+from grapejuice_common import log_config, self_test
 from grapejuice_common.dbus_client import dbus_connection
+from grapejuice_common.gtk import gtk_stuff
 from grapejuice_common.gtk.gtk_stuff import gtk_boot
 
 
@@ -71,7 +72,12 @@ def func_studio(args):
 
 
 def main(in_args=None):
+    log_config.configure_logging("grapejuice")
+
     from grapejuice_common.settings import settings
+
+    self_test.post.run()
+
     if settings:
         # TODO: Add logging for successful settings loading (Issue #9)
         pass
