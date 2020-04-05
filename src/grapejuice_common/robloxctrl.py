@@ -2,11 +2,10 @@ import os
 import re
 import time
 
-import wget
-
 import grapejuice_common.variables as variables
 import grapejuice_common.winectrl as winectrl
 from grapejuice_common.log_util import log_function
+from grapejuice_common.util import download_file
 
 DOWNLOAD_URL = "https://www.roblox.com/install/setup.ashx"
 
@@ -41,7 +40,7 @@ def get_installer():
     if os.path.exists(install_path):
         os.remove(install_path)
 
-    wget.download(DOWNLOAD_URL, install_path)
+    download_file(DOWNLOAD_URL, install_path)
 
 
 def run_installer():

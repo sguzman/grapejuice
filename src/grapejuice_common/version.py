@@ -1,9 +1,9 @@
 import re
 
+import requests
 from packaging import version
 
 from grapejuice_common import variables
-from grapejuice_common.http_config import http
 from grapejuice_common.log_util import log_function
 
 VERSION_PATTERN = re.compile(r'__version__\s*=\s*"(.+)?".*')
@@ -28,13 +28,13 @@ def local_version():
 
 @log_function
 def remote_version():
-    version_string = None
-    r = http().request("GET", variables.git_init_py_url())
-    if r.status == 200:
-        version_string = str(r.data, "utf-8")
+    response = requests.get(variables.git_init_py_url())
 
-    if version_string is None:
-        return version_string
+    if 199 < response.status_code < 300:
+        version_string = response.text.strip()
+
+    else:
+        return None
 
     match = VERSION_PATTERN.match(version_string)
     if match is None:

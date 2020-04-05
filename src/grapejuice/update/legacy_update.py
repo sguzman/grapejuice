@@ -3,10 +3,9 @@ import shutil
 import sys
 import zipfile
 
-import wget
-
 import grapejuice_common.variables as variables
 from grapejuice_common.pid_file import daemon_pid_file
+from grapejuice_common.util import download_file
 
 
 def perform_download():
@@ -14,7 +13,7 @@ def perform_download():
     if os.path.exists(download_path):
         os.remove(download_path)
 
-    return wget.download(
+    return download_file(
         variables.git_zip_download(),
         download_path
     )

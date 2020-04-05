@@ -114,20 +114,10 @@ def check_python_dependencies(log: logging.Logger):
 
         return packaging
 
-    def import_wget():
-        import wget
+    def import_requests():
+        import requests
 
-        return wget
-
-    def import_urrlib_3():
-        import urllib3
-
-        return urllib3
-
-    def import_certifi():
-        import certifi
-
-        return certifi
+        return requests
 
     def import_wheel():
         import wheel
@@ -166,9 +156,7 @@ def check_python_dependencies(log: logging.Logger):
         import_psutil,
         import_py_g_object,
         import_packaging,
-        import_wget,
-        import_urrlib_3,
-        import_certifi,
+        import_requests,
         import_wheel,
         import_setuptools,
         import_dbus

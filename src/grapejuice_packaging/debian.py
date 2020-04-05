@@ -49,12 +49,10 @@ CONTROL_FIELDS = [
     FIELD_ARCHITECTURE,
     ("Depends", [
         "python3 (>= 3.7~)",
-        "python3-certifi",
         "python3-dbus",
         "python3-packaging",
         "python3-psutil",
-        "python3-urllib3",
-        "python3-wget",
+        "python3-requests",
         "python3-gi",
         "libcairo2",
         "libgirepository-1.0-1",

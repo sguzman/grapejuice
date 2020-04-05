@@ -2,10 +2,8 @@ psutil
 pip
 PyGObject
 PyGObject-stubs
-wget
 packaging
-urllib3
-certifi
 wheel
 setuptools
 dbus-python
+requests
