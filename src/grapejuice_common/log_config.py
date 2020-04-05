@@ -1,12 +1,37 @@
+import getpass
 import logging
 import os
 import sys
 from datetime import datetime
+from logging import LogRecord
 from pathlib import Path
-from typing import IO, Union
+from typing import IO, Union, Optional
 
 from grapejuice_common import variables
-from grapejuice_common.log_util import log_function
+
+
+def _strip_pii(s: str):
+    return s \
+        .replace(variables.home(), "~") \
+        .replace(getpass.getuser(), "$USER")
+
+
+class GrapejuiceLogFormatter(logging.Formatter):
+
+    def format(self, record: LogRecord) -> str:
+        return _strip_pii(super().format(record))
+
+    def formatTime(self, record: LogRecord, datefmt: Optional[str] = ...) -> str:
+        return _strip_pii(super().formatTime(record, datefmt))
+
+    def formatException(self, exc_info) -> str:
+        return _strip_pii(super().formatException(exc_info))
+
+    def formatMessage(self, record: LogRecord) -> str:
+        return _strip_pii(super().formatMessage(record))
+
+    def formatStack(self, stack_info: str) -> str:
+        return _strip_pii(super().formatStack(stack_info))
 
 
 class LoggerConfiguration:
@@ -18,7 +43,7 @@ class LoggerConfiguration:
 
     def __init__(self, app_name: str):
         self._app_name = app_name
-        self._formatter = logging.Formatter(f"[%(levelname)s] {app_name}/%(name)s:- %(message)s")
+        self._formatter = GrapejuiceLogFormatter(f"[%(levelname)s] {app_name}/%(name)s:- %(message)s")
 
     @property
     def use_output_stream(self):
@@ -68,19 +93,6 @@ class LoggerConfiguration:
         return self._app_name
 
 
-def rig_variables():
-    rigged = dict()
-
-    for key, value in variables.__dict__.items():
-        if isinstance(value, type(rig_variables)):
-            rigged[key] = log_function(value)
-
-    for key, value in rigged.items():
-        variables.__dict__[key] = value
-
-    del rigged
-
-
 def configure_logging(app_name: str = None, configuration: LoggerConfiguration = None):
     if configuration is None:
         assert isinstance(app_name, str)
@@ -110,6 +122,4 @@ def configure_logging(app_name: str = None, configuration: LoggerConfiguration =
 
     root_logger.info(f"Log level was set to '{log_level}'")
     if configuration.use_output_file:
-        root_logger.info(f"The log file is stored at '{configuration.output_file}")
-
-    rig_variables()
+        root_logger.info(f"The log file is stored at '{configuration.output_file}'")
