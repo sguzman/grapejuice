@@ -32,7 +32,7 @@ class PIDFile:
             self._path = os.path.join("/tmp", self._name + ".pid")
 
         self._wrote_pid = False
-        LOG.info(f"PIDFile {self._name} got placed at '{self._path}")
+        LOG.info(f"PIDFile {self._name} got placed at '{self._path}'")
 
         atexit.register(self._at_exit)
 
