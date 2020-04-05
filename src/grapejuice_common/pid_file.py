@@ -1,9 +1,12 @@
 import atexit
+import logging
 import os
 import re
 import signal
 
 import psutil
+
+LOG = logging.getLogger(__name__)
 
 
 class EmptyPIDError(RuntimeError):
@@ -20,18 +23,21 @@ class PIDFile:
         self._name = re.sub(r"(\W)", "_", name)
 
         if "XDG_RUNTIME_DIR" in os.environ:
-            self._path = os.path.join(os.environ["XDG_RUNTIME_DIR"], self._name + ".pid")
+            xdg_runtime_dir = os.environ["XDG_RUNTIME_DIR"]
+            LOG.debug(f"PIDFile instance {self._name} is using XDG_RUNTIME_DIR '{xdg_runtime_dir}")
+            self._path = os.path.join(xdg_runtime_dir, self._name + ".pid")
 
         else:
+            LOG.debug(f"PIDFile instance {self._name} is using /tmp")
             self._path = os.path.join("/tmp", self._name + ".pid")
 
         self._wrote_pid = False
+        LOG.info(f"PIDFile {self._name} got placed at '{self._path}")
 
         atexit.register(self._at_exit)
 
     def _at_exit(self, *_):
-        if self._wrote_pid:
-            os.remove(self._path)
+        self._remove_file()
 
     def exists(self):
         return os.path.exists(self._path)
@@ -46,8 +52,16 @@ class PIDFile:
             return int(s)
 
     def _remove_file(self):
-        if os.path.exists(self._path):
-            os.remove(self._path)
+        if self._wrote_pid:
+            if os.path.exists(self._path):
+                LOG.debug(f"Removing pidfile {self._path}")
+                os.remove(self._path)
+
+            else:
+                LOG.warning(f"PIDFile {self._path} does not exist!")
+
+        else:
+            LOG.debug("Did not write PID, therefore I am not removing it")
 
     def is_running(self, remove_junk=True):
         if not self.exists():
