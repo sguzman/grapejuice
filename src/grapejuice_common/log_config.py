@@ -13,7 +13,7 @@ from grapejuice_common import variables
 def _strip_pii(s: str):
     return s \
         .replace(variables.home(), "~") \
-        .replace(getpass.getuser(), "$USER")
+        .replace(getpass.getuser(), "[REDACTED]")
 
 
 class GrapejuiceLogFormatter(logging.Formatter):
