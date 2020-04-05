@@ -9,6 +9,7 @@ from grapejuice_common import log_config, self_test
 from grapejuice_common.dbus_client import dbus_connection
 from grapejuice_common.gtk import gtk_stuff
 from grapejuice_common.gtk.gtk_stuff import gtk_boot
+from grapejuice_common.log_vacuum import vacuum_logs
 
 
 def on_exit():
@@ -77,6 +78,7 @@ def main(in_args=None):
     from grapejuice_common.settings import settings
 
     self_test.post.run()
+    vacuum_logs()
 
     if settings:
         # TODO: Add logging for successful settings loading (Issue #9)
