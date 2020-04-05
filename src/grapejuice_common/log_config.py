@@ -5,7 +5,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import IO, Union
 
-from grapejuice_common.variables import logging_directory
+from grapejuice_common import variables
+from grapejuice_common.log_util import log_function
 
 
 class LoggerConfiguration:
@@ -67,13 +68,27 @@ class LoggerConfiguration:
         return self._app_name
 
 
+def rig_variables():
+    rigged = dict()
+
+    for key, value in variables.__dict__.items():
+        if isinstance(value, type(rig_variables)):
+            rigged[key] = log_function(value)
+
+    for key, value in rigged.items():
+        variables.__dict__[key] = value
+
+    del rigged
+
+
 def configure_logging(app_name: str = None, configuration: LoggerConfiguration = None):
     if configuration is None:
         assert isinstance(app_name, str)
         configuration = LoggerConfiguration(app_name)
 
         datetime_now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        configuration.output_file = os.path.join(logging_directory(), f"{datetime_now}_{configuration.app_name}.log")
+        configuration.output_file = \
+            os.path.join(variables.logging_directory(), f"{datetime_now}_{configuration.app_name}.log")
 
     root_logger = logging.getLogger()
 
@@ -96,3 +111,5 @@ def configure_logging(app_name: str = None, configuration: LoggerConfiguration =
     root_logger.info(f"Log level was set to '{log_level}'")
     if configuration.use_output_file:
         root_logger.info(f"The log file is stored at '{configuration.output_file}")
+
+    rig_variables()
