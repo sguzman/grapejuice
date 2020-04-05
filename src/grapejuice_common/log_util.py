@@ -20,3 +20,16 @@ def log_function(func: callable):
         return result
 
     return wrapper
+
+
+def log_on_call(message: str):
+    def wrap_function(func: callable):
+        log = logging.getLogger(f"log_on_call/{func.__name__}")
+
+        def wrapper(*args, **kwargs):
+            log.info(message)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return wrap_function
