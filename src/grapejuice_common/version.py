@@ -4,11 +4,13 @@ from packaging import version
 
 from grapejuice_common import variables
 from grapejuice_common.http_config import http
+from grapejuice_common.log_util import log_function
 
 VERSION_PATTERN = re.compile(r'__version__\s*=\s*"(.+)?".*')
 cached_remote_version = None
 
 
+@log_function
 def local_version():
     version_string = None
 
@@ -24,6 +26,7 @@ def local_version():
     return version.parse(version_string)
 
 
+@log_function
 def remote_version():
     version_string = None
     r = http().request("GET", variables.git_init_py_url())
@@ -43,6 +46,7 @@ def remote_version():
     return cached_remote_version
 
 
+@log_function
 def update_available():
     local = local_version()
     if local is None:
