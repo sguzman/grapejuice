@@ -5,7 +5,7 @@ import sys
 
 import grapejuice_common.util
 import grapejuice_common.variables as variables
-from grapejuice_common import log_config, self_test
+from grapejuice_common import log_config
 from grapejuice_common.dbus_client import dbus_connection
 from grapejuice_common.gtk import gtk_stuff
 from grapejuice_common.gtk.gtk_stuff import gtk_boot
@@ -20,6 +20,9 @@ def on_exit():
 
 def main_gui():
     def make_main_window():
+        from grapejuice_common import self_test
+        self_test.post.run()
+
         from grapejuice.gui.main_window import MainWindow
         main_window = MainWindow()
         main_window.show()
@@ -32,6 +35,9 @@ def func_gui(args):
 
 
 def func_post_install(args):
+    from grapejuice_common import self_test
+    self_test.post.run()
+
     from grapejuice import deployment
     deployment.post_install()
 
@@ -76,8 +82,6 @@ def main(in_args=None):
     log_config.configure_logging("grapejuice")
 
     from grapejuice_common.settings import settings
-
-    self_test.post.run()
     vacuum_logs()
 
     if settings:
