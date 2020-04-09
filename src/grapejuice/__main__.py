@@ -1,5 +1,6 @@
 import argparse
 import os
+import random
 import shutil
 import sys
 
@@ -90,6 +91,9 @@ def main(in_args=None):
 
     if in_args is None:
         in_args = sys.argv
+
+    if random.randint(0, 10) == 5:
+        print("beep beep")
 
     parser = argparse.ArgumentParser(prog="grapejuice", description="Manage Roblox on Linux")
     subparsers = parser.add_subparsers(title="subcommands", help="sub-command help")
