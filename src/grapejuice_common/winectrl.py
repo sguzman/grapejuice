@@ -241,6 +241,11 @@ def wine_ok(system_wine: str = None, show_dialog=True):
     def prepare_version(s):
         from packaging import version
 
+        if "-" in s:
+            match = re.match(r"(wine-.*?)-.*", s)
+            if match:
+                s = match.group(1)
+
         if space in s:
             match = space_version_ptn.match(s)
 
