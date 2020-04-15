@@ -97,6 +97,15 @@ def read_os_release(log: logging.Logger):
             log.info(line.strip())
 
 
+@post.task("Test for root user")
+def test_for_root_user(log: logging.Logger):
+    if os.getuid() == 0:
+        if "CI_JOB_ID" not in os.environ:
+            msg = "Running Grapejuice as root is not supported"
+            log.error(msg)
+            raise TaskError(msg, can_continue=False)
+
+
 @post.task("Check python dependencies")
 def check_python_dependencies(log: logging.Logger):
     def import_psutil():

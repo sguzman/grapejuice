@@ -4,6 +4,12 @@ import site
 import subprocess
 import sys
 
+if os.getuid() == 0:
+    if "CI_JOB_ID" not in os.environ:
+        msg = "Installing Grapejuice as root is not supported"
+        print(msg, file=sys.stderr)
+        raise RuntimeError(msg)
+
 REQUIRED_MAJOR = 3
 REQUIRED_MINOR = 7
 

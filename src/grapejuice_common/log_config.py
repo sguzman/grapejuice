@@ -11,9 +11,12 @@ from grapejuice_common import variables
 
 
 def _strip_pii(s: str):
-    return s \
-        .replace(variables.home(), "~") \
-        .replace(getpass.getuser(), "[REDACTED]")
+    s = s.replace(variables.home(), "~")
+
+    if getpass.getuser().lower() != "root":
+        s = s.replace(getpass.getuser(), "[REDACTED]")
+
+    return s
 
 
 class GrapejuiceLogFormatter(logging.Formatter):
