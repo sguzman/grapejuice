@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+if [ "$USED_INSTALL_PY" == "1" ]; then
+    echo "Script started from install.py, all clear!"
+else
+    echo "Please start the installation by running install.py"
+    echo "If you haven't read the installation guide for Grapejuice yet, please do."
+    echo "https://gitlab.com/brinkervii/grapejuice/-/wikis/home"
+    exit 1
+fi
+
 if [ -z ${GRAPEJUICE_INSTALL_PREFIX+x} ]; then
     echo "GRAPEJUICE_INSTALL_PREFIX is not set, quitting..."
     exit 1

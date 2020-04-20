@@ -41,6 +41,8 @@ def get_install_prefix():
 
 
 def perform_install():
+    os.environ["USED_INSTALL_PY"] = "1"
+
     install_prefix = get_install_prefix()
     assert os.path.exists(install_prefix), f"The install prefix directory '{install_prefix}' does not exist! Please " \
                                            f"create it if you are absolutely sure this is the right path "
