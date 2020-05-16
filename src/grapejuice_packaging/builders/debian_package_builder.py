@@ -197,6 +197,9 @@ class DebianPackageBuilder(LinuxPackageBuilder):
         build.run()
 
     def dist(self):
+        self.clean_dist()
+        self._prepare_dist()
+
         dist = TaskSequence("Create distribution files for debian")
 
         @dist.task("Strip out __pycache__ directories")
