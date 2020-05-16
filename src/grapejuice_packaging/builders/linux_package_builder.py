@@ -61,7 +61,7 @@ def _build_package(root):
 
         desktop_variables = {
             "GRAPEJUICE_ICON": "grapejuice",
-            "GRAPEJUICE_EXECUTABLE": os.path.join(*bin_path_components, grapejuice_exec_name),
+            "GRAPEJUICE_EXECUTABLE": os.path.join(os.path.sep, *bin_path_components, grapejuice_exec_name),
             "PLAYER_ICON": "grapejuice-roblox-player",
             "STUDIO_ICON": "grapejuice-roblox-studio"
         }
