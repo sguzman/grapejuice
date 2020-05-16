@@ -120,6 +120,11 @@ class DebianPackageBuilder(LinuxPackageBuilder):
 
             self._build_dir = build_root
 
+        @build.task("Create debian directory")
+        def create_debian_directory(log):
+            path = Path(self._build_dir, "debian")
+            os.makedirs(path, exist_ok=True)
+
         @build.task("Write compat file")
         def write_compat(log):
             path = Path(self._build_dir, "debian", "compat")
