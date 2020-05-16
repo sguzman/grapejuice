@@ -215,4 +215,14 @@ class DebianPackageBuilder(LinuxPackageBuilder):
                 subprocess.check_call(["debuild", "-uc", "-us"])
                 os.chdir(wd)
 
+        @dist.task("Move distribution files")
+        def move_files(log):
+            for file in Path(self._build_dir).glob("*"):
+                if file.is_file():
+                    src = str(file.absolute())
+                    dst = Path(self._dist_dir, file.name)
+
+                    log.info(f"Moving file {src} -> {dst}")
+                    shutil.move(src, dst)
+
         dist.run()
