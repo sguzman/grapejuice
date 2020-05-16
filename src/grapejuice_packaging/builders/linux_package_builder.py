@@ -22,6 +22,7 @@ class LinuxPackageConfiguration:
     python_site_type: str = "dist_packages"
     python_site_version: str = "python3"
     package_name: str = f"{about.package_name}-{about.package_version}.tar.gz"
+    target_system_root: str = os.path.sep
 
     def __init__(self, root: str):
         self.root = root
@@ -79,7 +80,11 @@ def _build_package(configuration: LinuxPackageConfiguration):
 
         desktop_variables = {
             "GRAPEJUICE_ICON": "grapejuice",
-            "GRAPEJUICE_EXECUTABLE": os.path.join(os.path.sep, *bin_path_components, grapejuice_exec_name),
+            "GRAPEJUICE_EXECUTABLE": os.path.join(
+                configuration.target_system_root,
+                *bin_path_components,
+                grapejuice_exec_name
+            ),
             "PLAYER_ICON": "grapejuice-roblox-player",
             "STUDIO_ICON": "grapejuice-roblox-studio"
         }
@@ -92,6 +97,8 @@ def _build_package(configuration: LinuxPackageConfiguration):
             target_path = xdg_applications.joinpath(file.name)
             with target_path.open("w+") as fp:
                 fp.write(finished_desktop_entry)
+
+            target_path.chmod(0o755)
 
     @build.task("Copy binary entries")
     def copy_bin_scripts(log):

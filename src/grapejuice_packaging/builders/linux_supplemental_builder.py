@@ -1,5 +1,6 @@
 import sys
 
+import grapejuice_common.variables as v
 from grapejuice_packaging.builders.linux_package_builder import LinuxPackageBuilder, LinuxPackageConfiguration
 
 
@@ -10,5 +11,12 @@ class LinuxSupplementalPackageBuilder(LinuxPackageBuilder):
         configuration.python_site_version = f"python{sys.version_info.major}.{sys.version_info.minor}"
         configuration.copy_packages = False
         configuration.level_1_directory = level_1_directory
+        configuration.target_system_root = v.home()
 
         super().__init__(build_dir, dist_dir, configuration)
+
+    def dist(self):
+        self.clean_dist()
+        self._prepare_dist()
+
+        super().dist()
