@@ -4,7 +4,7 @@ grapejuice:test:
     stage: test
     script:
         - export PYTHONPATH=$(pwd)/src
-        - pipenv install --dev --python $(which python3)
+        - pipenv install --dev
         - pipenv run pytest tests
 
 grapejuice:linux_package:
@@ -15,5 +15,5 @@ grapejuice:linux_package:
             - artifacts/
     script:
         - export PYTHONPATH=$(pwd)/src
-        - pipenv install --dev --python $(which python3)
-        - pipenv run python3 -m grapejuice_packaging linux_package --dist-dir artifacts
+        - pipenv install --dev
+        - pipenv run python3 -m grapejuice_packaging linux_package --dist-dir artifacts/linux_package
