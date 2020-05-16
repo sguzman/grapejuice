@@ -3,15 +3,19 @@ import os
 import shutil
 import subprocess
 import sys
+import tarfile
 from pathlib import Path
 from string import Template
 
+import grapejuice.__about__ as about
 import grapejuice_common.variables as v
 import grapejuice_packaging.packaging_resources as res
 from grapejuice_common.task_sequence import TaskSequence
 from grapejuice_packaging.builders.package_builder import PackageBuilder
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+
+LOG = logging.getLogger(__name__)
 
 
 def _build_package(root):
@@ -94,4 +98,24 @@ class LinuxPackageBuilder(PackageBuilder):
         _build_package(self._build_dir)
 
     def dist(self):
-        pass
+        self.clean_dist()
+        self._prepare_dist()
+        path = Path(self._dist_dir, f"{about.package_name}-{about.package_version}.tar.gz")
+
+        with tarfile.open(path, "w:gz") as tar:
+            for file in Path(self._build_dir).rglob("*"):
+                if file.is_dir():
+                    continue
+
+                file_path = str(file.absolute())
+                if "__pycache__" in file_path:
+                    continue
+
+                arc_name = str(file.relative_to(self._build_dir))
+
+                LOG.info(f"Adding to tar.gz: {file_path} -> {arc_name}")
+
+                tar.add(
+                    file_path,
+                    arcname=arc_name
+                )

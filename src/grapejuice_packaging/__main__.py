@@ -12,6 +12,7 @@ def func_linux_package(args):
     builder = LinuxPackageBuilder(build_dir, dist_dir)
 
     builder.build()
+    builder.dist()
 
 
 def main(in_args=None):
