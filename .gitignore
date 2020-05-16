@@ -252,3 +252,4 @@ pip-selfcheck.json
 # End of https://www.gitignore.io/api/python,virtualenv,pycharm+all
 
 !src/grapejuice_packaging/packaging_resources/bin/*
+!scripts/*
