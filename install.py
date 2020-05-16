@@ -77,8 +77,16 @@ def have_py37():
     satisfied = sys.version_info.major >= REQUIRED_MAJOR and sys.version_info.minor >= REQUIRED_MINOR
 
     if not satisfied:
-        err_py37()
-        sys.exit(-1)
+        exit_code = -1
+
+        try:
+            err_py37()
+
+        except Exception as e:
+            exit_code = -2
+            print(e, file=sys.stderr)
+
+        sys.exit(exit_code)
 
     return satisfied
 
