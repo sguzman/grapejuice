@@ -122,14 +122,14 @@ class DebianPackageBuilder(LinuxPackageBuilder):
 
         @build.task("Write compat file")
         def write_compat(log):
-            path = Path(self._build_dir, "compat")
+            path = Path(self._build_dir, "debian", "compat")
 
             with path.open("w+") as fp:
                 fp.write(str(int(DEBHELPER_COMPAT)))
 
         @build.task("Write install file")
         def write_compat(log):
-            path = Path(self._build_dir, "install")
+            path = Path(self._build_dir, "debian", "install")
 
             with path.open("w+") as fp:
                 content = "ROOT/* /\n"
@@ -137,28 +137,28 @@ class DebianPackageBuilder(LinuxPackageBuilder):
 
         @build.task("Write control file")
         def write_control(log):
-            path = Path(self._build_dir, "control")
+            path = Path(self._build_dir, "debian", "control")
 
             with path.open("w+") as fp:
                 fp.write(_fields_to_string(CONTROL_FIELDS))
 
         @build.task("Write copyright file")
         def write_copyright(log):
-            path = Path(self._build_dir, "copyright")
+            path = Path(self._build_dir, "debian", "copyright")
 
             with path.open("w+") as fp:
                 fp.write(_fields_to_string(COPYRIGHT_FIELDS))
 
         @build.task("Write files file")
         def write_files(log):
-            path = Path(self._build_dir, "files")
+            path = Path(self._build_dir, "debian", "files")
 
             with path.open("w+") as fp:
                 fp.write(" ".join([PACKAGE_FILENAME, DEBIAN_SECTION, DEBIAN_PRIORITY]))
 
         @build.task("Write rules file")
         def write_rules(log):
-            path = Path(self._build_dir, "files")
+            path = Path(self._build_dir, "debian", "rules")
 
             with path.open("w+") as fp:
                 fp.write(RULES)
@@ -183,7 +183,7 @@ class DebianPackageBuilder(LinuxPackageBuilder):
             date_str = datetime.now().strftime("%a, %d %b %Y %H:%M:%S") + " +0000"
             lines.append(f" -- {MAINTAINER}  {date_str}\n")
 
-            with open(os.path.join(self._build_dir, "changelog"), "w+") as fp:
+            with open(os.path.join(self._build_dir, "debian", "changelog"), "w+") as fp:
                 fp.writelines(lines)
 
         build.run()
