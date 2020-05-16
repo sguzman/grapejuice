@@ -21,7 +21,7 @@ class LinuxPackageConfiguration:
     root: str = None
     level_1_directory: str = "usr"
     copy_packages: bool = True
-    python_site_type: str = "dist_packages"
+    python_site_type: str = "dist-packages"
     python_site_version: str = "python3"
     package_name: str = f"{about.package_name}-{about.package_version}.tar.gz"
     target_system_root: str = os.path.sep
