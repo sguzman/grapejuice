@@ -120,11 +120,14 @@ class DebianPackageBuilder(LinuxPackageBuilder):
         @build.task("Create the base linux package")
         def create_linux_package(log):
             build_root = self._build_dir
+
             self._build_dir = os.path.join(build_root, "ROOT")
+            self._configuration.root = self._build_dir
 
             super_build()
 
             self._build_dir = build_root
+            self._configuration.root = self._build_dir
 
         @build.task("Create debian directory")
         def create_debian_directory(log):
