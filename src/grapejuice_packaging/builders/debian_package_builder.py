@@ -105,10 +105,13 @@ def _fields_to_string(fields):
 
 
 class DebianPackageBuilder(LinuxPackageBuilder):
+    _package_files_loc: str = None
+
     def build(self):
         self.clean_build()
         self._prepare_build()
 
+        self._package_files_loc = self._build_dir
         self._build_dir = os.path.join(self._build_dir, "pkg")
 
         super_build = super().build
@@ -218,14 +221,15 @@ class DebianPackageBuilder(LinuxPackageBuilder):
                 subprocess.check_call(["debuild", "-uc", "-us"])
                 os.chdir(wd)
 
-        @dist.task("Move distribution files")
-        def move_files(log):
-            for file in Path(self._build_dir).glob("*"):
-                if file.is_file():
-                    src = str(file.absolute())
-                    dst = Path(self._dist_dir, file.name)
+        if self._package_files_loc is not None:
+            @dist.task("Move distribution files")
+            def move_files(log):
+                for file in Path(self._package_files_loc).glob("*"):
+                    if file.is_file():
+                        src = str(file.absolute())
+                        dst = Path(self._dist_dir, file.name)
 
-                    log.info(f"Moving file {src} -> {dst}")
-                    shutil.move(src, dst)
+                        log.info(f"Moving file {src} -> {dst}")
+                        shutil.move(src, dst)
 
         dist.run()
