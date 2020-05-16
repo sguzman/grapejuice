@@ -4,13 +4,6 @@ import subprocess
 from grapejuice_common.errors import NoWineError
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-K_GRAPEJUICE_INSTALL_PREFIX = "GRAPEJUICE_INSTALL_PREFIX"
-K_GRAPEJUICE_IS_PACKAGING = "GRAPEJUICE_IS_PACKAGING"
-K_GRAPEJUICE_PACKAGE_PREFIX = "GRAPEJUICE_PACKAGE_PREFIX"
-
-
-def is_packaging() -> bool:
-    return K_GRAPEJUICE_IS_PACKAGING in os.environ and os.environ[K_GRAPEJUICE_IS_PACKAGING].lower() == "yes"
 
 
 def ensure_dir(p):
@@ -26,19 +19,14 @@ def home():
 
 def system_application_dir():
     p = os.path.dirname(src_dir())
+
     assert os.path.exists(p)
+
     return p
 
 
 def user_application_dir():
     return os.path.join(local_share(), "grapejuice")
-
-
-def packaging_prefix():
-    if is_packaging():
-        return os.environ[K_GRAPEJUICE_PACKAGE_PREFIX]
-
-    return installation_prefix()
 
 
 def assets_dir():
@@ -65,13 +53,6 @@ def mime_xml_assets_dir():
 
 def icons_assets_dir():
     return os.path.join(assets_dir(), "icons")
-
-
-def installation_prefix():
-    if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
-        return os.environ[K_GRAPEJUICE_INSTALL_PREFIX]
-
-    return os.path.dirname(system_application_dir())
 
 
 def src_dir():
@@ -174,22 +155,6 @@ def installer_path():
     return os.path.join(wine_temp(), "Roblox_Installer.exe")
 
 
-def xdg_applications_dir():
-    return os.path.join(local_share(), "applications")
-
-
-def xdg_mime_dir():
-    return os.path.join(local_share(), "mime")
-
-
-def xdg_mime_packages():
-    return os.path.join(xdg_mime_dir(), "packages")
-
-
-def xdg_icons():
-    return os.path.join(local_share(), "icons")
-
-
 def xdg_config_home():
     if "XDG_CONFIG_HOME" in os.environ:
         config_home = os.environ["XDG_CONFIG_HOME"]
@@ -201,6 +166,14 @@ def xdg_config_home():
         os.makedirs(config_home)
 
     return config_home
+
+
+def dot_local():
+    path = os.path.join(home(), ".local")
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    return path
 
 
 def local_share():
@@ -217,17 +190,6 @@ def local_log():
 
 def logging_directory():
     return os.path.join(local_log(), "grapejuice")
-
-
-def dot_local():
-    if is_packaging():
-        return installation_prefix()
-
-    path = os.path.join(home(), ".local")
-    if not os.path.exists(path):
-        os.makedirs(path)
-
-    return path
 
 
 def xdg_documents():
@@ -247,32 +209,6 @@ def git_repository():
 
 def git_wiki():
     return git_repository() + "/-/wikis/home"
-
-
-def git_init_py_url():
-    return git_repository() + "/raw/master/src/grapejuice/__init__.py"
-
-
-def git_zip_download():
-    return git_repository() + "/-/archive/master/grapejuice-master.zip"
-
-
-def tmp_path():
-    d = "grapejuice-{}".format(os.getpid())
-    p = os.path.join("/tmp", d)
-
-    if not os.path.exists(p):
-        os.makedirs(p)
-    else:
-        if not os.path.isdir(p):
-            os.remove(p)
-            os.makedirs(p)
-
-    return p
-
-
-def tmp_zip_path():
-    return os.path.join(tmp_path(), "grapejuice-download.zip")
 
 
 def wine_binary(arch=""):

@@ -3,9 +3,8 @@ import subprocess
 
 from dbus import DBusException
 
-from grapejuice import background, deployment
+from grapejuice import background
 from grapejuice_common import winectrl, robloxctrl, variables
-from grapejuice_common.dist_info import dist_info, DistributionType
 
 
 def install_roblox():
@@ -40,21 +39,6 @@ class InstallRoblox(background.BackgroundTask):
             install_roblox()
         except DBusException:
             pass  # TODO: find a proper fix
-
-        self.finish()
-
-
-class DeployAssociations(background.BackgroundTask):
-    def __init__(self):
-        super().__init__("Deploying associations")
-
-    def run(self) -> None:
-        if dist_info.distribution_type == DistributionType.source:
-            os.environ[variables.K_GRAPEJUICE_INSTALL_PREFIX] = variables.dot_local()
-            deployment.post_install()
-
-        else:
-            self._log.error(f"{DeployAssociations.__name__} is only supported on source distributions")
 
         self.finish()
 

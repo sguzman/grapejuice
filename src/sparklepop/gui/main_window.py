@@ -1,5 +1,5 @@
-from grapejuice_common import WindowBase
 from grapejuice_common import variables
+from grapejuice_common.gtk.gtk_stuff import WindowBase
 from grapejuice_registry.snapshot import Snapshot
 from sparklepop.gui.snapshot_view_model import SnapshotViewModel
 

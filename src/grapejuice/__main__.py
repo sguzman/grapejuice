@@ -1,22 +1,13 @@
 import argparse
-import os
 import random
-import shutil
 import sys
 
 import grapejuice_common.util
-import grapejuice_common.variables as variables
 from grapejuice_common import log_config
 from grapejuice_common.dbus_client import dbus_connection
 from grapejuice_common.gtk import gtk_stuff
 from grapejuice_common.gtk.gtk_stuff import gtk_boot
 from grapejuice_common.log_vacuum import vacuum_logs
-
-
-def on_exit():
-    p = variables.tmp_path()
-    if os.path.exists(p) and os.path.isdir(p):
-        shutil.rmtree(variables.tmp_path())
 
 
 def main_gui():
@@ -33,14 +24,6 @@ def main_gui():
 
 def func_gui(args):
     main_gui()
-
-
-def func_post_install(args):
-    from grapejuice_common import self_test
-    self_test.post.run()
-
-    from grapejuice import deployment
-    deployment.post_install()
 
 
 def func_player(args):
@@ -100,9 +83,6 @@ def main(in_args=None):
 
     parser_gui = subparsers.add_parser("gui")
     parser_gui.set_defaults(func=func_gui)
-
-    parser_post_install = subparsers.add_parser("post_install")
-    parser_post_install.set_defaults(func=func_post_install)
 
     parser_player = subparsers.add_parser("player")
     parser_player.add_argument("uri", type=str, help="Your Roblox token to join a game")

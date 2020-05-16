@@ -1,11 +1,10 @@
 import os
 
 from grapejuice import background
-from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, DeployAssociations, \
-    GraphicsModeOpenGL, SandboxWine, RunRobloxStudio, ExtractFastFlags, OpenLogsDirectory
-from grapejuice.update.update_provider import provider as update_provider
+from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, GraphicsModeOpenGL, SandboxWine, \
+    RunRobloxStudio, ExtractFastFlags, OpenLogsDirectory
 from grapejuice_common import variables, robloxctrl
-from grapejuice_common import winectrl, version
+from grapejuice_common import winectrl
 from grapejuice_common.errors import NoWineError
 from grapejuice_common.event import Event
 from grapejuice_common.gtk.gtk_stuff import WindowBase, dialog
@@ -144,19 +143,6 @@ class MainWindowHandlers:
     def show_wiki(self, *_):
         xdg_open(variables.git_wiki())
 
-    def perform_update(self, *_):
-        dialog("If the Grapejuice upgrade breaks your installation, please redo the Grapejuice installation according "
-               "to the instructions in the Grapejuice git repository. The upgrade will begin after you close this "
-               "dialog.")
-
-        update_provider.do_update()
-
-    def reinstall(self, *_):
-        update_provider.reinstall()
-
-    def deploy_assocs(self, *_):
-        run_task_once(DeployAssociations, generic_already_running)
-
     def launch_sparklepop(self, *_):
         os.spawnlp(os.P_NOWAIT, "python", "python", "-m", "sparklepop")
 
@@ -174,71 +160,10 @@ class MainWindow(WindowBase):
             MainWindowHandlers()
         )
 
-        self.update_status_label.set_text("Checking for updates...")
-        self.update_update_related_buttons()
-        self.update_update_status()
-
         background.tasks.tasks_changed.add_listener(self.on_tasks_changed)
         on_destroy.add_listener(self.before_destroy)
 
         self.on_tasks_changed()
-
-    @property
-    def deploy_associations_button(self):
-        return self.builder.get_object("deploy_associations_button")
-
-    @property
-    def reinstall_button(self):
-        return self.builder.get_object("reinstall_button")
-
-    @property
-    def update_status_label(self):
-        return self.builder.get_object("update_status_label")
-
-    @property
-    def update_button(self):
-        return self.builder.get_object("update_button")
-
-    def update_update_related_buttons(self):
-        if not update_provider.can_update():
-            self.deploy_associations_button.hide()
-            self.reinstall_button.hide()
-
-    def update_update_status(self):
-        w = self
-
-        class CheckUpdates(background.BackgroundTask):
-            def __init__(self):
-                super().__init__("Checking for a newer version of Grapejuice")
-
-            def run(self) -> None:
-                if update_provider.can_update():
-                    if version.update_available():
-                        s = "This version of Grapejuice is out of date\n{} -> {}".format(
-                            str(version.local_version()),
-                            str(version.cached_remote_version)
-                        )
-
-                        w.update_status_label.set_text(s)
-                        w.update_button.show()
-                    else:
-                        local_ver = version.local_version()
-                        if local_ver > version.cached_remote_version:
-                            s = "This version of Grapejuice is from the future\n{}".format(str(local_ver))
-                        else:
-                            s = "Grapejuice is up to date\n{}".format(str(local_ver))
-
-                        w.update_status_label.set_text(s)
-                        w.update_button.hide()
-
-                else:
-                    s = f"Running Grapejuice {version.local_version()}"
-                    w.update_status_label.set_text(s)
-                    w.update_button.hide()
-
-                self.finish()
-
-        background.tasks.add(CheckUpdates())
 
     @property
     def window(self):
