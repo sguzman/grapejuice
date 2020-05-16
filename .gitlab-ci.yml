@@ -4,8 +4,5 @@ grapejuice:test:
     stage: test
     script:
         - export PYTHONPATH=$(pwd)/src
-        - virtualenv -p $(which python3) ./venv
-        - source ./venv/bin/activate
-        - pip install -r requirements.txt
-        - pip install -r dev_requirements.txt
-        - pytest tests
+        - pipenv install --dev
+        - pipenv run pytest tests

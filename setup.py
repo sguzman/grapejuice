@@ -16,9 +16,6 @@ import grapejuice.__about__ as __about__
 with open(readme_path, "r") as fp:
     long_description = fp.read()
 
-with open(requirements_path, "r") as fp:
-    requirements = [r.lstrip().rstrip() for r in fp.readlines()]
-
 setup(
     name="grapejuice",
     author=__about__.author_name,
@@ -43,7 +40,17 @@ setup(
     package_dir={"": "src"},
     include_package_data=True,
     python_requires=">=3.7",
-    install_requires=requirements,
+    install_requires=[
+        "psutil",
+        "pip",
+        "PyGObject",
+        "PyGObject-stubs",
+        "packaging",
+        "wheel",
+        "setuptools",
+        "dbus-python",
+        "requests"
+    ],
     entry_points={
         "console_scripts": [
             "grapejuice=grapejuice.__main__:main",
