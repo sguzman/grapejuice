@@ -17,3 +17,13 @@ grapejuice:linux_package:
         - export PYTHONPATH=$(pwd)/src
         - pipenv install --dev
         - pipenv run python3 -m grapejuice_packaging linux_package --dist-dir artifacts/linux_package
+
+grapejuice:debian_package:
+    stage: deploy
+    artifacts:
+        expire_in: 30 days
+        paths:
+            - artifacts/
+    script:
+        - export PYTHONPATH=$(pwd)/src
+        - python3 -m grapejuice_packaging debian_package --dist-dir artifacts/debian_package
