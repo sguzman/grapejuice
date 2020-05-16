@@ -8,7 +8,7 @@ grapejuice:test:
         - pipenv run pytest tests
 
 grapejuice:test_local_installation:
-    stage:test
+    stage: test
     script:
         - ./install.py
 
