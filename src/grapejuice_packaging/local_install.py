@@ -41,7 +41,8 @@ def _do_install(*_):
     def install_package(log):
         subprocess.check_call([
             "python3", "-m", "pip",
-            "install", "."
+            "install", ".",
+            "--user"
         ])
 
     install.run()
