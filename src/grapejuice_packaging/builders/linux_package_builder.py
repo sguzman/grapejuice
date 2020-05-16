@@ -15,12 +15,12 @@ logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 
 def _build_package(root):
-    build_sequence = TaskSequence("Build Linux Package")
+    build = TaskSequence("Build Linux Package")
 
     bin_path_components = ["usr", "bin"]
     grapejuice_exec_name = "grapejuice"
 
-    @build_sequence.task("Copy packages to site")
+    @build.task("Copy packages to site")
     def copy_packages(log):
         python_site = Path(root, "usr", "lib", "python3", "dist-packages")
         log.info(f"Using site directory: {python_site}")
@@ -33,7 +33,7 @@ def _build_package(root):
             "--target", str(python_site)
         ])
 
-    @build_sequence.task("Copy MIME files")
+    @build.task("Copy MIME files")
     def mime_files(log):
         mime_packages = Path(root, "usr", "share", "mime", "packages")
         log.info(f"Using mime packages directory: {mime_packages}")
@@ -42,14 +42,14 @@ def _build_package(root):
         for file in Path(v.mime_xml_assets_dir()).rglob("*.xml"):
             shutil.copyfile(str(file.absolute()), mime_packages.joinpath(file.name))
 
-    @build_sequence.task("Copy icons")
+    @build.task("Copy icons")
     def copy_icons(log):
         icons = Path(root, "usr", "share", "icons")
         log.info(f"Using icons directory: {icons}")
 
         shutil.copytree(v.icons_assets_dir(), icons)
 
-    @build_sequence.task("Copy desktop entries")
+    @build.task("Copy desktop entries")
     def copy_desktop_files(log):
         xdg_applications = Path(root, "usr", "share", "applications")
         log.info(f"Using XDG applications directory: {xdg_applications}")
@@ -71,7 +71,7 @@ def _build_package(root):
             with target_path.open("w+") as fp:
                 fp.write(finished_desktop_entry)
 
-    @build_sequence.task("Copy binary entries")
+    @build.task("Copy binary entries")
     def copy_bin_scripts(log):
         usr_bin = Path(root, *bin_path_components)
         log.info(f"Using bin directory: {usr_bin}")
@@ -83,7 +83,7 @@ def _build_package(root):
         for file in usr_bin.rglob("*"):
             file.chmod(0o755)
 
-    build_sequence.run()
+    build.run()
 
 
 class LinuxPackageBuilder(PackageBuilder):
