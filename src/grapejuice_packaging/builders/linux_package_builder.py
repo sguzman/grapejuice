@@ -15,44 +15,65 @@ from grapejuice_packaging.builders.package_builder import PackageBuilder
 LOG = logging.getLogger(__name__)
 
 
-def _build_package(root):
+class LinuxPackageConfiguration:
+    root: str = None
+    level_1_directory: str = "usr"
+    copy_packages: bool = True
+    python_site_type: str = "dist_packages"
+    python_site_version: str = "python3"
+    package_name: str = f"{about.package_name}-{about.package_version}.tar.gz"
+
+    def __init__(self, root: str):
+        self.root = root
+
+
+def _build_package(configuration: LinuxPackageConfiguration):
+    root = configuration.root
     build = TaskSequence("Build Linux Package")
 
-    bin_path_components = ["usr", "bin"]
+    bin_path_components = [configuration.level_1_directory, "bin"]
     grapejuice_exec_name = "grapejuice"
 
-    @build.task("Copy packages to site")
-    def copy_packages(log):
-        python_site = Path(root, "usr", "lib", "python3", "dist-packages")
-        log.info(f"Using site directory: {python_site}")
-        os.makedirs(python_site, exist_ok=True)
+    if configuration.copy_packages:
+        @build.task("Copy packages to site")
+        def copy_packages(log):
+            python_site = Path(
+                root,
+                configuration.level_1_directory,
+                "lib",
+                configuration.python_site_version,
+                configuration.python_site_type
+            )
 
-        subprocess.check_call([
-            "python3", "-m", "pip",
-            "install", ".",
-            "--no-dependencies",
-            "--target", str(python_site)
-        ])
+            log.info(f"Using site directory: {python_site}")
+            os.makedirs(python_site, exist_ok=True)
+
+            subprocess.check_call([
+                "python3", "-m", "pip",
+                "install", ".",
+                "--no-dependencies",
+                "--target", str(python_site)
+            ])
 
     @build.task("Copy MIME files")
     def mime_files(log):
-        mime_packages = Path(root, "usr", "share", "mime", "packages")
+        mime_packages = Path(root, configuration.level_1_directory, "share", "mime", "packages")
         log.info(f"Using mime packages directory: {mime_packages}")
         os.makedirs(mime_packages, exist_ok=True)
 
-        for file in Path(v.mime_xml_assets_dir()).rglob("*.xml"):
+        for file in Path(v.mime_xml_assets_dir()).glob("*.xml"):
             shutil.copyfile(str(file.absolute()), mime_packages.joinpath(file.name))
 
     @build.task("Copy icons")
     def copy_icons(log):
-        icons = Path(root, "usr", "share", "icons")
+        icons = Path(root, configuration.level_1_directory, "share", "icons")
         log.info(f"Using icons directory: {icons}")
 
         shutil.copytree(v.icons_assets_dir(), icons)
 
     @build.task("Copy desktop entries")
     def copy_desktop_files(log):
-        xdg_applications = Path(root, "usr", "share", "applications")
+        xdg_applications = Path(root, configuration.level_1_directory, "share", "applications")
         log.info(f"Using XDG applications directory: {xdg_applications}")
         os.makedirs(xdg_applications, exist_ok=True)
 
@@ -63,7 +84,7 @@ def _build_package(root):
             "STUDIO_ICON": "grapejuice-roblox-studio"
         }
 
-        for file in Path(v.desktop_assets_dir()).rglob("*.desktop"):
+        for file in Path(v.desktop_assets_dir()).glob("*.desktop"):
             with file.open("r") as fp:
                 template = Template(fp.read())
                 finished_desktop_entry = template.substitute(desktop_variables)
@@ -81,23 +102,30 @@ def _build_package(root):
         shutil.copyfile(res.bin_grapejuice_path(), usr_bin.joinpath(grapejuice_exec_name))
         shutil.copyfile(res.bin_grapejuiced_path(), usr_bin.joinpath("grapejuiced"))
 
-        for file in usr_bin.rglob("*"):
+        for file in usr_bin.glob("*"):
             file.chmod(0o755)
 
     build.run()
 
 
 class LinuxPackageBuilder(PackageBuilder):
+    def __init__(self, build_dir, dist_dir, configuration: LinuxPackageConfiguration = None):
+
+        super().__init__(build_dir, dist_dir)
+
+        self._configuration: LinuxPackageConfiguration = \
+            configuration or LinuxPackageConfiguration(self._build_dir)
+
     def build(self):
         self.clean_build()
         self._prepare_build()
 
-        _build_package(self._build_dir)
+        _build_package(self._configuration)
 
     def dist(self):
         self.clean_dist()
         self._prepare_dist()
-        path = Path(self._dist_dir, f"{about.package_name}-{about.package_version}.tar.gz")
+        path = Path(self._dist_dir, self._configuration.package_name)
 
         with tarfile.open(path, "w:gz") as tar:
             for file in Path(self._build_dir).rglob("*"):

@@ -5,6 +5,7 @@ import sys
 
 from grapejuice_packaging.builders.debian_package_builder import DebianPackageBuilder
 from grapejuice_packaging.builders.linux_package_builder import LinuxPackageBuilder
+from grapejuice_packaging.builders.linux_supplemental_builder import LinuxSupplementalPackageBuilder
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -29,6 +30,16 @@ def func_debian_package(args):
     builder.dist()
 
 
+def func_supplemental_package(args):
+    build_dir = os.path.join(".", "build", "supplemental_package") if args.build_dir is None else args.build_dir
+    dist_dir = os.path.join(".", "dist", "supplemental_package") if args.dist_dir is None else args.dist_dir
+
+    builder = LinuxSupplementalPackageBuilder(build_dir, dist_dir)
+
+    builder.build()
+    builder.dist()
+
+
 def main(in_args=None):
     if in_args is None:
         in_args = sys.argv
@@ -45,6 +56,11 @@ def main(in_args=None):
     parser_debian_package.add_argument("--build-dir", required=False)
     parser_debian_package.add_argument("--dist-dir", required=False)
     parser_debian_package.set_defaults(func=func_debian_package)
+
+    parser_supplemental_package = subparsers.add_parser("supplemental_package")
+    parser_supplemental_package.add_argument("--build-dir", required=False)
+    parser_supplemental_package.add_argument("--dist-dir", required=False)
+    parser_supplemental_package.set_defaults(func=func_supplemental_package)
 
     args = parser.parse_args(in_args[1:])
 
