@@ -32,7 +32,7 @@ def _do_install(*_):
     @install.task("Install supplemental packages")
     def install_supplemental_packages(log):
         for file in Path("dist", "supplemental_package").glob("*.tar.gz"):
-            log.info(f"Installing supplemental package {log}")
+            log.info(f"Installing supplemental package {file}")
 
             with tarfile.open(file) as tar:
                 tar.extractall(v.home())
