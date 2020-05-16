@@ -1,8 +1,11 @@
 import argparse
+import logging
 import os
 import sys
 
 from grapejuice_packaging.builders.linux_package_builder import LinuxPackageBuilder
+
+logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 
 def func_linux_package(args):

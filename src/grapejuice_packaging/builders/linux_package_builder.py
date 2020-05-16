@@ -2,7 +2,6 @@ import logging
 import os
 import shutil
 import subprocess
-import sys
 import tarfile
 from pathlib import Path
 from string import Template
@@ -12,8 +11,6 @@ import grapejuice_common.variables as v
 import grapejuice_packaging.packaging_resources as res
 from grapejuice_common.task_sequence import TaskSequence
 from grapejuice_packaging.builders.package_builder import PackageBuilder
-
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 LOG = logging.getLogger(__name__)
 
