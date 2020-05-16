@@ -4,5 +4,5 @@ grapejuice:test:
     stage: test
     script:
         - export PYTHONPATH=$(pwd)/src
-        - pipenv install --dev
+        - pipenv install --dev --python $(which python3)
         - pipenv run pytest tests
