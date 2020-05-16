@@ -109,6 +109,8 @@ class DebianPackageBuilder(LinuxPackageBuilder):
         self.clean_build()
         self._prepare_build()
 
+        self._build_dir = os.path.join(self._build_dir, "pkg")
+
         super_build = super().build
         build = TaskSequence("Build Debian Package")
 
