@@ -17,6 +17,9 @@ logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 def _build_package(root):
     build_sequence = TaskSequence("Build Linux Package")
 
+    bin_path_components = ["usr", "bin"]
+    grapejuice_exec_name = "grapejuice"
+
     @build_sequence.task("Copy packages to site")
     def copy_packages(log):
         python_site = Path(root, "usr", "lib", "python3", "dist-packages")
@@ -54,7 +57,7 @@ def _build_package(root):
 
         desktop_variables = {
             "GRAPEJUICE_ICON": "grapejuice",
-            "GRAPEJUICE_EXECUTABLE": "/usr/bin/grapejuice",
+            "GRAPEJUICE_EXECUTABLE": os.path.join(*bin_path_components, grapejuice_exec_name),
             "PLAYER_ICON": "grapejuice-roblox-player",
             "STUDIO_ICON": "grapejuice-roblox-studio"
         }
@@ -70,12 +73,15 @@ def _build_package(root):
 
     @build_sequence.task("Copy binary entries")
     def copy_bin_scripts(log):
-        usr_bin = Path(root, "usr", "bin")
+        usr_bin = Path(root, *bin_path_components)
         log.info(f"Using bin directory: {usr_bin}")
         os.makedirs(usr_bin, exist_ok=True)
 
-        shutil.copyfile(res.bin_grapejuice_path(), usr_bin.joinpath("grapejuice"))
+        shutil.copyfile(res.bin_grapejuice_path(), usr_bin.joinpath(grapejuice_exec_name))
         shutil.copyfile(res.bin_grapejuiced_path(), usr_bin.joinpath("grapejuiced"))
+
+        for file in usr_bin.rglob("*"):
+            file.chmod(0o755)
 
     build_sequence.run()
 
