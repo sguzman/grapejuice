@@ -195,7 +195,7 @@ class DebianPackageBuilder(LinuxPackageBuilder):
             wd = os.getcwd()
 
             @dist.task("Create package file")
-            def create_package():
+            def create_package(log):
                 os.chdir(self._build_dir)
                 subprocess.check_call(["debuild", "-uc", "-us"])
                 os.chdir(wd)
