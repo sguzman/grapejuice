@@ -100,8 +100,11 @@ def main(in_args=None):
     parser_studio.set_defaults(func=func_studio)
 
     args = parser.parse_args(in_args[1:])
+
     if hasattr(args, "func"):
-        return args.func(args)
+        f: callable = args.func
+        return f(args) or 0
+
     else:
         parser.print_help()
 
@@ -109,4 +112,4 @@ def main(in_args=None):
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
