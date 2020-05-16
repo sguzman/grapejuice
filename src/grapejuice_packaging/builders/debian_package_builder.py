@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -195,6 +196,13 @@ class DebianPackageBuilder(LinuxPackageBuilder):
 
     def dist(self):
         dist = TaskSequence("Create distribution files for debian")
+
+        @dist.task("Strip out __pycache__ directories")
+        def strip_py_cache(log):
+            for directory in Path(self._build_dir).rglob("__pycache__"):
+                if directory.is_dir():
+                    log.info(f"Removing {directory}")
+                    shutil.rmtree(directory, ignore_errors=True)
 
         if is_debian():
             wd = os.getcwd()
