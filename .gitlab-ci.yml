@@ -6,3 +6,14 @@ grapejuice:test:
         - export PYTHONPATH=$(pwd)/src
         - pipenv install --dev --python $(which python3)
         - pipenv run pytest tests
+
+grapejuice:linux_package:
+    stage: deploy
+    artifacts:
+        expire_in: 30 days
+        paths:
+            - artifacts/
+    script:
+        - export PYTHONPATH=$(pwd)/src
+        - pipenv install --dev --python $(which python3)
+        - pipenv run python3 -m grapejuice_packaging linux_package --dist-dir artifacts
