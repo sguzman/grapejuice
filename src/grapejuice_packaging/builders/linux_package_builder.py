@@ -1,8 +1,10 @@
+import json
 import logging
 import os
 import shutil
 import subprocess
 import tarfile
+from io import BytesIO
 from pathlib import Path
 from string import Template
 
@@ -134,6 +136,13 @@ class LinuxPackageBuilder(PackageBuilder):
         self._prepare_dist()
         path = Path(self._dist_dir, self._configuration.package_name)
 
+        manifest = {
+            "package": about.package_name,
+            "package_version": about.package_version,
+            "author": f"{about.author_name} <{about.author_email}>",
+            "files": []
+        }
+
         with tarfile.open(path, "w:gz") as tar:
             for file in Path(self._build_dir).rglob("*"):
                 if file.is_dir():
@@ -144,6 +153,7 @@ class LinuxPackageBuilder(PackageBuilder):
                     continue
 
                 arc_name = str(file.relative_to(self._build_dir))
+                manifest["files"].append(arc_name)
 
                 LOG.info(f"Adding to tar.gz: {file_path} -> {arc_name}")
 
@@ -151,3 +161,18 @@ class LinuxPackageBuilder(PackageBuilder):
                     file_path,
                     arcname=arc_name
                 )
+
+            manifest_string = json.dumps(manifest).encode("UTF-8")
+            manifest_info = tarfile.TarInfo(name="/".join([
+                self._configuration.level_1_directory,
+                "share",
+                "grapejuice",
+                "package_manifest.json"
+            ]))
+            manifest_info.size = len(manifest_string)
+
+            buf = BytesIO()
+            buf.write(manifest_string)
+            buf.seek(0)
+
+            tar.addfile(tarinfo=manifest_info, fileobj=buf)
