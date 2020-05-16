@@ -41,31 +41,34 @@ def have_zenity():
 
 
 def err_zenity(title, message):
-    import os
-
-    os.spawnlp(os.P_WAIT, "zenity", "zenity", "--error", title, "--no-wrap", "--text={}".format(message))
+    subprocess.call(["zenity", "--error", title, "--no-wrap", "--text={}".format(message)])
 
 
 def err_desperation(message):
-    import os
-
-    os.spawnlp(os.P_WAIT, "xmessage", "xmessage", message)
+    subprocess.call(["xmessage", message])
 
 
 def show_err(title, message):
     if have_tkinter():
         err_tkinter(title, message)
+
     elif have_zenity():
         err_zenity(title, message)
+
     else:
         err_desperation(message)
 
 
 def err_py37():
     import sys
+
+    ver = f"{REQUIRED_MAJOR}.{REQUIRED_MINOR}"
+
     show_err("Out of date",
-             "Your current version of python is out of date and therefore Grapejuice cannot be installed. Python 3.7 "
-             "is required.Check the Grapejuice source repository for new installation instructions.\n\nYou have:\n" + sys.version)
+             f"Your current version of python is out of date and therefore Grapejuice cannot be installed.\n\n"
+             f"Python {ver} is required. Check the Grapejuice source repository for the installation instructions.\n\n"
+             f"You have:\n{sys.version}"
+             )
 
 
 def have_py37():
