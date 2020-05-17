@@ -4,8 +4,8 @@ import time
 
 from dbus import DBusException
 
-import grapejuice_common.dbus_config as dbus_config
-from grapejuice_common.pid_file import daemon_pid_file
+import grapejuice_common.ipc.dbus_config as dbus_config
+from grapejuice_common.ipc.pid_file import daemon_pid_file
 
 LOG = logging.getLogger(__name__)
 

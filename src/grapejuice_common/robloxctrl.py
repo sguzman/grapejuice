@@ -4,7 +4,7 @@ import time
 
 import grapejuice_common.variables as variables
 import grapejuice_common.winectrl as winectrl
-from grapejuice_common.log_util import log_function
+from grapejuice_common.logs.log_util import log_function
 from grapejuice_common.util import download_file
 
 DOWNLOAD_URL = "https://www.roblox.com/install/setup.ashx"

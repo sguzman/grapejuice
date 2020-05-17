@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 import grapejuice.__about__ as about
-from grapejuice_common.task_sequence import TaskSequence
+from grapejuice_common.util.task_sequence import TaskSequence
 from grapejuice_packaging.builders.linux_package_builder import LinuxPackageBuilder
 from grapejuice_packaging.util.distribution_detect import is_debian
 

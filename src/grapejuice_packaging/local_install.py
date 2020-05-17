@@ -6,7 +6,7 @@ from pathlib import Path
 from setuptools import Command
 
 import grapejuice_common.variables as v
-from grapejuice_common.task_sequence import TaskSequence
+from grapejuice_common.util.task_sequence import TaskSequence
 
 ROBLOX_STUDIO = "roblox-studio.desktop"
 ROBLOX_PLAYER = "roblox-player.desktop"

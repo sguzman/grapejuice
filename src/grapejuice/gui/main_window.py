@@ -5,10 +5,10 @@ from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, Install
     RunRobloxStudio, ExtractFastFlags, OpenLogsDirectory
 from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl
-from grapejuice_common.errors import NoWineError
-from grapejuice_common.event import Event
+from grapejuice_common.features.settings import settings
 from grapejuice_common.gtk.gtk_stuff import WindowBase, dialog
-from grapejuice_common.settings import settings
+from grapejuice_common.util.errors import NoWineError
+from grapejuice_common.util.event import Event
 from grapejuice_common.winectrl import wine_ok
 
 on_destroy = Event()

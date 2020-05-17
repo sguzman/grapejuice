@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from grapejuice_common.errors import NoWineError
+from grapejuice_common.util.errors import NoWineError
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 

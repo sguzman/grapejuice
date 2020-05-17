@@ -5,7 +5,7 @@ import os
 # Since part of the self-test is importing all project dependencies, Gtk gets imported.
 # Gtk will cache sys.argv[0] and use this to display in the activities window.
 # SO VERY IMPORTANT: MAKE SURE sys.arg[0] is hacked BEFORE Gtk is imported!
-from grapejuice_common.task_sequence import TaskSequence, TaskError
+from grapejuice_common.util.task_sequence import TaskSequence, TaskError
 
 post = TaskSequence("Power On Self Test")
 

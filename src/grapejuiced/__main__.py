@@ -2,8 +2,8 @@ import argparse
 import signal
 import sys
 
-from grapejuice_common import log_config, self_test
-from grapejuice_common.pid_file import PIDFile, daemon_pid_file
+from grapejuice_common.logs import self_test, log_config
+from grapejuice_common.ipc.pid_file import PIDFile, daemon_pid_file
 
 
 def spawn(pid_file: PIDFile):

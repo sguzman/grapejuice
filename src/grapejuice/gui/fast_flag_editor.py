@@ -5,10 +5,10 @@ from gi.repository import Gtk
 
 from grapejuice_common import robloxctrl
 from grapejuice_common import variables
-from grapejuice_common.fast_flags import FastFlagList, FastFlag
+from grapejuice_common.features.fast_flags import FastFlagList, FastFlag
 from grapejuice_common.gtk.GtkPaginator import GtkPaginator
 from grapejuice_common.gtk.gtk_stuff import WindowBase
-from grapejuice_common.paginator import Paginator
+from grapejuice_common.util.paginator import Paginator
 
 
 class WidgetStuff:

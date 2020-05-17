@@ -2,7 +2,7 @@ import dbus
 from dbus.mainloop.glib import DBusGMainLoop
 from gi.repository import GLib
 
-from grapejuice_common.dbus_config import bus_path
+from grapejuice_common.ipc.dbus_config import bus_path
 from grapejuiced.dbus_service import DBusService
 
 

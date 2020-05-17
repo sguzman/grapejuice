@@ -8,7 +8,7 @@ from grapejuice_common import winectrl, robloxctrl, variables
 
 
 def install_roblox():
-    from grapejuice_common.dbus_client import dbus_connection
+    from grapejuice_common.ipc.dbus_client import dbus_connection
     dbus_connection().install_roblox()
 
 
@@ -66,7 +66,7 @@ class RunRobloxStudio(background.BackgroundTask):
         super().__init__("Launching Roblox Studio")
 
     def run(self) -> None:
-        from grapejuice_common.dbus_client import dbus_connection
+        from grapejuice_common.ipc.dbus_client import dbus_connection
         dbus_connection().launch_studio()
         self.finish()
 
@@ -77,7 +77,7 @@ class ExtractFastFlags(background.BackgroundTask):
 
     def run(self) -> None:
         try:
-            from grapejuice_common.dbus_client import dbus_connection
+            from grapejuice_common.ipc.dbus_client import dbus_connection
             dbus_connection().extract_fast_flags()
 
         except DBusException:

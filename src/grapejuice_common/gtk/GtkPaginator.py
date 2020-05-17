@@ -1,5 +1,5 @@
 from grapejuice_common.gtk.grapejuice_component import GrapejuiceComponent
-from grapejuice_common.paginator import Paginator
+from grapejuice_common.util.paginator import Paginator
 
 
 class GtkPaginator(GrapejuiceComponent):

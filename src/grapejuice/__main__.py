@@ -3,16 +3,16 @@ import random
 import sys
 
 import grapejuice_common.util
-from grapejuice_common import log_config
-from grapejuice_common.dbus_client import dbus_connection
+from grapejuice_common.ipc.dbus_client import dbus_connection
 from grapejuice_common.gtk import gtk_stuff
 from grapejuice_common.gtk.gtk_stuff import gtk_boot
-from grapejuice_common.log_vacuum import vacuum_logs
+from grapejuice_common.logs import log_config
+from grapejuice_common.logs.log_vacuum import vacuum_logs
 
 
 def main_gui():
     def make_main_window():
-        from grapejuice_common import self_test
+        from grapejuice_common.logs import self_test
         self_test.post.run()
 
         from grapejuice.gui.main_window import MainWindow
@@ -28,7 +28,7 @@ def func_gui(args):
 
 def func_player(args):
     def player_main():
-        from grapejuice_common.settings import settings
+        from grapejuice_common.features.settings import settings
 
         if settings.n_player_dialogs_remain > 0:
             settings.n_player_dialogs_remain = settings.n_player_dialogs_remain - 1
@@ -65,7 +65,7 @@ def func_studio(args):
 def main(in_args=None):
     log_config.configure_logging("grapejuice")
 
-    from grapejuice_common.settings import settings
+    from grapejuice_common.features.settings import settings
     vacuum_logs()
 
     if settings:

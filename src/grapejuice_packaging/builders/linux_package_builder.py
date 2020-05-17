@@ -11,7 +11,7 @@ from string import Template
 import grapejuice.__about__ as about
 import grapejuice_common.variables as v
 import grapejuice_packaging.packaging_resources as res
-from grapejuice_common.task_sequence import TaskSequence
+from grapejuice_common.util.task_sequence import TaskSequence
 from grapejuice_packaging.builders.package_builder import PackageBuilder
 
 LOG = logging.getLogger(__name__)

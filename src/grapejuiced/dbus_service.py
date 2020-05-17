@@ -3,7 +3,7 @@ import subprocess
 import dbus.service
 
 from grapejuice_common import variables
-from grapejuice_common.dbus_config import bus_name
+from grapejuice_common.ipc.dbus_config import bus_name
 from grapejuiced.__init__ import __version__
 
 

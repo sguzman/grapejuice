@@ -1,6 +1,6 @@
 import math
 
-from grapejuice_common.event import Event
+from grapejuice_common.util.event import Event
 
 
 class Paginator:
