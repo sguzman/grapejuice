@@ -8,6 +8,20 @@ from setuptools import Command
 import grapejuice_common.variables as v
 from grapejuice_common.task_sequence import TaskSequence
 
+ROBLOX_STUDIO = "roblox-studio.desktop"
+ROBLOX_PLAYER = "roblox-player.desktop"
+
+MIME = {
+    "x-scheme-handler/roblox-studio": ROBLOX_STUDIO,
+    "x-scheme-handler/roblox-player": ROBLOX_PLAYER,
+    "application/x-roblox-rbxl": ROBLOX_STUDIO,
+    "application/x-roblox-rbxlx": ROBLOX_STUDIO
+}
+
+
+def _xdg_mime_default(desktop_entry: str, mime: str):
+    subprocess.check_call(["xdg-mime", "default", desktop_entry, mime])
+
 
 def _do_install(*_):
     assert os.path.exists("pyproject.toml"), \
@@ -44,6 +58,23 @@ def _do_install(*_):
             "install", ".",
             "--user"
         ])
+
+    @install.task("Updating MIME type associations")
+    def update_mime_associations(log):
+        for mime, desktop in MIME.items():
+            log.info(f"Associating {mime} with {desktop}")
+            _xdg_mime_default(desktop, mime)
+
+    @install.task("Updating MIME database")
+    def update_mime_database(log):
+        path = Path(v.home(), ".local", "share", "mime")
+        log.info(f"Updating MIME database: {path}")
+
+        subprocess.check_call(["update-mime-database", str(path.absolute())])
+
+    @install.task("Updating GTK icon cache")
+    def update_icon_cache(log):
+        subprocess.check_call(["gtk-update-icon-cache"])
 
     install.run()
 
