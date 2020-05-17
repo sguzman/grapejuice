@@ -36,6 +36,14 @@ def _do_install(*_):
 
     install = TaskSequence("Install Grapejuice locally")
 
+    @install.task("Kill Grapejuice daemon, if running")
+    def kill_daemon(log):
+        try:
+            subprocess.call(["python3", "-m", "grapejuiced", "kill"])
+
+        except subprocess.CalledProcessError:
+            pass
+
     @install.task("Build package of supplemental files")
     def build_supplemental(log):
         subprocess.check_call([
