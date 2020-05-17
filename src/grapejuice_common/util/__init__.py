@@ -1,7 +1,5 @@
 import os
 
-import requests
-
 
 def prepare_uri(uri):
     if uri is None:
@@ -18,6 +16,8 @@ def prepare_uri(uri):
 
 
 def download_file(url, target_path):
+    import requests
+
     response = requests.get(url)
     assert 199 < response.status_code < 300, f"Got status {response.status_code} for {url}"
 
