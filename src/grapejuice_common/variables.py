@@ -1,9 +1,12 @@
 import os
 import subprocess
+import uuid
+from pathlib import Path
 
 from grapejuice_common.util.errors import NoWineError
 
 HERE = os.path.abspath(os.path.dirname(__file__))
+INSTANCE_ID = str(uuid.uuid4())
 
 
 def ensure_dir(p):
@@ -208,7 +211,20 @@ def git_repository():
 
 
 def git_wiki():
-    return git_repository() + "/-/wikis/home"
+    return f"{git_repository()}/-/wikis/home"
+
+
+def git_grapejuice_init():
+    return f"{git_repository()}/-/raw/master/src/grapejuice/__init__.py"
+
+
+def git_source_tarball():
+    return f"{git_repository()}/-/archive/master/grapejuice-master.tar.gz"
+
+
+def tmp_path():
+    path = Path(os.path.sep, "tmp", f"grapejuice-{INSTANCE_ID}")
+    return ensure_dir(str(path.absolute()))
 
 
 def wine_binary(arch=""):
