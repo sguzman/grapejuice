@@ -1,17 +1,22 @@
-# Grapejuice
+<header align="center">
+    <img src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" />
+    <h1>Grapejuice</h1>
+</header>
+
+⚠️ A lot of people assume that the Roblox game client will work. To be extremely clear, **Roblox player does NOT work**
+ Only Roblox Studio Works. ⚠️
+
 Since recent releases of Wine, Roblox Studio has started being able to run under it once again.
 Installing an managing Roblox under Wine can be quite the hassle as Wine itself can create a mess and binding protocol
 uri's are not supported by default. Grapejuice aims to address these problems and make Roblox easy to get setup op Linux.
 
 Please note that this project is highly experimental, not everything will work perfectly.
 
-## Installation
+## Installing Grapejuice from source
 
-Installation differs per distributions, please follow the appropriate installation guide for yours.
+Installing from source differs per distributions, please follow the appropriate installation guide for yours.
 All the installation guides can be found in the [Grapejuice Wiki](https://gitlab.com/brinkervii/grapejuice/wikis/home)
 
-I recommend that after installing roblox, you change the rendering method to OpenGL instead of the default. You can find
-this setting under Settings -> Rendering in the Roblox Studio menu.
 
 ## Troubleshooting
 
