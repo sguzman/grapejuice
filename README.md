@@ -1,5 +1,5 @@
-<header align="center">
-    <img src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" />
+<header style="text-align: center">
+    <img src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" height="128" />
     <h1>Grapejuice</h1>
 </header>
 
