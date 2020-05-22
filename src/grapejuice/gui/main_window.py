@@ -165,6 +165,13 @@ class MainWindowHandlers:
         self._updating = True
         background.tasks.add(PerformUpdate(update_provider, reopen=True))
 
+    def reinstall_grapejuice(self, *_):
+        if self._updating:
+            return
+
+        self._updating = True
+        background.tasks.add(PerformUpdate(update_provider, reopen=True))
+
 
 class MainWindow(WindowBase):
     def __init__(self):
@@ -178,6 +185,12 @@ class MainWindow(WindowBase):
 
         self.on_tasks_changed()
         self.set_update_status_visibility(False)
+
+        if update_provider.can_update():
+            self.reinstall_grapejuice_button.show()
+
+        else:
+            self.reinstall_grapejuice_button.hide()
 
         self.perform_update_check()
 
@@ -200,6 +213,10 @@ class MainWindow(WindowBase):
     @property
     def update_button(self):
         return self.builder.get_object("update_button")
+
+    @property
+    def reinstall_grapejuice_button(self):
+        return self.builder.get_object("reinstall_grapejuice_button")
 
     def set_update_status_visibility(self, visible: bool, ignore_elements: Iterable = None):
         for element in (self.update_status_label, self.update_button, self.update_status):

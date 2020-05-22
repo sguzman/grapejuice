@@ -359,13 +359,14 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="reinstall_grapejuice_button">
                     <property name="label" translatable="yes">Reinstall Grapejuice</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="image">icon_reinstall</property>
                     <property name="image_position">top</property>
+                    <signal name="clicked" handler="reinstall_grapejuice" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
