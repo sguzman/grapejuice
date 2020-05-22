@@ -6,6 +6,7 @@ import sys
 from grapejuice_packaging.builders.debian_package_builder import DebianPackageBuilder
 from grapejuice_packaging.builders.linux_package_builder import LinuxPackageBuilder
 from grapejuice_packaging.builders.linux_supplemental_builder import LinuxSupplementalPackageBuilder
+from grapejuice_packaging.builders.pypi_package_builder import PyPiPackageBuilder
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -40,6 +41,12 @@ def func_supplemental_package(args):
     builder.dist()
 
 
+def func_pypi_package(args):
+    builder = PyPiPackageBuilder("build", "dist")
+    builder.build()
+    builder.dist()
+
+
 def main(in_args=None):
     if in_args is None:
         in_args = sys.argv
@@ -61,6 +68,9 @@ def main(in_args=None):
     parser_supplemental_package.add_argument("--build-dir", required=False)
     parser_supplemental_package.add_argument("--dist-dir", required=False)
     parser_supplemental_package.set_defaults(func=func_supplemental_package)
+
+    parser_pypi_package = subparsers.add_parser("pypi_package")
+    parser_pypi_package.set_defaults(func=func_pypi_package)
 
     args = parser.parse_args(in_args[1:])
 
