@@ -163,6 +163,11 @@ class MainWindowHandlers:
             return
 
         self._updating = True
+
+        dialog("If the Grapejuice upgrade breaks your installation, please redo the Grapejuice installation according "
+               "to the instructions in the Grapejuice git repository. The upgrade will begin after you close this "
+               "dialog.")
+
         background.tasks.add(PerformUpdate(update_provider, reopen=True))
 
     def reinstall_grapejuice(self, *_):
