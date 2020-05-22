@@ -1,10 +1,12 @@
-<header style="text-align: center">
+<div style="display:block; width: 100%; text-align: center !important;">
     <img src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" height="128" />
     <h1>Grapejuice</h1>
-</header>
+</div>
 
 ⚠️ A lot of people assume that the Roblox game client will work. To be extremely clear, **Roblox player does NOT work**
- Only Roblox Studio Works. ⚠️
+ Only Roblox Studio Works.
+
+---
 
 Since recent releases of Wine, Roblox Studio has started being able to run under it once again.
 Installing an managing Roblox under Wine can be quite the hassle as Wine itself can create a mess and binding protocol
