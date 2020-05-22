@@ -1,8 +1,6 @@
 <div style="display:block; width: 100%; text-align: center !important;">
-        <h1>
-            <img src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" height="1m" />
-            Grapejuice
-        </h1>
+        <img style="display: inline-block; height: 1em" src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" height="1m" />
+        <h1>Grapejuice</h1>
 </div>
 
 ⚠️ A lot of people assume that the Roblox game client will work. To be extremely clear, **Roblox player does NOT work**
