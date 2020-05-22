@@ -18,12 +18,17 @@ class UpdateError(RuntimeError):
 
 
 class UpdateProvider(ABC):
+    _cached_gitlab_version: version.Version = None
+
     @staticmethod
     def local_version() -> version.Version:
         return version.parse(grapejuice_version)
 
     @staticmethod
-    def gitlab_version() -> version.Version:
+    def gitlab_version(return_cached: bool = False) -> version.Version:
+        if return_cached and UpdateProvider._cached_gitlab_version is not None:
+            return UpdateProvider._cached_gitlab_version
+
         url = v.git_grapejuice_init()
         response = requests.get(url)
 
@@ -41,7 +46,10 @@ class UpdateProvider(ABC):
             if not match:
                 continue
 
-            return version.parse(match.group(1).strip())
+            ver = version.parse(match.group(1).strip())
+            UpdateProvider._cached_gitlab_version = ver
+
+            return ver
 
         LOG.error("Could not match a Grapejuice version string in the remote repository")
         LOG.warning("Returning version 0.0.0")
@@ -53,5 +61,17 @@ class UpdateProvider(ABC):
         return False
 
     @abstractmethod
-    def do_update(self):
+    def do_update(self) -> None:
+        pass
+
+    @abstractmethod
+    def update_available(self) -> bool:
+        pass
+
+    @abstractmethod
+    def local_is_newer(self) -> bool:
+        pass
+
+    @abstractmethod
+    def target_version(self) -> version.Version:
         pass

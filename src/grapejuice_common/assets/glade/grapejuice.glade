@@ -60,6 +60,12 @@
     <property name="pixel_size">48</property>
     <property name="icon_name">redhat-tools</property>
   </object>
+  <object class="GtkImage" id="icon_reinstall">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixel_size">48</property>
+    <property name="icon_name">view-refresh</property>
+  </object>
   <object class="GtkImage" id="icon_roblox_studio">
     <property name="height_request">16</property>
     <property name="visible">True</property>
@@ -73,6 +79,12 @@
     <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
     <property name="icon_name">package</property>
+  </object>
+  <object class="GtkImage" id="icon_update">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="margin_end">5</property>
+    <property name="icon_name">view-refresh</property>
   </object>
   <object class="GtkImage" id="icon_wine_config">
     <property name="visible">True</property>
@@ -186,15 +198,15 @@
           <object class="GtkStack" id="main_stack">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_start">10</property>
+            <property name="margin_end">10</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
             <property name="transition_type">slide-left-right</property>
             <child>
               <object class="GtkBox" id="page_main">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">10</property>
                 <child>
@@ -240,7 +252,49 @@
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkBox" id="update_status">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="update_status_label">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="label" translatable="yes">Fetching update status...</property>
+                        <property name="justify">center</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="update_button">
+                        <property name="label" translatable="yes">Update Grapejuice</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="halign">center</property>
+                        <property name="margin_start">5</property>
+                        <property name="margin_end">5</property>
+                        <property name="margin_top">5</property>
+                        <property name="margin_bottom">5</property>
+                        <property name="image">icon_update</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -252,10 +306,6 @@
               <object class="GtkGrid" id="page_maintenance">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
                 <property name="row_spacing">5</property>
                 <property name="column_spacing">5</property>
                 <property name="row_homogeneous">True</property>
@@ -307,6 +357,26 @@
                     <property name="top_attach">0</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Reinstall Grapejuice</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_reinstall</property>
+                    <property name="image_position">top</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
               </object>
               <packing>
                 <property name="name">page_maintenance</property>
@@ -320,10 +390,6 @@
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
                 <property name="row_spacing">5</property>
                 <property name="column_spacing">5</property>
                 <property name="row_homogeneous">True</property>

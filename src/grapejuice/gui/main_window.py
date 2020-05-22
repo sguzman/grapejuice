@@ -1,4 +1,5 @@
 import os
+from typing import Iterable
 
 from grapejuice import background
 from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, GraphicsModeOpenGL, SandboxWine, \
@@ -7,6 +8,7 @@ from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl
 from grapejuice_common.features.settings import settings
 from grapejuice_common.gtk.gtk_stuff import WindowBase, dialog
+from grapejuice_common.updates.provider_map import get_update_provider
 from grapejuice_common.util.errors import NoWineError
 from grapejuice_common.util.event import Event
 from grapejuice_common.winectrl import wine_ok
@@ -14,6 +16,8 @@ from grapejuice_common.winectrl import wine_ok
 on_destroy = Event()
 
 once_task_tracker = dict()
+
+update_provider = get_update_provider()
 
 
 def on_task_removed(task: background.BackgroundTask):
@@ -164,6 +168,9 @@ class MainWindow(WindowBase):
         on_destroy.add_listener(self.before_destroy)
 
         self.on_tasks_changed()
+        self.set_update_status_visibility(False)
+
+        self.perform_update_check()
 
     @property
     def window(self):
@@ -172,6 +179,39 @@ class MainWindow(WindowBase):
     @property
     def background_task_spinner(self):
         return self.builder.get_object("background_task_spinner")
+
+    @property
+    def update_status(self):
+        return self.builder.get_object("update_status")
+
+    @property
+    def update_status_label(self):
+        return self.builder.get_object("update_status_label")
+
+    @property
+    def update_button(self):
+        return self.builder.get_object("update_button")
+
+    def set_update_status_visibility(self, visible: bool, ignore_elements: Iterable = None):
+        for element in (self.update_status_label, self.update_button, self.update_status):
+            if ignore_elements and element in ignore_elements:
+                continue
+
+            if visible:
+                element.show()
+
+            else:
+                element.hide()
+
+    def show_update_status(self, status: str, show_button: bool):
+        if show_button:
+            ignore_elements = []
+
+        else:
+            ignore_elements = [self.update_button]
+
+        self.update_status_label.set_text(status)
+        self.set_update_status_visibility(True, ignore_elements)
 
     def on_tasks_changed(self):
         if background.tasks.count > 0:
@@ -185,3 +225,36 @@ class MainWindow(WindowBase):
 
     def before_destroy(self):
         background.tasks.tasks_changed.remove_listener(self.on_tasks_changed)
+
+    def perform_update_check(self):
+        if not update_provider.can_update():
+            return
+
+        w = self
+
+        class CheckForUpdates(background.BackgroundTask):
+            def __init__(self):
+                super().__init__("Checking for a newer version of Grapejuice")
+
+            def run(self) -> None:
+                show_button = False
+
+                if update_provider.update_available():
+                    s = "This version of Grapejuice is out of date.\n" \
+                        f"{update_provider.local_version()} -> {update_provider.target_version()}"
+                    show_button = True
+
+                else:
+                    if update_provider.local_is_newer():
+                        s = f"This version of Grapejuice is from the future\n{update_provider.local_version()}"
+
+                    else:
+                        s = f" Grapejuice is up to date\n{update_provider.local_version()}"
+
+                if s:
+                    w.update_status_label.set_text(s)
+                    w.show_update_status(s, show_button)
+
+                self.finish()
+
+        background.tasks.add(CheckForUpdates())
