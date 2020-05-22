@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 
@@ -5,6 +6,7 @@ from dbus import DBusException
 
 from grapejuice import background
 from grapejuice_common import winectrl, robloxctrl, variables
+from grapejuice_common.updates.update_provider import UpdateProvider
 
 
 def install_roblox():
@@ -95,4 +97,23 @@ class OpenLogsDirectory(background.BackgroundTask):
         os.makedirs(path, exist_ok=True)
 
         subprocess.check_call(["xdg-open", path])
+        self.finish()
+
+
+class PerformUpdate(background.BackgroundTask):
+    def __init__(self, update_provider: UpdateProvider, reopen: bool = False):
+        super().__init__()
+        self._update_provider = update_provider
+        self._reopen = reopen
+        self._reopen_command = ["python3", "-m", "grapejuice", "gui", "--parent-pid", str(os.getpid())]
+
+    def run(self) -> None:
+        log = logging.getLogger(self.__class__.__name__)
+
+        try:
+            self._update_provider.do_update()
+
+        except Exception as e:
+            log.error(e)
+
         self.finish()

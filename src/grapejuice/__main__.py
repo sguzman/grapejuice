@@ -1,11 +1,12 @@
 import argparse
+import os
 import random
 import sys
 
 import grapejuice_common.util
-from grapejuice_common.ipc.dbus_client import dbus_connection
 from grapejuice_common.gtk import gtk_stuff
 from grapejuice_common.gtk.gtk_stuff import gtk_boot
+from grapejuice_common.ipc.dbus_client import dbus_connection
 from grapejuice_common.logs import log_config
 from grapejuice_common.logs.log_vacuum import vacuum_logs
 

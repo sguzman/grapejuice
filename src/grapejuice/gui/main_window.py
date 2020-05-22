@@ -3,7 +3,7 @@ from typing import Iterable
 
 from grapejuice import background
 from grapejuice.tasks import DisableMimeAssociations, ApplyDLLOverrides, InstallRoblox, GraphicsModeOpenGL, SandboxWine, \
-    RunRobloxStudio, ExtractFastFlags, OpenLogsDirectory
+    RunRobloxStudio, ExtractFastFlags, OpenLogsDirectory, PerformUpdate
 from grapejuice_common import variables, robloxctrl
 from grapejuice_common import winectrl
 from grapejuice_common.features.settings import settings
@@ -48,6 +48,8 @@ def xdg_open(*args):
 
 
 class MainWindowHandlers:
+    _updating = False
+
     def on_destroy(self, *_):
         from gi.repository import Gtk
         on_destroy()
@@ -155,6 +157,13 @@ class MainWindowHandlers:
 
     def open_logs_directory(self, *_):
         run_task_once(OpenLogsDirectory, generic_already_running)
+
+    def update_grapejuice(self, *_):
+        if self._updating:
+            return
+
+        self._updating = True
+        background.tasks.add(PerformUpdate(update_provider, reopen=True))
 
 
 class MainWindow(WindowBase):
