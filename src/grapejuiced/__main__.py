@@ -63,7 +63,9 @@ def main(in_args=None):
 
     args = parser.parse_args(in_args)
     if hasattr(args, "func"):
-        return args.func(args)
+        f: callable = getattr(args, "func")
+        return f(args)
+
     else:
         parser.print_help()
 
