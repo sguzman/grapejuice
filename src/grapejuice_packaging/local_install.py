@@ -78,7 +78,8 @@ def _do_install(*_):
         subprocess.check_call([
             "python3", "-m", "pip",
             "install", ".",
-            "--user"
+            "--user",
+            "--upgrade"
         ])
 
         if env_snapshot is not None:
