@@ -1,5 +1,5 @@
-<div style="display:block; width: 100%; text-align: center !important;">
-        <img style="display: inline-block; height: 1em" src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" height="1m" />
+<div style="text-align: center">
+        <img style="display: inline-block; height: 1em" src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" />
         <h1>Grapejuice</h1>
 </div>
 
