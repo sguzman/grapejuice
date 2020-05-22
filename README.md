@@ -16,6 +16,9 @@ Please note that this project is highly experimental, not everything will work p
 Installing from source differs per distributions, please follow the appropriate installation guide for yours.
 All the installation guides can be found in the [Grapejuice Wiki](https://gitlab.com/brinkervii/grapejuice/wikis/home)
 
+## Note for upgrading from 1.x to 2.x
+The builtin Grapejuice updater behaves a bit wonkily upgrading from 1.x to 2.x. Upgrading *does* work.
+However, the upgrade button might not indicate such until you relaunch Grapejuice manually.
 
 ## Troubleshooting
 
