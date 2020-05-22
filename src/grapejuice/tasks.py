@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+import sys
 
 from dbus import DBusException
 
@@ -105,7 +106,6 @@ class PerformUpdate(background.BackgroundTask):
         super().__init__()
         self._update_provider = update_provider
         self._reopen = reopen
-        self._reopen_command = ["python3", "-m", "grapejuice", "gui", "--parent-pid", str(os.getpid())]
 
     def run(self) -> None:
         log = logging.getLogger(self.__class__.__name__)
@@ -115,5 +115,13 @@ class PerformUpdate(background.BackgroundTask):
 
         except Exception as e:
             log.error(e)
+
+        if self._reopen:
+            subprocess.Popen(["bash", "-c", "python3 -m grapejuice gui & disown"], preexec_fn=os.setpgrp)
+
+            from gi.repository import Gtk
+            Gtk.main_quit()
+
+            sys.exit(0)
 
         self.finish()
