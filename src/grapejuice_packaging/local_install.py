@@ -86,6 +86,17 @@ def _do_install(*_):
             for env_key, env_value in env_snapshot.items():
                 os.environ[env_key] = env_value
 
+    @install.task("Updating GTK icon cache")
+    def update_icon_cache(log):
+        subprocess.check_call(["gtk-update-icon-cache"])
+
+    @install.task("Updating desktop database")
+    def update_desktop_database(log):
+        path = Path(v.home(), ".local", "share", "applications").absolute()
+        log.info(f"Updating desktop database: {path}")
+
+        subprocess.check_call(["update-desktop-database", str(path)])
+
     @install.task("Updating MIME type associations")
     def update_mime_associations(log):
         for mime, desktop in MIME.items():
@@ -98,17 +109,6 @@ def _do_install(*_):
         log.info(f"Updating MIME database: {path}")
 
         subprocess.check_call(["update-mime-database", str(path)])
-
-    @install.task("Updating GTK icon cache")
-    def update_icon_cache(log):
-        subprocess.check_call(["gtk-update-icon-cache"])
-
-    @install.task("Updating desktop database")
-    def update_desktop_database(log):
-        path = Path(v.home(), ".local", "share", "applications").absolute()
-        log.info(f"Updating desktop database: {path}")
-
-        subprocess.check_call(["update-desktop-database", str(path)])
 
     install.run()
 
