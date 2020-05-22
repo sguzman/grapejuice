@@ -1,7 +1,4 @@
-<div style="text-align: center">
-        <img style="display: inline-block; height: 1em" src="src/grapejuice_common/assets/icons/hicolor/scalable/apps/grapejuice.svg" />
-        <h1>Grapejuice</h1>
-</div>
+# Grapejuice
 
 ⚠️ A lot of people assume that the Roblox game client will work. To be extremely clear, **Roblox player does NOT work**
  Only Roblox Studio Works.
@@ -10,7 +7,7 @@
 
 Since recent releases of Wine, Roblox Studio has started being able to run under it once again.
 Installing an managing Roblox under Wine can be quite the hassle as Wine itself can create a mess and binding protocol
-uri's are not supported by default. Grapejuice aims to address these problems and make Roblox easy to get setup op Linux.
+uri's are not supported by default. Grapejuice aims to address these problems and make Roblox easy to get setup on Linux.
 
 Please note that this project is highly experimental, not everything will work perfectly.
 
@@ -35,10 +32,7 @@ What works:
 - Team Create
 - Play Solo
 
-Bugs:
-- With a dual monitor setup, context menus and dialogs may appear on the wrong monitor
-
 What doesn't work:
 - The Roblox game client
 - Test server
-- Plugin gui's may cause seizures
+- Plugin gui's may cause seizures with some rendering methods. More about this issue is discussed in the [Troubleshooting Guide](https://gitlab.com/brinkervii/grapejuice/wikis/Troubleshooting)
