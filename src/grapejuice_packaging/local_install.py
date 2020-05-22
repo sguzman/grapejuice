@@ -81,10 +81,10 @@ def _do_install(*_):
             "--user"
         ])
 
-        # if env_snapshot is not None:
-        #     log.info("Restoring environment snapshot...")
-        #     for env_key, env_value in env_snapshot.items():
-        #         os.environ[env_key] = env_value
+        if env_snapshot is not None:
+            log.info("Restoring environment snapshot...")
+            for env_key, env_value in env_snapshot.items():
+                os.environ[env_key] = env_value
 
     @install.task("Updating GTK icon cache")
     def update_icon_cache(log):
