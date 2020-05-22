@@ -7,4 +7,4 @@ Icon=$STUDIO_ICON
 Exec=$GRAPEJUICE_EXECUTABLE studio "%u%f"
 Categories=Development;
 StartupWMClass=RobloxStudioLauncherBeta.exe
-MimeType=x-scheme-handler/roblox-studio
+MimeType=x-scheme-handler/roblox-studio;application/x-roblox-rbxl;application/x-roblox-rbxlx

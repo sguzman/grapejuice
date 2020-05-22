@@ -2,7 +2,7 @@ import logging
 import threading
 from typing import Union
 
-from grapejuice_common.event import Event
+from grapejuice_common.util.event import Event
 
 
 class Task:

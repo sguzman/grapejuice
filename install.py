@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-import site
 import subprocess
 import sys
 
@@ -13,43 +12,8 @@ if os.getuid() == 0:
 REQUIRED_MAJOR = 3
 REQUIRED_MINOR = 7
 
-K_GRAPEJUICE_INSTALL_PREFIX = "GRAPEJUICE_INSTALL_PREFIX"
-K_GRAPEJUICE_IS_PACKAGING = "GRAPEJUICE_IS_PACKAGING"
-K_GRAPEJUICE_PACKAGE_PREFIX = "GRAPEJUICE_PACKAGE_PREFIX"
 
-
-def get_install_prefix():
-    if K_GRAPEJUICE_INSTALL_PREFIX in os.environ:
-        assert K_GRAPEJUICE_PACKAGE_PREFIX in os.environ, f"{K_GRAPEJUICE_PACKAGE_PREFIX} must be present in the " \
-                                                          f"environment for a packaging job to work "
-
-        os.environ[K_GRAPEJUICE_IS_PACKAGING] = "yes"  # Assume we are packaging
-
-        print("! The installation script is assuming that grapejuice is being packaged, file assocations will NOT be "
-              "made !")
-
-        return os.getenv(K_GRAPEJUICE_INSTALL_PREFIX)
-
-    here = os.path.dirname(__file__)
-    site.addsitedir(os.path.join(here, "src"))
-
-    try:
-        from grapejuice_common.variables import dot_local
-        return dot_local()
-    except ImportError as e:
-        raise e
-
-
-def perform_install():
-    os.environ["USED_INSTALL_PY"] = "1"
-
-    install_prefix = get_install_prefix()
-    assert os.path.exists(install_prefix), f"The install prefix directory '{install_prefix}' does not exist! Please " \
-                                           f"create it if you are absolutely sure this is the right path "
-
-    os.environ[K_GRAPEJUICE_INSTALL_PREFIX] = install_prefix
-    print("! Using the install prefix at ", install_prefix)
-
+def find_python_interpreter():
     if "VIRTUAL_ENV" in os.environ:
         print("! Detected VIRTUAL_ENV, finding system Python interpreter...")
         venv = os.environ["VIRTUAL_ENV"]
@@ -79,10 +43,13 @@ def perform_install():
         python = viable_interpreters[0]
         print("! Using system Python at", python)
 
-        subprocess.check_call(["bash", "install.sh", python])
+        return python
 
-    else:
-        subprocess.check_call(["bash", "install.sh", sys.executable])
+    return "python3"
+
+
+def perform_install():
+    subprocess.check_call([find_python_interpreter(), "setup.py", "install_locally"])
 
 
 def have_tkinter():
@@ -109,31 +76,34 @@ def have_zenity():
 
 
 def err_zenity(title, message):
-    import os
-
-    os.spawnlp(os.P_WAIT, "zenity", "zenity", "--error", title, "--no-wrap", "--text={}".format(message))
+    subprocess.call(["zenity", "--error", title, "--no-wrap", "--text={}".format(message)])
 
 
 def err_desperation(message):
-    import os
-
-    os.spawnlp(os.P_WAIT, "xmessage", "xmessage", message)
+    subprocess.call(["xmessage", message])
 
 
 def show_err(title, message):
     if have_tkinter():
         err_tkinter(title, message)
+
     elif have_zenity():
         err_zenity(title, message)
+
     else:
         err_desperation(message)
 
 
 def err_py37():
     import sys
+
+    ver = f"{REQUIRED_MAJOR}.{REQUIRED_MINOR}"
+
     show_err("Out of date",
-             "Your current version of python is out of date and therefore Grapejuice cannot be installed. Python 3.7 "
-             "is required.Check the Grapejuice source repository for new installation instructions.\n\nYou have:\n" + sys.version)
+             f"Your current version of python is out of date and therefore Grapejuice cannot be installed.\n\n"
+             f"Python {ver} is required. Check the Grapejuice source repository for the installation instructions.\n\n"
+             f"You have:\n{sys.version}"
+             )
 
 
 def have_py37():
@@ -142,8 +112,16 @@ def have_py37():
     satisfied = sys.version_info.major >= REQUIRED_MAJOR and sys.version_info.minor >= REQUIRED_MINOR
 
     if not satisfied:
-        err_py37()
-        sys.exit(-1)
+        exit_code = -1
+
+        try:
+            err_py37()
+
+        except Exception as e:
+            exit_code = -2
+            print(e, file=sys.stderr)
+
+        sys.exit(exit_code)
 
     return satisfied
 

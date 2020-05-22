@@ -1,6 +1,6 @@
 from grapejuice_common import variables
 from grapejuice_common.gtk.gtk_stuff import WindowBase
-from grapejuice_common.settings import settings
+from grapejuice_common.features.settings import settings
 
 
 class FastFlagWarning(WindowBase):

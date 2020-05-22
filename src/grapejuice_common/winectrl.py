@@ -10,7 +10,7 @@ from subprocess import DEVNULL
 from typing import List
 
 import grapejuice_common.variables as variables
-from grapejuice_common.log_util import log_on_call, log_function
+from grapejuice_common.logs.log_util import log_on_call, log_function
 
 LOG = logging.getLogger(__name__)
 
@@ -231,11 +231,11 @@ def poll_processes():
 
 @log_function
 def wine_ok(system_wine: str = None, show_dialog=True):
-    from grapejuice_common.settings import settings
+    from grapejuice_common.features.settings import settings
     if settings.ignore_wine_version.value:
         return True
 
-    from grapejuice_common.dbus_client import dbus_connection
+    from grapejuice_common.ipc.dbus_client import dbus_connection
     from grapejuice_common.gtk.gtk_stuff import dialog
 
     def prepare_version(s):

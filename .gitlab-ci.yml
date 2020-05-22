@@ -4,30 +4,31 @@ grapejuice:test:
     stage: test
     script:
         - export PYTHONPATH=$(pwd)/src
-        - virtualenv -p $(which python3) ./venv
-        - source ./venv/bin/activate
-        - pip install -r requirements.txt
-        - pip install -r dev_requirements.txt
-        - pytest tests
+        - pipenv install --dev
+        - pipenv run pytest tests
 
-grapejuice:debian_install:
+grapejuice:test_local_installation:
     stage: test
-    image: debian:buster
     script:
-        - apt update
-        - apt upgrade -y
-        - find artifacts -iname \*.deb -exec apt install -y ./{} \;
+        - ./install.py
 
-grapejuice:debian:
-    stage: build
+grapejuice:linux_package:
+    stage: deploy
     artifacts:
-        expire_in: 1 year
+        expire_in: 30 days
         paths:
             - artifacts/
     script:
-        - virtualenv -p $(which python3) ./venv
-        - source ./venv/bin/activate
-        - pip install -r requirements.txt
-        - python3 setup.py package_debian
-        - mkdir artifacts
-        - cp dist/debian/* artifacts
+        - export PYTHONPATH=$(pwd)/src
+        - pipenv install --dev
+        - pipenv run python3 -m grapejuice_packaging linux_package --dist-dir artifacts/linux_package
+
+grapejuice:debian_package:
+    stage: deploy
+    artifacts:
+        expire_in: 30 days
+        paths:
+            - artifacts/
+    script:
+        - export PYTHONPATH=$(pwd)/src
+        - python3 -m grapejuice_packaging debian_package --dist-dir artifacts/debian_package

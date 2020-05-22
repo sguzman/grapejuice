@@ -1,27 +1,19 @@
 import argparse
 import os
 import random
-import shutil
 import sys
 
 import grapejuice_common.util
-import grapejuice_common.variables as variables
-from grapejuice_common import log_config
-from grapejuice_common.dbus_client import dbus_connection
 from grapejuice_common.gtk import gtk_stuff
 from grapejuice_common.gtk.gtk_stuff import gtk_boot
-from grapejuice_common.log_vacuum import vacuum_logs
-
-
-def on_exit():
-    p = variables.tmp_path()
-    if os.path.exists(p) and os.path.isdir(p):
-        shutil.rmtree(variables.tmp_path())
+from grapejuice_common.ipc.dbus_client import dbus_connection
+from grapejuice_common.logs import log_config
+from grapejuice_common.logs.log_vacuum import vacuum_logs
 
 
 def main_gui():
     def make_main_window():
-        from grapejuice_common import self_test
+        from grapejuice_common.logs import self_test
         self_test.post.run()
 
         from grapejuice.gui.main_window import MainWindow
@@ -35,17 +27,9 @@ def func_gui(args):
     main_gui()
 
 
-def func_post_install(args):
-    from grapejuice_common import self_test
-    self_test.post.run()
-
-    from grapejuice import deployment
-    deployment.post_install()
-
-
 def func_player(args):
     def player_main():
-        from grapejuice_common.settings import settings
+        from grapejuice_common.features.settings import settings
 
         if settings.n_player_dialogs_remain > 0:
             settings.n_player_dialogs_remain = settings.n_player_dialogs_remain - 1
@@ -82,7 +66,7 @@ def func_studio(args):
 def main(in_args=None):
     log_config.configure_logging("grapejuice")
 
-    from grapejuice_common.settings import settings
+    from grapejuice_common.features.settings import settings
     vacuum_logs()
 
     if settings:
@@ -101,9 +85,6 @@ def main(in_args=None):
     parser_gui = subparsers.add_parser("gui")
     parser_gui.set_defaults(func=func_gui)
 
-    parser_post_install = subparsers.add_parser("post_install")
-    parser_post_install.set_defaults(func=func_post_install)
-
     parser_player = subparsers.add_parser("player")
     parser_player.add_argument("uri", type=str, help="Your Roblox token to join a game")
     parser_player.set_defaults(func=func_player)
@@ -120,8 +101,11 @@ def main(in_args=None):
     parser_studio.set_defaults(func=func_studio)
 
     args = parser.parse_args(in_args[1:])
+
     if hasattr(args, "func"):
-        return args.func(args)
+        f: callable = getattr(args, "func")
+        return f(args) or 0
+
     else:
         parser.print_help()
 
@@ -129,4 +113,4 @@ def main(in_args=None):
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

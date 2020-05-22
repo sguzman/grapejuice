@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.36.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkImage" id="icon_deploy_assocs">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="margin_top">5</property>
-    <property name="margin_bottom">5</property>
-    <property name="pixel_size">48</property>
-    <property name="icon_name">folder</property>
-  </object>
   <object class="GtkImage" id="icon_drive">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -71,8 +63,6 @@
   <object class="GtkImage" id="icon_reinstall">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="margin_top">5</property>
-    <property name="margin_bottom">5</property>
     <property name="pixel_size">48</property>
     <property name="icon_name">view-refresh</property>
   </object>
@@ -90,12 +80,11 @@
     <property name="pixel_size">48</property>
     <property name="icon_name">package</property>
   </object>
-  <object class="GtkImage" id="icon_updatebtn">
+  <object class="GtkImage" id="icon_update">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="margin_left">5</property>
-    <property name="margin_right">5</property>
-    <property name="icon_name">download</property>
+    <property name="margin_end">5</property>
+    <property name="icon_name">view-refresh</property>
   </object>
   <object class="GtkImage" id="icon_wine_config">
     <property name="visible">True</property>
@@ -185,61 +174,6 @@
     <property name="icon_name">grapejuice</property>
     <property name="startup_id">Grapejuice</property>
     <signal name="destroy" handler="on_destroy" swapped="no"/>
-    <child type="titlebar">
-      <object class="GtkHeaderBar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="title" translatable="yes">Grapejuice</property>
-        <property name="show_close_button">True</property>
-        <property name="decoration_layout">menu:minimize,close</property>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="spacing">5</property>
-            <child>
-              <object class="GtkMenuButton" id="main_menu_button">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="focus_on_click">False</property>
-                <property name="receives_default">True</property>
-                <property name="popover">main_menu</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_top">3</property>
-                    <property name="margin_bottom">3</property>
-                    <property name="pixbuf">../icons/hicolor/24x24/apps/grapejuice.png</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSpinner" id="background_task_spinner">
-                <property name="width_request">24</property>
-                <property name="height_request">24</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="valign">center</property>
-                <property name="vexpand">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-        </child>
-      </object>
-    </child>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -264,15 +198,15 @@
           <object class="GtkStack" id="main_stack">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_start">10</property>
+            <property name="margin_end">10</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
             <property name="transition_type">slide-left-right</property>
             <child>
               <object class="GtkBox" id="page_main">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">10</property>
                 <child>
@@ -318,7 +252,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="update_area">
+                  <object class="GtkBox" id="update_status">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="orientation">vertical</property>
@@ -327,7 +261,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">center</property>
-                        <property name="label" translatable="yes">update_status</property>
+                        <property name="label" translatable="yes">Fetching update status...</property>
                         <property name="justify">center</property>
                       </object>
                       <packing>
@@ -338,18 +272,21 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="update_button">
-                        <property name="label" translatable="yes">Update now</property>
+                        <property name="label" translatable="yes">Update Grapejuice</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="halign">center</property>
-                        <property name="margin_top">15</property>
-                        <property name="image">icon_updatebtn</property>
-                        <property name="always_show_image">True</property>
-                        <signal name="clicked" handler="perform_update" swapped="no"/>
+                        <property name="margin_start">5</property>
+                        <property name="margin_end">5</property>
+                        <property name="margin_top">5</property>
+                        <property name="margin_bottom">5</property>
+                        <property name="image">icon_update</property>
+                        <signal name="clicked" handler="update_grapejuice" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">False</property>
+                        <property name="fill">True</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
@@ -370,10 +307,6 @@
               <object class="GtkGrid" id="page_maintenance">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
                 <property name="row_spacing">5</property>
                 <property name="column_spacing">5</property>
                 <property name="row_homogeneous">True</property>
@@ -395,38 +328,6 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="reinstall_button">
-                    <property name="label" translatable="yes">Reinstall Grapejuice</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">icon_reinstall</property>
-                    <property name="image_position">top</property>
-                    <property name="always_show_image">True</property>
-                    <signal name="clicked" handler="reinstall" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="deploy_associations_button">
-                    <property name="label" translatable="yes">Deploy Associations</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">icon_deploy_assocs</property>
-                    <property name="image_position">top</property>
-                    <property name="always_show_image">True</property>
-                    <signal name="clicked" handler="deploy_assocs" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkButton">
                     <property name="label" translatable="yes">GraphicsMode OpenGL</property>
                     <property name="visible">True</property>
@@ -437,8 +338,8 @@
                     <signal name="clicked" handler="graphicsmode_opengl" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
                   </packing>
                 </child>
                 <child>
@@ -453,9 +354,27 @@
                     <signal name="clicked" handler="open_logs_directory" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
+                    <property name="left_attach">2</property>
+                    <property name="top_attach">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="reinstall_grapejuice_button">
+                    <property name="label" translatable="yes">Reinstall Grapejuice</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="image">icon_reinstall</property>
+                    <property name="image_position">top</property>
+                    <signal name="clicked" handler="reinstall_grapejuice" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
@@ -473,10 +392,6 @@
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">center</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
                 <property name="row_spacing">5</property>
                 <property name="column_spacing">5</property>
                 <property name="row_homogeneous">True</property>
@@ -626,6 +541,61 @@
             <property name="pack_type">end</property>
             <property name="position">1</property>
           </packing>
+        </child>
+      </object>
+    </child>
+    <child type="titlebar">
+      <object class="GtkHeaderBar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="title" translatable="yes">Grapejuice</property>
+        <property name="show_close_button">True</property>
+        <property name="decoration_layout">menu:minimize,close</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkMenuButton" id="main_menu_button">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="receives_default">True</property>
+                <property name="popover">main_menu</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_top">3</property>
+                    <property name="margin_bottom">3</property>
+                    <property name="pixbuf">../icons/hicolor/24x24/apps/grapejuice.png</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinner" id="background_task_spinner">
+                <property name="width_request">24</property>
+                <property name="height_request">24</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
         </child>
       </object>
     </child>

@@ -1,15 +1,17 @@
+import logging
 import os
 import subprocess
+import sys
 
 from dbus import DBusException
 
-from grapejuice import background, deployment
+from grapejuice import background
 from grapejuice_common import winectrl, robloxctrl, variables
-from grapejuice_common.dist_info import dist_info, DistributionType
+from grapejuice_common.updates.update_provider import UpdateProvider
 
 
 def install_roblox():
-    from grapejuice_common.dbus_client import dbus_connection
+    from grapejuice_common.ipc.dbus_client import dbus_connection
     dbus_connection().install_roblox()
 
 
@@ -44,21 +46,6 @@ class InstallRoblox(background.BackgroundTask):
         self.finish()
 
 
-class DeployAssociations(background.BackgroundTask):
-    def __init__(self):
-        super().__init__("Deploying associations")
-
-    def run(self) -> None:
-        if dist_info.distribution_type == DistributionType.source:
-            os.environ[variables.K_GRAPEJUICE_INSTALL_PREFIX] = variables.dot_local()
-            deployment.post_install()
-
-        else:
-            self._log.error(f"{DeployAssociations.__name__} is only supported on source distributions")
-
-        self.finish()
-
-
 class GraphicsModeOpenGL(background.BackgroundTask):
     def __init__(self):
         super().__init__("Changing the Roblox GraphicsMode to OpenGL")
@@ -82,7 +69,7 @@ class RunRobloxStudio(background.BackgroundTask):
         super().__init__("Launching Roblox Studio")
 
     def run(self) -> None:
-        from grapejuice_common.dbus_client import dbus_connection
+        from grapejuice_common.ipc.dbus_client import dbus_connection
         dbus_connection().launch_studio()
         self.finish()
 
@@ -93,7 +80,7 @@ class ExtractFastFlags(background.BackgroundTask):
 
     def run(self) -> None:
         try:
-            from grapejuice_common.dbus_client import dbus_connection
+            from grapejuice_common.ipc.dbus_client import dbus_connection
             dbus_connection().extract_fast_flags()
 
         except DBusException:
@@ -111,4 +98,30 @@ class OpenLogsDirectory(background.BackgroundTask):
         os.makedirs(path, exist_ok=True)
 
         subprocess.check_call(["xdg-open", path])
+        self.finish()
+
+
+class PerformUpdate(background.BackgroundTask):
+    def __init__(self, update_provider: UpdateProvider, reopen: bool = False):
+        super().__init__()
+        self._update_provider = update_provider
+        self._reopen = reopen
+
+    def run(self) -> None:
+        log = logging.getLogger(self.__class__.__name__)
+
+        try:
+            self._update_provider.do_update()
+
+        except Exception as e:
+            log.error(e)
+
+        if self._reopen:
+            subprocess.Popen(["bash", "-c", "python3 -m grapejuice gui & disown"], preexec_fn=os.setpgrp)
+
+            from gi.repository import Gtk
+            Gtk.main_quit()
+
+            sys.exit(0)
+
         self.finish()
