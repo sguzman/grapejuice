@@ -61,11 +61,30 @@ def _do_install(*_):
 
     @install.task("Install Grapejuice package")
     def install_package(log):
+        env_snapshot = None
+
+        if "VIRTUAL_ENV" in os.environ:
+            virtual_env = os.environ["VIRTUAL_ENV"]
+            log.warning(f"Breaking out of virtualenv: {virtual_env}")
+            env_snapshot = dict(os.environ)
+
+            path = os.environ["PATH"].split(os.pathsep)
+            path = list(filter(lambda s: not s.startswith(virtual_env), path))
+            os.environ["PATH"] = os.pathsep.join(path)
+
+            log.info(f"Set PATH to: " + os.environ["PATH"])
+            os.environ.pop("VIRTUAL_ENV", None)
+
         subprocess.check_call([
             "python3", "-m", "pip",
             "install", ".",
             "--user"
         ])
+
+        if env_snapshot is not None:
+            log.info("Restoring environment snapshot...")
+            for env_key, env_value in env_snapshot.items():
+                os.environ[env_key] = env_value
 
     @install.task("Updating MIME type associations")
     def update_mime_associations(log):
