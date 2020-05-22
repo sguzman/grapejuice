@@ -2,8 +2,8 @@ import argparse
 import signal
 import sys
 
-from grapejuice_common.logs import self_test, log_config
 from grapejuice_common.ipc.pid_file import PIDFile, daemon_pid_file
+from grapejuice_common.logs import self_test, log_config
 
 
 def spawn(pid_file: PIDFile):
@@ -29,6 +29,8 @@ def func_daemon(*_):
         print("> Another daemon is already running, quitting...")
         return
 
+    self_test.post.run()
+
     spawn(pid_file)
 
 
@@ -46,7 +48,6 @@ def func_kill(*_):
 
 def main(in_args=None):
     log_config.configure_logging("grapejuice-daemon")
-    self_test.post.run()
 
     if in_args is None:
         in_args = sys.argv[1:]
