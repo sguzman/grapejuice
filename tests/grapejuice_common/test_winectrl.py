@@ -8,6 +8,7 @@ def test_vanilla_ok():
 
 def test_git_build_ok():
     assert winectrl.wine_ok(system_wine="wine-5.5-436-g2b0977fc71", show_dialog=False)
+    assert winectrl.wine_ok(system_wine="wine-5.8-173-g9e26bc8116", show_dialog=False)
 
 
 def test_vanilla_not_ok():
