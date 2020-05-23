@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 import tarfile
 from io import BytesIO
 from pathlib import Path
@@ -55,7 +56,7 @@ def _build_package(configuration: LinuxPackageConfiguration):
             os.makedirs(python_site, exist_ok=True)
 
             subprocess.check_call([
-                "python3", "-m", "pip",
+                sys.executable, "-m", "pip",
                 "install", ".",
                 "--no-dependencies",
                 "--target", str(python_site)

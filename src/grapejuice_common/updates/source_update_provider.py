@@ -3,6 +3,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 import tarfile
 
 import requests
@@ -53,7 +54,7 @@ class SourceUpdateProvider(UpdateProvider):
         os.chdir(os.path.join(update_package_path, "grapejuice-master"))
 
         LOG.debug("Installing update")
-        subprocess.check_call(["python3", "./install.py"])
+        subprocess.check_call([sys.executable, "./install.py"])
         os.chdir(cwd)
 
         fp.close()

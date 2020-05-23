@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 import time
 
 from dbus import DBusException
@@ -90,8 +91,8 @@ class DBusConnection:
         self.proxy.InstallRoblox()
 
     def _spawn_daemon(self):
-        LOG.debug("Spawning Grapejuice daemeon")
-        os.spawnlp(os.P_NOWAIT, "python3", "python3", "-m", "grapejuiced", "daemonize")
+        LOG.debug("Spawning Grapejuice daemon")
+        os.spawnlp(os.P_NOWAIT, sys.executable, sys.executable, "-m", "grapejuiced", "daemonize")
 
     def version(self):
         return self.proxy.Version()

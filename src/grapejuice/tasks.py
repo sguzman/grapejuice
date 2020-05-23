@@ -117,7 +117,7 @@ class PerformUpdate(background.BackgroundTask):
             log.error(e)
 
         if self._reopen:
-            subprocess.Popen(["bash", "-c", "python3 -m grapejuice gui & disown"], preexec_fn=os.setpgrp)
+            subprocess.Popen(["bash", "-c", f"{sys.executable} -m grapejuice gui & disown"], preexec_fn=os.setpgrp)
 
             from gi.repository import Gtk
             Gtk.main_quit()
