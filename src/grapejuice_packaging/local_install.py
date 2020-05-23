@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 import tarfile
 from pathlib import Path
 
@@ -7,6 +8,8 @@ from setuptools import Command
 
 import grapejuice_common.variables as v
 from grapejuice_common.util.task_sequence import TaskSequence
+
+PYTHON_INTERPRETER = sys.executable
 
 ROBLOX_STUDIO = "roblox-studio.desktop"
 ROBLOX_PLAYER = "roblox-player.desktop"
@@ -39,7 +42,7 @@ def _do_install(*_):
     @install.task("Kill Grapejuice daemon, if running")
     def kill_daemon(log):
         try:
-            subprocess.call(["python3", "-m", "grapejuiced", "kill"])
+            subprocess.call([PYTHON_INTERPRETER, "-m", "grapejuiced", "kill"])
 
         except subprocess.CalledProcessError:
             pass
@@ -47,7 +50,7 @@ def _do_install(*_):
     @install.task("Build package of supplemental files")
     def build_supplemental(log):
         subprocess.check_call([
-            "python3", "-m", "grapejuice_packaging",
+            PYTHON_INTERPRETER, "-m", "grapejuice_packaging",
             "supplemental_package"
         ])
 
@@ -76,7 +79,7 @@ def _do_install(*_):
             os.environ.pop("VIRTUAL_ENV", None)
 
         subprocess.check_call([
-            "python3", "-m", "pip",
+            PYTHON_INTERPRETER, "-m", "pip",
             "install", ".",
             "--user",
             "--upgrade"
