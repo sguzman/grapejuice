@@ -13,43 +13,8 @@ REQUIRED_MAJOR = 3
 REQUIRED_MINOR = 7
 
 
-def find_python_interpreter():
-    if "VIRTUAL_ENV" in os.environ:
-        print("! Detected VIRTUAL_ENV, finding system Python interpreter...")
-        venv = os.environ["VIRTUAL_ENV"]
-
-        viable_paths = list(filter(lambda p: venv not in p, os.environ["PATH"].split(":")))
-
-        py3 = list(map(lambda s: os.path.join(s, "python3"), viable_paths))
-        py37 = list(map(lambda s: os.path.join(s, "python3.7"), viable_paths))
-
-        viable_binaries = list(filter(os.path.exists, py3 + py37))
-
-        def interpreter_is_viable(path):
-            ver = subprocess.check_output([
-                path,
-                "-c",
-                "import sys; print(sys.version_info.major, sys.version_info.minor)"
-            ]).decode("UTF-8")
-
-            major, minor = list(map(int, ver.split(" ")))
-
-            return major >= REQUIRED_MAJOR and minor >= REQUIRED_MINOR
-
-        viable_interpreters = list(filter(interpreter_is_viable, viable_binaries))
-
-        assert len(viable_interpreters) > 0, "Could not find a valid Python3 interpreter in $PATH"
-
-        python = viable_interpreters[0]
-        print("! Using system Python at", python)
-
-        return python
-
-    return "python3"
-
-
 def perform_install():
-    subprocess.check_call([find_python_interpreter(), "setup.py", "install_locally"])
+    subprocess.check_call([sys.executable, "setup.py", "install_locally"])
 
 
 def have_tkinter():
