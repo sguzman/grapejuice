@@ -1,3 +1,4 @@
+import logging
 import os
 import subprocess
 import uuid
@@ -7,6 +8,8 @@ from grapejuice_common.util.errors import NoWineError
 
 HERE = os.path.abspath(os.path.dirname(__file__))
 INSTANCE_ID = str(uuid.uuid4())
+
+LOG = logging.getLogger(__name__)
 
 
 def ensure_dir(p):
@@ -228,7 +231,10 @@ def tmp_path():
 
 
 def wine_binary(arch=""):
-    path_search = []
+    from grapejuice_common.features.settings import settings
+
+    path_search = [settings.wine_binary.value]
+
     if "PATH" in os.environ:
         for spec in os.environ["PATH"].split(":"):
             path_search.append(os.path.join(spec, "wine" + arch))
@@ -240,6 +246,7 @@ def wine_binary(arch=""):
 
     for p in (path_search + static_search):
         if os.path.exists(p):
+            LOG.debug(f"Using wine binary at: {p}")
             return p
 
     raise NoWineError()
