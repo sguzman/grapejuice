@@ -245,7 +245,7 @@ def wine_binary(arch=""):
     ]
 
     for p in (path_search + static_search):
-        if os.path.exists(p):
+        if p and os.path.exists(p):
             LOG.debug(f"Using wine binary at: {p}")
             return p
 
