@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 
+from grapejuice_packaging.builders.appimage_builder import AppImageBuilder
 from grapejuice_packaging.builders.debian_package_builder import DebianPackageBuilder
 from grapejuice_packaging.builders.linux_package_builder import LinuxPackageBuilder
 from grapejuice_packaging.builders.linux_supplemental_builder import LinuxSupplementalPackageBuilder
@@ -47,6 +48,16 @@ def func_pypi_package(args):
     builder.dist()
 
 
+def func_app_image(args):
+    cwd = os.path.abspath(os.getcwd())
+    build_dir = os.path.join(cwd, "build")
+    dist_dir = os.path.join(cwd, "dist")
+
+    builder = AppImageBuilder(build_dir, dist_dir)
+    builder.build()
+    builder.dist()
+
+
 def main(in_args=None):
     if in_args is None:
         in_args = sys.argv
@@ -68,6 +79,9 @@ def main(in_args=None):
     parser_supplemental_package.add_argument("--build-dir", required=False)
     parser_supplemental_package.add_argument("--dist-dir", required=False)
     parser_supplemental_package.set_defaults(func=func_supplemental_package)
+
+    parser_app_image = subparsers.add_parser("app_image")
+    parser_app_image.set_defaults(func=func_app_image)
 
     parser_pypi_package = subparsers.add_parser("pypi_package")
     parser_pypi_package.set_defaults(func=func_pypi_package)

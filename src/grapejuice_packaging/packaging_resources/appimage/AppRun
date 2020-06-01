@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+SCRIPT=$(readlink -f "$0")
+HERE=$(dirname "$SCRIPT")
+
+WORKDIR=$HERE/app
+EXEC=$HERE/app/__main__
+
+cd "$WORKDIR"
+
+"$EXEC" grapejuiced kill
+"$EXEC" grapejuiced daemonize &
+
+if [ $# -eq 0 ]; then
+	"$EXEC" gui
+
+else
+	"$EXEC" $@
+fi
+
+"$EXEC" grapejuiced kill

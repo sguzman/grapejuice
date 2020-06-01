@@ -61,6 +61,10 @@ def icons_assets_dir():
     return os.path.join(assets_dir(), "icons")
 
 
+def grapejuice_icon():
+    return os.path.join(icons_assets_dir(), "hicolor", "scalable", "apps", "grapejuice.svg")
+
+
 def src_dir():
     return os.path.abspath(os.path.dirname(HERE))
 
