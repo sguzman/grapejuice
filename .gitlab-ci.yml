@@ -43,5 +43,6 @@ grapejuice:appimage:
         - pipenv install --system --dev
         - export PYTHONPATH=$(pwd)/src
         - python3 -m grapejuice_packaging app_image
+        - mkdir -p artifacts
         - cp dist/*.AppImage artifacts
         - chmod a+x artifacts/*.AppImage
