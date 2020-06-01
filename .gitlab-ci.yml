@@ -32,3 +32,15 @@ grapejuice:debian_package:
     script:
         - export PYTHONPATH=$(pwd)/src
         - python3 -m grapejuice_packaging debian_package --dist-dir artifacts/debian_package
+
+grapejuice:appimage:
+    stage: deploy
+        artifacts:
+            expire_in: 30 days
+            paths:
+                - artifacts/
+        script:
+            - export PYTHONPATH=$(pwd)/src
+            - python3 -m grapejuice_packaging app_image
+            - cp dist/*.AppImage artifacts
+            - chmod a+x artifacts/*.AppImage
