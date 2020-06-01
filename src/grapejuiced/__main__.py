@@ -50,7 +50,7 @@ def main(in_args=None):
     log_config.configure_logging("grapejuice-daemon")
 
     if in_args is None:
-        in_args = sys.argv[1:]
+        in_args = sys.argv
 
     parser = argparse.ArgumentParser(prog="grapejuiced", description="The Grapejuice daemon")
     subparsers = parser.add_subparsers(title="subcommands", help="sub-command help")
@@ -61,7 +61,7 @@ def main(in_args=None):
     parser_daemon = subparsers.add_parser("daemonize")
     parser_daemon.set_defaults(func=func_daemon)
 
-    args = parser.parse_args(in_args)
+    args = parser.parse_args(in_args[1:])
     if hasattr(args, "func"):
         f: callable = getattr(args, "func")
         return f(args)

@@ -1,5 +1,4 @@
 import argparse
-import os
 import random
 import sys
 
@@ -63,6 +62,12 @@ def func_studio(args):
         dbus_connection().launch_studio()
 
 
+def run_daemon_instead(argv):
+    from grapejuiced.__main__ import main as daemon_main
+    daemon_main([sys.argv[0], *argv])
+    return 0
+
+
 def main(in_args=None):
     log_config.configure_logging("grapejuice")
 
@@ -75,6 +80,9 @@ def main(in_args=None):
 
     if in_args is None:
         in_args = sys.argv
+
+    if in_args[1].lower() == "grapejuiced":
+        return run_daemon_instead(in_args[2:])
 
     if random.randint(0, 10) == 5:
         print("beep beep")
